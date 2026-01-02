@@ -1,0 +1,1 @@
+// xenon.js - Temporary file for (dashboard)\n// Created: Fri Jan  2 07:06:45     2026\nconsole.log('xenon.js loaded for (dashboard)');
