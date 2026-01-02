@@ -52,6 +52,7 @@ Atteindre **85%+ de précision** sur les prédictions sportives à travers toute
 - Git
 
 ### Installation
+```
 
 ```bash
 # 1. Cloner le projet
