@@ -1,3 +1,82 @@
+# 🐐 GOAT-PREDICTION-ULTIMATE
+
+**L'IA la plus avancée au monde pour les prédictions sportives et le betting intelligent**
+
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black.svg)](https://nextjs.org)
+[![Docker](https://img.shields.io/badge/Docker-✓-blue.svg)](https://docker.com)
+
+## 🎯 Objectif
+
+Atteindre **85%+ de précision** sur les prédictions sportives à travers toutes les disciplines grâce à une architecture multi-couches avancée combinant :
+
+- 🧠 **Machine Learning Quantique Émulé**
+- ⚡ **Traitement en Temps Réel**
+- 📊 **Analytics Avancées**
+- 🏦 **Gestion de Risque Institutionnelle**
+
+## 🏗️ Architecture
+
+### Couche 1 : Perception Temps Réel
+- 27 APIs sportives simultanées
+- Flux de données temps réel
+- Analyse sentimentale des médias sociaux
+- Données météorologiques et conditions terrain
+
+### Couche 2 : Traitement Quantique Émulé
+- Réseaux de neurones quantiques simulés
+- Transformers multi-attention (64 têtes)
+- Graph Neural Networks pour relations joueurs/équipes
+- Architectures NeuroSymbolic
+
+### Couche 3 : Raisonnement Stratégique
+- Théorie des jeux appliquée aux sports
+- Mathématiques financières pour bankroll management
+- Physique du sport (trajectoires, énergie)
+- Psychologie sportive et momentum
+
+### Couche 4 : Méta-Apprentissage
+- Transfer learning cross-sport
+- Apprentissage par renforcement profond
+- Détection automatique de concept drift
+- Auto-ML avec optimisation bayésienne
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+- Docker & Docker Compose
+- Python 3.11+
+- Node.js 18+
+- Git
+
+### Installation
+
+```bash
+# 1. Cloner le projet
+git clone https://github.com/goat-prediction/ultimate.git
+cd GOAT-PREDICTION
+
+# 2. Configuration initiale
+make setup
+# Éditer .env.local avec vos configurations
+
+# 3. Lancer l'infrastructure
+make init
+make build
+make start
+
+# 4. Initialiser la base de données
+make db-init
+make db-migrate
+
+# 5. Accéder à l'application
+# Frontend: http://localhost:3000
+# Backend API: http://localhost:8000
+# Documentation API: http://localhost:8000/docs
+# Grafana: http://localhost:3001 (admin/admin)
+
 ```bash
 GOAT-PREDICTION/
 ├── .babelrc
