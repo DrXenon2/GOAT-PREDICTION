@@ -53,8 +53,6 @@ Atteindre **85%+ de précision** sur les prédictions sportives à travers toute
 
 ### Installation
 ```
-
-```bash
 # 1. Cloner le projet
 git clone https://github.com/goat-prediction/ultimate.git
 cd GOAT-PREDICTION
