@@ -1,0 +1,1 @@
+// xenon.js - Temporary file for esports\n// Created: Fri Jan  2 07:07:01     2026\nconsole.log('xenon.js loaded for esports');
