@@ -1,0 +1,679 @@
+version: '3.8'
+
+services:
+  # Development PostgreSQL
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: goat-prediction-postgres-dev
+    environment:
+      POSTGRES_USER: goat_dev
+      POSTGRES_PASSWORD: goat_dev_password
+      POSTGRES_DB: goat_prediction_dev
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,pg_trgm,btree_gin,btree_gist,uuid-ossp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+      - ./database/supabase/migrations:/docker-entrypoint-initdb.d
+      - ./database/supabase/seeds:/seeds
+    command: >
+      postgres
+      -c max_connections=200
+      -c shared_buffers=512MB
+      -c effective_cache_size=1536MB
+      -c maintenance_work_mem=128MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+      -c work_mem=8MB
+      -c min_wal_size=1GB
+      -c max_wal_size=4GB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goat_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Development Redis
+  redis-dev:
+    image: redis:7-alpine
+    container_name: goat-prediction-redis-dev
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass redis_dev_password
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save 60 1
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-dev-data:/data
+      - ./database/redis/configurations/redis.dev.conf:/usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Development TimescaleDB
+  timescaledb-dev:
+    image: timescale/timescaledb:latest-pg15
+    container_name: goat-prediction-timescaledb-dev
+    environment:
+      POSTGRES_USER: timescale_dev
+      POSTGRES_PASSWORD: timescale_dev_password
+      POSTGRES_DB: goat_prediction_timeseries_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - timescaledb-dev-data:/var/lib/postgresql/data
+      - ./database/timescaledb:/docker-entrypoint-initdb.d
+    command: >
+      postgres
+      -c max_connections=100
+      -c shared_buffers=256MB
+      -c effective_cache_size=768MB
+      -c maintenance_work_mem=64MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U timescale_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Development API Gateway
+  api-gateway-dev:
+    build:
+      context: ./backend/api-gateway
+      dockerfile: Dockerfile.dev
+    container_name: goat-prediction-api-gateway-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/api-gateway:/app
+      - ./backend/api-gateway/logs:/app/logs
+      - /app/__pycache__
+      - /app/.pytest_cache
+      - /app/.coverage
+    environment:
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      REDIS_URL: redis://:redis_dev_password@redis-dev:6379/0
+      JWT_SECRET: dev_jwt_secret_key_for_development_goat_prediction_2024
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:8080,http://localhost:5173
+      LOG_LEVEL: DEBUG
+      DEBUG: "true"
+      RELOAD: "true"
+      PYTHONPATH: /app/src
+      MLFLOW_TRACKING_URI: http://mlflow-dev:5000
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY:-}
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+      redis-dev:
+        condition: service_healthy
+      mlflow-dev:
+        condition: service_started
+    command: >
+      sh -c "
+        echo '🚀 Starting API Gateway in development mode...' &&
+        echo 'Waiting for database...' &&
+        sleep 5 &&
+        echo 'Running migrations...' &&
+        alembic upgrade head &&
+        echo 'Starting server with hot reload...' &&
+        uvicorn src.main:app \
+          --host 0.0.0.0 \
+          --port 8000 \
+          --reload \
+          --reload-dir /app/src \
+          --log-level debug \
+          --access-log \
+          --use-colors
+      "
+
+  # Development Prediction Engine
+  prediction-engine-dev:
+    build:
+      context: ./backend/prediction-engine
+      dockerfile: Dockerfile.dev
+    container_name: goat-prediction-prediction-engine-dev
+    ports:
+      - "8001:8000"
+      - "8002:8002"  # Additional port for WebSockets
+    volumes:
+      - ./backend/prediction-engine:/app
+      - ./backend/prediction-engine/logs:/app/logs
+      - ./data/development:/app/data
+      - ./models/development:/app/models
+      - /app/__pycache__
+      - /app/.pytest_cache
+      - /app/.coverage
+      - ./mlops/experiment-tracking:/experiments
+    environment:
+      ENVIRONMENT: development
+      POSTGRES_URL: postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      TIMESCALE_URL: postgresql://timescale_dev:timescale_dev_password@timescaledb-dev:5432/goat_prediction_timeseries_dev
+      REDIS_URL: redis://:redis_dev_password@redis-dev:6379/0
+      KAFKA_BROKERS: kafka-dev:9092
+      ELASTICSEARCH_URL: http://elasticsearch-dev:9200
+      ML_MODELS_PATH: /app/models/development
+      DATA_CACHE_PATH: /app/data/cache
+      LOG_LEVEL: DEBUG
+      DEBUG: "true"
+      RELOAD: "true"
+      PYTHONPATH: /app/src
+      MLFLOW_TRACKING_URI: http://mlflow-dev:5000
+      WANDB_API_KEY: ${WANDB_API_KEY:-}
+      COMET_API_KEY: ${COMET_API_KEY:-}
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY:-}
+      MODEL_TRAINING_ENABLED: "true"
+      AUTO_TRAIN_MODELS: "true"
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+      redis-dev:
+        condition: service_healthy
+      timescaledb-dev:
+        condition: service_healthy
+      kafka-dev:
+        condition: service_started
+      elasticsearch-dev:
+        condition: service_healthy
+      mlflow-dev:
+        condition: service_started
+    command: >
+      sh -c "
+        echo '🧠 Starting Prediction Engine in development mode...' &&
+        echo 'Waiting for services...' &&
+        sleep 15 &&
+        echo 'Initializing development environment...' &&
+        python scripts/setup_development.py &&
+        echo 'Training initial models if needed...' &&
+        python scripts/train_development_models.py --quick &&
+        echo 'Starting server with hot reload...' &&
+        uvicorn src.main:app \
+          --host 0.0.0.0 \
+          --port 8000 \
+          --reload \
+          --reload-dir /app/src \
+          --log-level debug \
+          --access-log \
+          --use-colors \
+          --ws websockets
+      "
+
+  # Development Frontend
+  frontend-dev:
+    build:
+      context: ./frontend/web-app
+      dockerfile: Dockerfile.dev
+    container_name: goat-prediction-frontend-dev
+    ports:
+      - "3000:3000"
+      - "9229:9229"  # Node.js debug port
+      - "9230:9230"  # Additional debug port
+    volumes:
+      - ./frontend/web-app:/app
+      - /app/node_modules
+      - /app/.next
+      - /app/.turbo
+      - /app/.cache
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      NEXT_PUBLIC_WS_URL: ws://localhost:8001/ws
+      NEXT_PUBLIC_ENVIRONMENT: development
+      NEXT_TELEMETRY_DISABLED: 1
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+      TURBO_TELEMETRY_DISABLED: 1
+      DEBUG: "next:*"
+      NEXT_DEBUG: "true"
+    command: >
+      sh -c "
+        echo '🌐 Starting Frontend in development mode...' &&
+        npm run dev -- --turbo
+      "
+    stdin_open: true
+    tty: true
+    depends_on:
+      - api-gateway-dev
+      - prediction-engine-dev
+
+  # Development Kafka
+  kafka-dev:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: goat-prediction-kafka-dev
+    depends_on:
+      zookeeper-dev:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-dev:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-dev:9092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 24
+      KAFKA_LOG_RETENTION_BYTES: 536870912
+      KAFKA_NUM_PARTITIONS: 3
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development Zookeeper
+  zookeeper-dev:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: goat-prediction-zookeeper-dev
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - "2181:2181"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development Elasticsearch
+  elasticsearch-dev:
+    image: elasticsearch:8.11.0
+    container_name: goat-prediction-elasticsearch-dev
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-dev-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  # Development Kibana
+  kibana-dev:
+    image: kibana:8.11.0
+    container_name: goat-prediction-kibana-dev
+    depends_on:
+      elasticsearch-dev:
+        condition: service_healthy
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch-dev:9200
+      XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: d2a7c2b5e8f4a9c6b3d1e5f8a2b4c6d9
+    ports:
+      - "5601:5601"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5601/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development MLflow
+  mlflow-dev:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: goat-prediction-mlflow-dev
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+    environment:
+      MLFLOW_S3_ENDPOINT_URL: http://minio-dev:9000
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      MLFLOW_TRACKING_URI: postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      MLFLOW_S3_IGNORE_TLS: "true"
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-dev-data:/mlflow
+      - ./mlops/experiment-tracking:/experiments
+    command: >
+      mlflow server
+      --backend-store-uri postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      --default-artifact-root s3://mlflow-artifacts/
+      --host 0.0.0.0
+      --port 5000
+      --gunicorn-opts "--log-level debug"
+
+  # Development MinIO
+  minio-dev:
+    image: minio/minio:latest
+    container_name: goat-prediction-minio-dev
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_BROWSER_REDIRECT_URL: http://localhost:9001
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-dev-data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Development Prometheus
+  prometheus-dev:
+    image: prom/prometheus:latest
+    container_name: goat-prediction-prometheus-dev
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus/prometheus.dev.yml:/etc/prometheus/prometheus.yml
+      - prometheus-dev-data:/prometheus
+      - ./infrastructure/monitoring/prometheus/rules/dev:/etc/prometheus/rules
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=7d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development Grafana
+  grafana-dev:
+    image: grafana/grafana:latest
+    container_name: goat-prediction-grafana-dev
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_INSTALL_PLUGINS: grafana-piechart-panel,grafana-clock-panel
+      GF_LOG_LEVEL: debug
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-dev-data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana/provisioning/dev:/etc/grafana/provisioning
+      - ./infrastructure/monitoring/dashboards/dev:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus-dev
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Development Adminer
+  adminer-dev:
+    image: adminer:latest
+    container_name: goat-prediction-adminer-dev
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres-dev
+      ADMINER_DESIGN: pepa-linha-dark
+    depends_on:
+      - postgres-dev
+      - timescaledb-dev
+      - redis-dev
+
+  # Development PGAdmin
+  pgadmin-dev:
+    image: dpage/pgadmin4:latest
+    container_name: goat-prediction-pgadmin-dev
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@goat-prediction.dev
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-dev-data:/var/lib/pgadmin
+      - ./database/supabase/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - postgres-dev
+      - timescaledb-dev
+
+  # Development Redis Commander
+  redis-commander-dev:
+    image: rediscommander/redis-commander:latest
+    container_name: goat-prediction-redis-commander-dev
+    environment:
+      REDIS_HOSTS: local:redis-dev:6379:0:redis_dev_password
+      HTTP_USER: admin
+      HTTP_PASSWORD: admin123
+      REDIS_LABEL: goat-prediction-dev
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis-dev
+
+  # Development Mailhog
+  mailhog-dev:
+    image: mailhog/mailhog:latest
+    container_name: goat-prediction-mailhog-dev
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /maildir
+      MH_UI_WEB_PATH: ./mailhog
+      MH_API_CORS_ORIGINS: http://localhost:3000,http://localhost:8080
+
+  # Development Jaeger
+  jaeger-dev:
+    image: jaegertracing/all-in-one:latest
+    container_name: goat-prediction-jaeger-dev
+    ports:
+      - "16686:16686"  # Web UI
+      - "14268:14268"  # Collector
+      - "9411:9411"    # Zipkin
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: :9411
+      COLLECTOR_OTLP_ENABLED: true
+      LOG_LEVEL: debug
+
+  # Development LocalStack
+  localstack-dev:
+    image: localstack/localstack:latest
+    container_name: goat-prediction-localstack-dev
+    ports:
+      - "4566:4566"  # All services
+      - "4571:4571"  # S3
+      - "4572:4572"  # SQS
+      - "4575:4575"  # SNS
+      - "4584:4584"  # Secrets Manager
+    environment:
+      SERVICES: s3,sqs,sns,secretsmanager,events,lambda,stepfunctions
+      DEBUG: 1
+      DATA_DIR: /tmp/localstack/data
+      DOCKER_HOST: unix:///var/run/docker.sock
+      LS_LOG: trace
+      PERSISTENCE: 1
+    volumes:
+      - localstack-dev-data:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./tests/mocks/aws:/etc/localstack/init/ready.d
+
+  # Development Database Seed
+  db-seed-dev:
+    build:
+      context: ./database
+      dockerfile: Dockerfile.dev
+    container_name: goat-prediction-db-seed-dev
+    depends_on:
+      postgres-dev:
+        condition: service_healthy
+      timescaledb-dev:
+        condition: service_healthy
+    environment:
+      POSTGRES_URL: postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      TIMESCALE_URL: postgresql://timescale_dev:timescale_dev_password@timescaledb-dev:5432/goat_prediction_timeseries_dev
+      SEED_DATA: "true"
+      SEED_MOCK_MATCHES: "100"
+      SEED_MOCK_PREDICTIONS: "500"
+    volumes:
+      - ./database/supabase/seeds:/seeds
+      - ./data/development:/data
+      - ./scripts/data:/scripts
+    command: >
+      sh -c "
+        echo '🌱 Starting database seeding...' &&
+        echo 'Waiting for databases...' &&
+        sleep 20 &&
+        echo 'Running migrations...' &&
+        psql $$POSTGRES_URL -f /seeds/001_initial_schema.sql &&
+        echo 'Seeding sports data...' &&
+        psql $$POSTGRES_URL -f /seeds/sports_data.sql &&
+        echo 'Setting up timescale hypertables...' &&
+        psql $$TIMESCALE_URL -f /seeds/timeseries_setup.sql &&
+        echo 'Generating mock data...' &&
+        python /scripts/generate_mock_data.py --matches 100 --predictions 500 &&
+        echo '✅ Database seeding complete!' &&
+        echo ''
+        echo '📊 Development environment is ready!'
+        echo '🔗 API Gateway: http://localhost:8000'
+        echo '🧠 Prediction Engine: http://localhost:8001'
+        echo '🌐 Frontend: http://localhost:3000'
+        echo '📈 Grafana: http://localhost:3001 (admin/admin)'
+        echo '📊 MLflow: http://localhost:5000'
+        echo '🗄️  Adminer: http://localhost:8080'
+        echo '📊 PGAdmin: http://localhost:5050 (admin@goat-prediction.dev/admin123)'
+        echo '🔴 Redis Commander: http://localhost:8081 (admin/admin123)'
+        echo '📨 Mailhog: http://localhost:8025'
+        echo '🔍 Jaeger: http://localhost:16686'
+        echo ''
+        echo 'To stop: docker-compose -f docker-compose.dev.yml down'
+        echo 'To view logs: docker-compose -f docker-compose.dev.yml logs -f'
+      "
+
+  # Development Jupyter Notebook
+  jupyter-dev:
+    image: jupyter/datascience-notebook:latest
+    container_name: goat-prediction-jupyter-dev
+    ports:
+      - "8888:8888"
+      - "8889:8889"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data/development:/home/jovyan/data
+      - ./backend/prediction-engine:/home/jovyan/goat-prediction
+      - ./mlops/experiment-tracking:/home/jovyan/experiments
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: goatdev2024
+      PYTHONPATH: /home/jovyan/goat-prediction/src
+      MLFLOW_TRACKING_URI: http://mlflow-dev:5000
+    working_dir: /home/jovyan/work
+    command: >
+      sh -c "
+        echo 'Installing Goat Prediction dependencies...' &&
+        pip install -r /home/jovyan/goat-prediction/requirements-dev.txt &&
+        echo 'Starting Jupyter Lab...' &&
+        start-notebook.sh \
+          --NotebookApp.token='goatdev2024' \
+          --NotebookApp.password='' \
+          --NotebookApp.notebook_dir='/home/jovyan/work' \
+          --ip='0.0.0.0' \
+          --port=8888 \
+          --no-browser \
+          --allow-root
+      "
+
+  # Development Portainer
+  portainer-dev:
+    image: portainer/portainer-ce:latest
+    container_name: goat-prediction-portainer-dev
+    ports:
+      - "9000:9000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-dev-data:/data
+      - ./infrastructure/portainer/certs:/certs
+    command: -H unix:///var/run/docker.sock --ssl --sslcert /certs/portainer.crt --sslkey /certs/portainer.key
+    restart: unless-stopped
+
+  # Development Test Runner
+  test-runner-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: goat-prediction-test-runner-dev
+    depends_on:
+      api-gateway-dev:
+        condition: service_started
+      prediction-engine-dev:
+        condition: service_started
+      postgres-dev:
+        condition: service_healthy
+      redis-dev:
+        condition: service_healthy
+    environment:
+      ENVIRONMENT: test
+      API_GATEWAY_URL: http://api-gateway-dev:8000
+      PREDICTION_ENGINE_URL: http://prediction-engine-dev:8000
+      DATABASE_URL: postgresql://goat_dev:goat_dev_password@postgres-dev:5432/goat_prediction_dev
+      REDIS_URL: redis://:redis_dev_password@redis-dev:6379/0
+      PYTHONPATH: /app/backend
+    volumes:
+      - ./tests:/app/tests
+      - ./backend:/app/backend
+      - ./test-reports:/app/test-reports
+      - ./coverage:/app/coverage
+    command: >
+      sh -c "
+        echo '🧪 Starting test runner...' &&
+        echo 'Waiting for services to be ready...' &&
+        sleep 30 &&
+        echo 'Running tests...' &&
+        cd /app/backend &&
+        python -m pytest \
+          tests/ \
+          -v \
+          --tb=short \
+          --junitxml=/app/test-reports/junit.xml \
+          --cov=prediction-engine/src \
+          --cov=api-gateway/src \
+          --cov-report=xml:/app/test-reports/coverage.xml \
+          --cov-report=html:/app/test-reports/coverage-html \
+          --cov-report=term-missing \
+          --cov-fail-under=80
+      "
+
+volumes:
+  postgres-dev-data:
+  redis-dev-data:
+  timescaledb-dev-data:
+  elasticsearch-dev-data:
+  mlflow-dev-data:
+  minio-dev-data:
+  prometheus-dev-data:
+  grafana-dev-data:
+  pgadmin-dev-data:
+  portainer-dev-data:
+  localstack-dev-data:
