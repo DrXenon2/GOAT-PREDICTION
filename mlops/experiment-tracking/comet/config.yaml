@@ -1,0 +1,1197 @@
+# 🐐 GOAT-PREDICTION ULTIMATE - COMET.ML CONFIGURATION
+# Version: 2.0.0
+# Description: Comet.ml configuration for experiment tracking and model management
+# Author: GOAT-PREDICTION Team
+# Date: $(date)
+
+# =============================================================================
+# COMET CORE CONFIGURATION
+# =============================================================================
+
+# Comet API Key (keep this secret, use environment variable COMET_API_KEY)
+api_key: "${COMET_API_KEY}"
+
+# Project Settings
+project_name: "goat-prediction-ultimate"
+workspace: "goat-prediction-team"
+
+# Experiment Settings
+experiment_name: "${EXPERIMENT_NAME:-goat-experiment-${TIMESTAMP}}"
+experiment_key: "${EXPERIMENT_KEY:-${RANDOM_UUID}}"
+experiment_alias: "${EXPERIMENT_ALIAS:-latest}"
+
+# Offline Mode (for development without internet)
+offline_directory: "${COMET_OFFLINE_DIR:-./.comet/offline}"
+offline_enabled: ${COMET_OFFLINE_ENABLED:-false}
+
+# Logging Settings
+log_graph: true
+log_code: true
+log_env_details: true
+log_env_gpu: true
+log_env_cpu: true
+log_env_host: true
+log_git_metadata: true
+log_git_patch: true
+
+# =============================================================================
+# EXPERIMENT TRACKING CONFIGURATION
+# =============================================================================
+
+# Automatic Logging
+auto_metric_logging: true
+auto_param_logging: true
+auto_output_logging: true
+auto_histogram_epoch_logging: true
+auto_histogram_weight_logging: true
+auto_histogram_gradient_logging: true
+auto_histogram_activation_logging: true
+
+# Hyperparameter Tracking
+params:
+  # Model Architecture
+  model_type: "${MODEL_TYPE:-transformer}"
+  model_version: "${MODEL_VERSION:-1.0.0}"
+  hidden_size: ${HIDDEN_SIZE:-256}
+  num_layers: ${NUM_LAYERS:-6}
+  num_heads: ${NUM_HEADS:-8}
+  dropout_rate: ${DROPOUT_RATE:-0.1}
+  activation: "${ACTIVATION:-gelu}"
+  
+  # Training Configuration
+  batch_size: ${BATCH_SIZE:-32}
+  learning_rate: ${LEARNING_RATE:-0.001}
+  weight_decay: ${WEIGHT_DECAY:-0.01}
+  optimizer: "${OPTIMIZER:-adamw}"
+  scheduler: "${SCHEDULER:-cosine}"
+  warmup_steps: ${WARMUP_STEPS:-1000}
+  max_epochs: ${MAX_EPOCHS:-100}
+  early_stopping_patience: ${EARLY_STOPPING_PATIENCE:-10}
+  
+  # Data Configuration
+  train_split: ${TRAIN_SPLIT:-0.7}
+  val_split: ${VAL_SPLIT:-0.15}
+  test_split: ${TEST_SPLIT:-0.15}
+  sequence_length: ${SEQUENCE_LENGTH:-128}
+  num_features: ${NUM_FEATURES:-100}
+  
+  # Sports Specific
+  sport: "${SPORT:-football}"
+  market_type: "${MARKET_TYPE:-match_winner}"
+  feature_set: "${FEATURE_SET:-advanced}"
+  
+  # Random Seeds
+  random_seed: ${RANDOM_SEED:-42}
+  data_seed: ${DATA_SEED:-123}
+  model_seed: ${MODEL_SEED:-456}
+
+# Metrics to Track
+metrics:
+  # Training Metrics
+  - name: "train_loss"
+    minimize: true
+  - name: "train_accuracy"
+    maximize: true
+  - name: "train_precision"
+    maximize: true
+  - name: "train_recall"
+    maximize: true
+    goal: 0.85
+  - name: "train_f1"
+    maximize: true
+    goal: 0.85
+  - name: "train_auc"
+    maximize: true
+    goal: 0.90
+    
+  # Validation Metrics
+  - name: "val_loss"
+    minimize: true
+  - name: "val_accuracy"
+    maximize: true
+    goal: 0.85
+  - name: "val_precision"
+    maximize: true
+    goal: 0.80
+  - name: "val_recall"
+    maximize: true
+    goal: 0.80
+  - name: "val_f1"
+    maximize: true
+    goal: 0.85
+  - name: "val_auc"
+    maximize: true
+    goal: 0.90
+    
+  # Test Metrics
+  - name: "test_loss"
+    minimize: true
+  - name: "test_accuracy"
+    maximize: true
+    goal: 0.85
+  - name: "test_precision"
+    maximize: true
+    goal: 0.80
+  - name: "test_recall"
+    maximize: true
+    goal: 0.80
+  - name: "test_f1"
+    maximize: true
+    goal: 0.85
+  - name: "test_auc"
+    maximize: true
+    goal: 0.90
+    
+  # Business Metrics
+  - name: "roi"
+    maximize: true
+    goal: 0.15
+  - name: "profit_factor"
+    maximize: true
+    goal: 1.5
+  - name: "sharpe_ratio"
+    maximize: true
+    goal: 2.0
+  - name: "max_drawdown"
+    minimize: true
+    goal: 0.10
+  - name: "win_rate"
+    maximize: true
+    goal: 0.60
+  - name: "average_odds"
+    maximize: true
+  - name: "value_bet_ratio"
+    maximize: true
+    goal: 0.20
+
+# =============================================================================
+# MODEL REGISTRY CONFIGURATION
+# =============================================================================
+
+model_registry:
+  enabled: true
+  registry_name: "goat-prediction-models"
+  
+  # Model Stages
+  stages:
+    - "none"
+    - "staging"
+    - "production"
+    - "archived"
+  
+  # Versioning
+  versioning_enabled: true
+  auto_version: true
+  version_prefix: "v"
+  
+  # Model Metadata
+  metadata:
+    framework: "${FRAMEWORK:-pytorch}"
+    task_type: "${TASK_TYPE:-classification}"
+    input_shape: "${INPUT_SHAPE:-[batch_size, 128, 100]}"
+    output_shape: "${OUTPUT_SHAPE:-[batch_size, 3]}"
+    sport: "${SPORT:-football}"
+    market: "${MARKET_TYPE:-match_winner}"
+    author: "${AUTHOR:-goat-prediction-team}"
+    description: "GOAT-PREDICTION ${SPORT} ${MARKET_TYPE} model"
+    
+  # Model Artifacts
+  artifacts:
+    - name: "model"
+      type: "model"
+      path: "./models/${MODEL_NAME}.pt"
+      metadata:
+        format: "pytorch"
+        size_mb: "${MODEL_SIZE_MB}"
+        
+    - name: "config"
+      type: "config"
+      path: "./configs/${MODEL_NAME}_config.yaml"
+      metadata:
+        format: "yaml"
+        
+    - name: "preprocessor"
+      type: "preprocessor"
+      path: "./preprocessors/${MODEL_NAME}_preprocessor.pkl"
+      metadata:
+        format: "pickle"
+        
+    - name: "feature_importance"
+      type: "analysis"
+      path: "./analysis/${MODEL_NAME}_feature_importance.png"
+      metadata:
+        format: "png"
+        description: "Feature importance analysis"
+        
+    - name: "performance_report"
+      type: "report"
+      path: "./reports/${MODEL_NAME}_report.html"
+      metadata:
+        format: "html"
+        description: "Model performance report"
+
+# =============================================================================
+# DATASET TRACKING CONFIGURATION
+# =============================================================================
+
+dataset_tracking:
+  enabled: true
+  
+  # Dataset Versioning
+  versioning_enabled: true
+  auto_version_datasets: true
+  
+  # Dataset Metadata
+  metadata:
+    sport: "${SPORT:-football}"
+    date_range: "${DATE_RANGE:-2020-01-01_to_2023-12-31}"
+    source: "${DATA_SOURCE:-statsbomb,opta,sportradar}"
+    num_samples: ${NUM_SAMPLES:-10000}
+    num_features: ${NUM_FEATURES:-100}
+    class_distribution: "${CLASS_DISTRIBUTION}"
+    split_ratio: "${SPLIT_RATIO:-70/15/15}"
+    
+  # Dataset Artifacts
+  artifacts:
+    - name: "raw_data"
+      type: "dataset"
+      path: "./data/raw/${SPORT}_matches.csv"
+      metadata:
+        format: "csv"
+        size_mb: "${DATASET_SIZE_MB}"
+        
+    - name: "processed_data"
+      type: "dataset"
+      path: "./data/processed/${SPORT}_features.npy"
+      metadata:
+        format: "numpy"
+        
+    - name: "data_report"
+      type: "report"
+      path: "./reports/${SPORT}_data_report.html"
+      metadata:
+        format: "html"
+        description: "Dataset analysis report"
+
+# =============================================================================
+# OPTIMIZATION CONFIGURATION
+# =============================================================================
+
+optimization:
+  enabled: true
+  framework: "optuna"  # optuna, ray, hyperopt
+  
+  # Optimization Strategy
+  strategy: "tpe"  # tpe, random, grid, bayesian
+  direction: "maximize"
+  metric_name: "val_f1"
+  
+  # Search Space
+  search_space:
+    learning_rate:
+      type: "float"
+      low: 0.0001
+      high: 0.01
+      log: true
+      
+    batch_size:
+      type: "categorical"
+      values: [16, 32, 64, 128]
+      
+    hidden_size:
+      type: "int"
+      low: 128
+      high: 512
+      step: 64
+      
+    num_layers:
+      type: "int"
+      low: 2
+      high: 8
+      
+    dropout_rate:
+      type: "float"
+      low: 0.0
+      high: 0.5
+      
+    weight_decay:
+      type: "float"
+      low: 0.0
+      high: 0.1
+      log: true
+      
+  # Optimization Parameters
+  n_trials: ${N_TRIALS:-100}
+  timeout: ${TIMEOUT:-3600}  # seconds
+  n_jobs: ${N_JOBS:-4}
+  show_progress_bar: true
+  
+  # Early Stopping
+  early_stopping:
+    enabled: true
+    patience: 10
+    min_delta: 0.001
+
+# =============================================================================
+# VISUALIZATION CONFIGURATION
+# =============================================================================
+
+visualization:
+  enabled: true
+  
+  # Charts to Generate
+  charts:
+    - type: "loss_curve"
+      title: "Training and Validation Loss"
+      x_label: "Epoch"
+      y_label: "Loss"
+      series: ["train_loss", "val_loss"]
+      
+    - type: "metric_curve"
+      title: "Accuracy Over Time"
+      x_label: "Epoch"
+      y_label: "Accuracy"
+      series: ["train_accuracy", "val_accuracy", "test_accuracy"]
+      
+    - type: "roc_curve"
+      title: "ROC Curve"
+      x_label: "False Positive Rate"
+      y_label: "True Positive Rate"
+      
+    - type: "precision_recall_curve"
+      title: "Precision-Recall Curve"
+      x_label: "Recall"
+      y_label: "Precision"
+      
+    - type: "confusion_matrix"
+      title: "Confusion Matrix"
+      normalize: true
+      
+    - type: "feature_importance"
+      title: "Feature Importance"
+      top_n: 20
+      
+    - type: "calibration_curve"
+      title: "Calibration Curve"
+      
+    - type: "profit_curve"
+      title: "Profit Curve"
+      x_label: "Threshold"
+      y_label: "Cumulative Profit"
+      
+    - type: "sharpe_ratio_curve"
+      title: "Sharpe Ratio vs Threshold"
+      x_label: "Threshold"
+      y_label: "Sharpe Ratio"
+  
+  # Dashboard Configuration
+  dashboard:
+    auto_open: true
+    height: 800
+    width: 1200
+    theme: "dark"  # light, dark
+    
+  # Report Generation
+  reports:
+    - type: "experiment_summary"
+      format: "html"
+      path: "./reports/experiment_summary.html"
+      
+    - type: "model_card"
+      format: "html"
+      path: "./reports/model_card.html"
+      
+    - type: "performance_report"
+      format: "pdf"
+      path: "./reports/performance_report.pdf"
+
+# =============================================================================
+# MONITORING & ALERTING CONFIGURATION
+# =============================================================================
+
+monitoring:
+  enabled: true
+  
+  # Performance Monitoring
+  performance:
+    check_interval: 3600  # seconds
+    metrics_to_monitor:
+      - "inference_latency"
+      - "prediction_accuracy"
+      - "throughput"
+      - "error_rate"
+      
+    thresholds:
+      inference_latency:
+        warning: 100  # ms
+        critical: 500  # ms
+        
+      prediction_accuracy:
+        warning: 0.70
+        critical: 0.60
+        
+      error_rate:
+        warning: 0.05
+        critical: 0.10
+  
+  # Data Drift Detection
+  data_drift:
+    enabled: true
+    check_interval: 86400  # seconds (daily)
+    features_to_monitor:
+      - "all"
+      
+    methods:
+      - "ks_test"
+      - "psi"
+      - "mmd"
+      
+    thresholds:
+      psi:
+        warning: 0.10
+        critical: 0.25
+        
+      ks_statistic:
+        warning: 0.05
+        critical: 0.10
+  
+  # Model Drift Detection
+  model_drift:
+    enabled: true
+    check_interval: 86400  # seconds (daily)
+    
+    methods:
+      - "accuracy_drop"
+      - "prediction_distribution"
+      - "performance_degradation"
+      
+    thresholds:
+      accuracy_drop:
+        warning: 0.05
+        critical: 0.10
+
+# =============================================================================
+# COLLABORATION CONFIGURATION
+# =============================================================================
+
+collaboration:
+  enabled: true
+  
+  # Team Settings
+  team:
+    name: "goat-prediction-team"
+    roles:
+      - "data_scientist"
+      - "ml_engineer"
+      - "domain_expert"
+      - "product_manager"
+    
+    permissions:
+      read: ["all"]
+      write: ["data_scientist", "ml_engineer"]
+      admin: ["ml_lead"]
+  
+  # Sharing Settings
+  sharing:
+    public_experiments: false
+    share_with:
+      - workspace: "goat-prediction-team"
+        permission: "view"
+      
+    export_formats:
+      - "csv"
+      - "json"
+      - "html"
+      - "pdf"
+  
+  # Comments and Discussions
+  discussions:
+    enabled: true
+    notify_on_comment: true
+    allowed_attachments: true
+    
+  # Version Control Integration
+  version_control:
+    git_integration: true
+    auto_commit: false
+    branch_tracking: true
+
+# =============================================================================
+# INTEGRATION CONFIGURATION
+# =============================================================================
+
+integrations:
+  
+  # ML Frameworks
+  frameworks:
+    pytorch:
+      enabled: true
+      log_gradients: true
+      log_parameters: true
+      log_model: true
+      
+    tensorflow:
+      enabled: true
+      log_graph: true
+      log_histograms: true
+      
+    sklearn:
+      enabled: true
+      log_model: true
+      log_metrics: true
+      
+    xgboost:
+      enabled: true
+      log_model: true
+      log_importance: true
+      
+    lightgbm:
+      enabled: true
+      log_model: true
+      
+    catboost:
+      enabled: true
+      log_model: true
+  
+  # Data Processing
+  data:
+    pandas:
+      enabled: true
+      log_dataframes: true
+      log_series: true
+      
+    numpy:
+      enabled: true
+      log_arrays: true
+      
+    dask:
+      enabled: true
+      
+    ray:
+      enabled: true
+  
+  # Visualization
+  visualization:
+    matplotlib:
+      enabled: true
+      auto_log_figures: true
+      
+    plotly:
+      enabled: true
+      auto_log_figures: true
+      
+    seaborn:
+      enabled: true
+      auto_log_figures: true
+  
+  # Deployment
+  deployment:
+    docker:
+      enabled: true
+      log_container_info: true
+      
+    kubernetes:
+      enabled: true
+      log_pod_info: true
+      
+    fastapi:
+      enabled: true
+      log_api_metrics: true
+      
+    streamlit:
+      enabled: true
+      log_app_metrics: true
+
+# =============================================================================
+# CUSTOM METRICS & LOGGING CONFIGURATION
+# =============================================================================
+
+custom_metrics:
+  
+  # Sports-Specific Metrics
+  sports_metrics:
+    
+    # Football Metrics
+    football:
+      - name: "expected_goals_correlation"
+        description: "Correlation between predicted and actual goals"
+        maximize: true
+        
+      - name: "clean_sheet_accuracy"
+        description: "Accuracy in predicting clean sheets"
+        maximize: true
+        
+      - name: "btts_accuracy"
+        description: "Both teams to score prediction accuracy"
+        maximize: true
+        
+      - name: "over_under_accuracy"
+        description: "Over/Under prediction accuracy"
+        maximize: true
+        
+      - name: "correct_score_accuracy"
+        description: "Exact score prediction accuracy"
+        maximize: true
+    
+    # Basketball Metrics
+    basketball:
+      - name: "point_spread_accuracy"
+        description: "Point spread prediction accuracy"
+        maximize: true
+        
+      - name: "total_points_accuracy"
+        description: "Total points prediction accuracy"
+        maximize: true
+        
+      - name: "moneyline_accuracy"
+        description: "Moneyline prediction accuracy"
+        maximize: true
+        
+      - name: "player_props_accuracy"
+        description: "Player props prediction accuracy"
+        maximize: true
+    
+    # Tennis Metrics
+    tennis:
+      - name: "match_winner_accuracy"
+        description: "Match winner prediction accuracy"
+        maximize: true
+        
+      - name: "set_betting_accuracy"
+        description: "Set betting prediction accuracy"
+        maximize: true
+        
+      - name: "total_games_accuracy"
+        description: "Total games prediction accuracy"
+        maximize: true
+  
+  # Business Metrics
+  business_metrics:
+    - name: "return_on_investment"
+      formula: "(total_profit / total_investment) * 100"
+      maximize: true
+      goal: 15.0
+      
+    - name: "profit_factor"
+      formula: "gross_profit / gross_loss"
+      maximize: true
+      goal: 1.5
+      
+    - name: "sharpe_ratio"
+      formula: "(average_return - risk_free_rate) / std_dev_returns"
+      maximize: true
+      goal: 2.0
+      
+    - name: "maximum_drawdown"
+      formula: "max(peak - trough)"
+      minimize: true
+      goal: 0.10
+      
+    - name: "win_rate"
+      formula: "(winning_bets / total_bets) * 100"
+      maximize: true
+      goal: 60.0
+      
+    - name: "average_odds"
+      formula: "sum(odds) / count(bets)"
+      maximize: true
+      
+    - name: "value_bet_ratio"
+      formula: "(value_bets / total_bets) * 100"
+      maximize: true
+      goal: 20.0
+    
+    - name: "kelly_fraction"
+      formula: "(probability * odds - 1) / (odds - 1)"
+      description: "Optimal betting fraction"
+      
+    - name: "bankroll_growth"
+      formula: "final_bankroll / initial_bankroll"
+      maximize: true
+  
+  # Risk Metrics
+  risk_metrics:
+    - name: "value_at_risk_95"
+      description: "Value at Risk at 95% confidence"
+      minimize: true
+      
+    - name: "expected_shortfall"
+      description: "Expected shortfall/Conditional VaR"
+      minimize: true
+      
+    - name: "volatility"
+      description: "Standard deviation of returns"
+      minimize: true
+      
+    - name: "skewness"
+      description: "Skewness of return distribution"
+      
+    - name: "kurtosis"
+      description: "Kurtosis of return distribution"
+
+# =============================================================================
+# EXPERIMENT TEMPLATES
+# =============================================================================
+
+experiment_templates:
+  
+  # Football Match Winner Template
+  football_match_winner:
+    name: "Football Match Winner Prediction"
+    description: "Predict match winner in football matches"
+    tags: ["football", "match_winner", "classification"]
+    
+    params:
+      model_type: "transformer"
+      sport: "football"
+      market_type: "match_winner"
+      sequence_length: 10
+      num_features: 128
+      
+    metrics:
+      primary: "val_f1"
+      secondary: ["val_accuracy", "val_auc", "roi"]
+      
+    artifacts:
+      - "model"
+      - "config"
+      - "preprocessor"
+      - "performance_report"
+  
+  # Basketball Point Spread Template
+  basketball_point_spread:
+    name: "Basketball Point Spread Prediction"
+    description: "Predict point spread in basketball games"
+    tags: ["basketball", "point_spread", "regression"]
+    
+    params:
+      model_type: "gradient_boosting"
+      sport: "basketball"
+      market_type: "point_spread"
+      num_features: 85
+      
+    metrics:
+      primary: "val_mse"
+      secondary: ["val_mae", "val_r2", "profit_factor"]
+  
+  # Tennis Match Winner Template
+  tennis_match_winner:
+    name: "Tennis Match Winner Prediction"
+    description: "Predict match winner in tennis matches"
+    tags: ["tennis", "match_winner", "classification"]
+    
+    params:
+      model_type: "neural_network"
+      sport: "tennis"
+      market_type: "match_winner"
+      num_features: 76
+      
+    metrics:
+      primary: "val_accuracy"
+      secondary: ["val_precision", "val_recall", "win_rate"]
+  
+  # Live Betting Template
+  live_betting:
+    name: "Live Betting Prediction"
+    description: "Real-time predictions for in-play betting"
+    tags: ["live", "realtime", "time_series"]
+    
+    params:
+      model_type: "lstm"
+      sequence_length: 50
+      num_features: 64
+      update_frequency: 60  # seconds
+      
+    metrics:
+      primary: "latency"
+      secondary: ["accuracy", "throughput", "roi"]
+
+# =============================================================================
+# DEPLOYMENT CONFIGURATION
+# =============================================================================
+
+deployment:
+  
+  # Model Serving
+  serving:
+    framework: "triton"  # triton, torchserve, tensorflow-serving, seldon
+    endpoint: "${MODEL_ENDPOINT:-http://localhost:8000}"
+    version: "${MODEL_VERSION:-1}"
+    
+    monitoring:
+      enabled: true
+      metrics:
+        - "inference_latency_p95"
+        - "throughput_rps"
+        - "error_rate"
+        - "gpu_utilization"
+        
+    scaling:
+      auto_scaling: true
+      min_replicas: 1
+      max_replicas: 10
+      target_cpu_utilization: 70
+      target_memory_utilization: 80
+  
+  # A/B Testing
+  ab_testing:
+    enabled: true
+    
+    variants:
+      - name: "production"
+        weight: 50
+        model_version: "v1.2.0"
+        
+      - name: "candidate"
+        weight: 50
+        model_version: "v1.3.0"
+    
+    metrics:
+      - "conversion_rate"
+      - "accuracy"
+      - "roi"
+      - "user_satisfaction"
+    
+    significance_level: 0.05
+    minimum_sample_size: 1000
+  
+  # Canary Deployment
+  canary:
+    enabled: true
+    initial_traffic_percentage: 10
+    increment_percentage: 10
+    evaluation_period_hours: 24
+    
+    success_criteria:
+      - metric: "error_rate"
+        threshold: 0.05
+        comparison: "lt"
+        
+      - metric: "latency_p95"
+        threshold: 200  # ms
+        comparison: "lt"
+        
+      - metric: "accuracy"
+        threshold: 0.70
+        comparison: "gt"
+
+# =============================================================================
+# ENVIRONMENT SPECIFIC CONFIGURATION
+# =============================================================================
+
+# Development Environment
+development:
+  api_key: "${COMET_API_KEY_DEV}"
+  project_name: "goat-prediction-dev"
+  offline_enabled: true
+  log_level: "debug"
+  auto_metric_step: 10
+  auto_param_logging: true
+  optimization:
+    n_trials: 20
+    timeout: 600
+
+# Staging Environment
+staging:
+  api_key: "${COMET_API_KEY_STAGING}"
+  project_name: "goat-prediction-staging"
+  offline_enabled: false
+  log_level: "info"
+  auto_metric_step: 50
+  model_registry:
+    auto_promote: false
+  optimization:
+    n_trials: 50
+    timeout: 1800
+
+# Production Environment
+production:
+  api_key: "${COMET_API_KEY_PROD}"
+  project_name: "goat-prediction-prod"
+  offline_enabled: false
+  log_level: "warning"
+  auto_metric_step: 100
+  model_registry:
+    auto_promote: true
+    require_approval: true
+  optimization:
+    n_trials: 100
+    timeout: 3600
+  monitoring:
+    alerting:
+      enabled: true
+      slack_webhook: "${SLACK_WEBHOOK}"
+      email_notifications: true
+
+# =============================================================================
+# ADVANCED CONFIGURATION
+# =============================================================================
+
+advanced:
+  
+  # Performance Optimization
+  performance:
+    batch_logging: true
+    batch_size: 100
+    flush_interval: 10  # seconds
+    max_queue_size: 1000
+    
+    compression:
+      enabled: true
+      algorithm: "gzip"
+      level: 6
+    
+    caching:
+      enabled: true
+      cache_dir: "./.comet/cache"
+      max_size_mb: 1024
+  
+  # Security
+  security:
+    ssl_verify: true
+    proxy:
+      enabled: ${HTTP_PROXY_ENABLED:-false}
+      url: "${HTTP_PROXY_URL}"
+    
+    encryption:
+      enabled: true
+      algorithm: "aes-256-gcm"
+    
+    authentication:
+      method: "api_key"
+      refresh_interval: 3600
+  
+  # Custom Logging
+  custom_loggers:
+    
+    # Custom CSV Logger
+    csv_logger:
+      enabled: true
+      path: "./logs/metrics.csv"
+      flush_interval: 30
+      
+    # Custom JSON Logger  
+    json_logger:
+      enabled: true
+      path: "./logs/experiment.json"
+      pretty_print: true
+      
+    # Custom TensorBoard Logger
+    tensorboard_logger:
+      enabled: true
+      log_dir: "./logs/tensorboard"
+      
+    # Custom MLflow Logger
+    mlflow_logger:
+      enabled: true
+      tracking_uri: "./mlruns"
+  
+  # Custom Callbacks
+  callbacks:
+    
+    # Early Stopping Callback
+    early_stopping:
+      enabled: true
+      monitor: "val_loss"
+      patience: 10
+      min_delta: 0.001
+      mode: "min"
+      
+    # Model Checkpoint Callback
+    model_checkpoint:
+      enabled: true
+      monitor: "val_f1"
+      mode: "max"
+      save_best_only: true
+      path: "./checkpoints/best_model.pt"
+      
+    # Learning Rate Scheduler Callback
+    lr_scheduler:
+      enabled: true
+      scheduler: "reduce_on_plateau"
+      monitor: "val_loss"
+      factor: 0.5
+      patience: 5
+      
+    # Custom Metric Callback
+    custom_metric_callback:
+      enabled: true
+      metrics:
+        - "roi"
+        - "sharpe_ratio"
+        - "profit_factor"
+      calculate_every: "epoch"
+
+# =============================================================================
+# TEMPLATE VARIABLES
+# =============================================================================
+
+# These variables will be replaced at runtime
+variables:
+  TIMESTAMP: "${timestamp}"
+  RANDOM_UUID: "${uuid}"
+  GIT_COMMIT: "${git_commit}"
+  GIT_BRANCH: "${git_branch}"
+  HOSTNAME: "${hostname}"
+  USER: "${user}"
+  CPU_COUNT: "${cpu_count}"
+  GPU_COUNT: "${gpu_count}"
+  MEMORY_GB: "${memory_gb}"
+  
+  # Sports Data Variables
+  SEASON: "${season:-2023-2024}"
+  LEAGUE: "${league:-premier_league}"
+  DATA_SOURCES: "${data_sources:-statsbomb,opta}"
+  
+  # Model Variables
+  MODEL_NAME: "${model_name:-goat_model}"
+  MODEL_VERSION: "${model_version:-1.0.0}"
+  FRAMEWORK_VERSION: "${framework_version}"
+
+# =============================================================================
+# VALIDATION RULES
+# =============================================================================
+
+validation:
+  
+  # Parameter Validation
+  params:
+    - name: "learning_rate"
+      type: "float"
+      min: 0.00001
+      max: 0.1
+      
+    - name: "batch_size"
+      type: "int"
+      min: 1
+      max: 1024
+      
+    - name: "hidden_size"
+      type: "int"
+      min: 32
+      max: 1024
+      
+    - name: "dropout_rate"
+      type: "float"
+      min: 0.0
+      max: 0.9
+  
+  # Metric Validation
+  metrics:
+    - name: "accuracy"
+      min: 0.0
+      max: 1.0
+      
+    - name: "loss"
+      min: 0.0
+      
+    - name: "roi"
+      min: -1.0
+      max: 10.0
+  
+  # Resource Validation
+  resources:
+    - name: "memory_usage"
+      threshold: 0.95  # 95% of available memory
+      action: "warning"
+      
+    - name: "gpu_memory"
+      threshold: 0.90  # 90% of GPU memory
+      action: "error"
+      
+    - name: "disk_space"
+      threshold: 0.80  # 80% of disk space
+      action: "warning"
+
+# =============================================================================
+# DOCUMENTATION & HELP
+# =============================================================================
+
+documentation:
+  
+  # Configuration Help
+  help:
+    api_key: "Get your API key from https://www.comet.ml"
+    project_name: "Name of the Comet project"
+    workspace: "Your Comet workspace name"
+    
+  # Examples
+  examples:
+    
+    # Basic Example
+    basic: |
+      import comet_ml
+      from comet_ml import Experiment
+      
+      experiment = Experiment(
+          api_key="YOUR_API_KEY",
+          project_name="goat-prediction",
+          workspace="your-workspace"
+      )
+      
+      # Log parameters
+      experiment.log_parameters({
+          "learning_rate": 0.001,
+          "batch_size": 32,
+          "epochs": 100
+      })
+      
+      # Log metrics
+      for epoch in range(100):
+          train_loss = calculate_loss()
+          experiment.log_metric("train_loss", train_loss, epoch=epoch)
+    
+    # PyTorch Example
+    pytorch_example: |
+      import torch
+      import comet_ml
+      from comet_ml.integration.pytorch import log_model
+      
+      experiment = Experiment()
+      
+      model = YourModel()
+      optimizer = torch.optim.Adam(model.parameters())
+      
+      # Training loop
+      for epoch in range(epochs):
+          # ... training code ...
+          experiment.log_metric("loss", loss.item())
+      
+      # Log model
+      log_model(experiment, model, "football_match_winner")
+    
+    # Hyperparameter Optimization
+    optimization_example: |
+      import comet_ml
+      from comet_ml import Optimizer
+      
+      config = {
+          "algorithm": "bayes",
+          "spec": {
+              "maxCombo": 10,
+              "objective": "maximize",
+              "metric": "val_accuracy",
+          },
+          "parameters": {
+              "learning_rate": {"type": "float", "min": 0.0001, "max": 0.1},
+              "batch_size": {"type": "int", "min": 16, "max": 128},
+          }
+      }
+      
+      opt = Optimizer(config)
+      
+      for experiment in opt.get_experiments():
+          # Run experiment
+          accuracy = train_model(
+              learning_rate=experiment.get_parameter("learning_rate"),
+              batch_size=experiment.get_parameter("batch_size")
+          )
+          
+          experiment.log_metric("val_accuracy", accuracy)
+
+# =============================================================================
+# END OF CONFIGURATION
+# =============================================================================
+
+# Note: This configuration file is part of GOAT-PREDICTION Ultimate
+# For questions or issues, contact: ml-team@goat-prediction.com
