@@ -1,1 +1,917 @@
+# Dockerignore for Goat Prediction Ultimate
+# Comprehensive ignore patterns for all environments
 
+# Version Control
+.git
+.gitignore
+.gitattributes
+.gitmodules
+.github
+.gitlab
+.bitbucket
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.lock-wscript
+
+# Build outputs
+dist
+build
+.out
+.next
+.nuxt
+.gatsby
+.cache
+.turbo
+.output
+
+# Dependencies
+jspm_packages
+web_modules
+*.tgz
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+.yarn-integrity
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+mypy_cache/
+.ruff_cache/
+.python-version
+
+# Coverage reports
+coverage/
+*.lcov
+htmlcov/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+cypress/videos
+cypress/screenshots
+cypress/downloads
+playwright/.cache
+playwright/test-results
+test-results
+test-reports
+
+# Security
+secrets.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.der
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.temp
+*.tmp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+*.stackdump
+desktop.ini
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+mongod.lock
+redis.lock
+
+# ML Models (development only, production has specific models)
+models/development/
+models/test/
+!models/production/
+
+# Data (development only)
+data/development/
+data/test/
+!data/production/
+
+# Documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Docker
+docker-compose.override.yml
+docker-compose.dev.yml
+docker-compose.test.yml
+!docker-compose.yml
+!docker-compose.prod.yml
+.docker/
+docker-data/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+
+# Config files (development versions)
+*.dev.*
+*.test.*
+*.local.*
+*.example
+*.sample
+
+# Certificates (development only)
+.cert/
+.certs/
+ssl/development/
+ssl/test/
+
+# Cache directories
+.cache/
+.next/cache/
+.nuxt/cache/
+.gatsby/cache/
+
+# Specific to our project
+.backups/
+.secrets/
+.config/development/
+.config/test/
+.logs/development/
+.logs/test/
+
+# ML Experiment tracking (local)
+mlruns/
+wandb/
+.comet.config
+.neptune.ai
+
+# Jupyter
+.ipynb_checkpoints
+*.ipynb
+
+# Virtual environments
+venv*/
+env*/
+.conda/
+
+# macOS
+._.DS_Store
+.com.apple.timemachine.donotpresent
+
+# Linux
+*~
+
+# Windows
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.z
+
+# Media
+*.ai
+*.bmp
+*.gif
+*.ico
+*.jpeg
+*.jpg
+*.png
+*.ps
+*.psd
+*.svg
+*.tif
+*.tiff
+*.webp
+
+# Audio
+*.aif
+*.mid
+*.midi
+*.mp3
+*.mpa
+*.ogg
+*.wav
+*.wma
+
+# Video
+*.3gp
+*.avi
+*.flv
+*.m4v
+*.mkv
+*.mov
+*.mp4
+*.mpg
+*.mpeg
+*.rm
+*.swf
+*.vob
+*.wmv
+
+# Office
+*.doc
+*.docx
+*.odt
+*.pdf
+*.ppt
+*.pptx
+*.rtf
+*.xls
+*.xlsx
+
+# Fonts
+*.eot
+*.otf
+*.ttf
+*.woff
+*.woff2
+
+# Executables
+*.exe
+*.msi
+*.bin
+*.cmd
+*.sh
+*.bat
+*.com
+*.scr
+
+# Virtual Machines
+*.vdi
+*.vhd
+*.vmdk
+*.vmx
+
+# Development tools
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform.lock.hcl
+
+# Kubernetes
+.kube/
+
+# Helm
+*.lock
+charts/*/charts/
+
+# Ansible
+*.retry
+
+# Vagrant
+.vagrant/
+
+# Compression
+*.gz
+*.bz2
+*.xz
+*.lzma
+*.lz4
+*.zst
+
+# JavaScript/TypeScript source maps
+*.map
+
+# ESLint
+.eslintrc.js
+.eslintrc.json
+.eslintrc.yml
+.eslintignore
+
+# Prettier
+.prettierrc
+.prettierrc.js
+.prettierrc.json
+.prettierrc.yml
+.prettierignore
+
+# Stylelint
+.stylelintrc
+.stylelintrc.js
+.stylelintrc.json
+.stylelintrc.yml
+.stylelintignore
+
+# Babel
+.babelrc
+.babelrc.js
+.babelrc.json
+
+# Webpack
+webpack.config.js
+webpack.config.*.js
+
+# Rollup
+rollup.config.js
+rollup.config.*.js
+
+# Vite
+vite.config.js
+vite.config.*.js
+vite.config.ts
+
+# Parcel
+.parcel-cache
+
+# Snowpack
+.snowpack/
+
+# Svelte
+.svelte-kit/
+
+# Angular
+angular.json
+
+# Vue
+vue.config.js
+
+# Nuxt
+nuxt.config.js
+
+# Next.js
+.next/
+
+# Gatsby
+public
+.cache/
+public/
+
+# Remix
+.build/
+public/build/
+
+# Astro
+dist/
+astro/
+
+# SolidJS
+.solid/
+
+# Qwik
+.qwik/
+
+# Sapper
+__sapper__/
+
+# Stencil
+.stencil/
+
+# Storybook
+storybook-static/
+.storybook/
+
+# Docusaurus
+.docusaurus/
+build/
+
+# Hugo
+resources/
+public/
+
+# Jekyll
+_site/
+.jekyll-cache/
+
+# Hexo
+.deploy_git/
+
+# Eleventy
+_site/
+.eleventy.js
+
+# Metalsmith
+.metalsmith/
+
+# Middleman
+.tmp/
+.sass-cache/
+
+# Brunch
+brunch-config.js
+
+# Broccoli
+.broccoli/
+
+# Ember
+dist/
+tmp/
+
+# Phoenix
+deps/
+_build/
+
+# Ruby
+*.gem
+.bundle/
+
+# Go
+vendor/
+*.exe
+*.test
+*.out
+*.prof
+
+# Rust
+target/
+Cargo.lock
+
+# Java
+.classpath
+.project
+.settings/
+*.class
+*.jar
+*.war
+*.ear
+
+# Scala
+*.class
+
+# Kotlin
+*.class
+
+# C/C++
+*.o
+*.a
+*.so
+*.obj
+
+# C#
+*.suo
+*.user
+*.cache
+*.csproj.user
+
+# PHP
+vendor/
+composer.lock
+
+# Laravel
+storage/
+bootstrap/cache/
+
+# WordPress
+wp-content/uploads/
+wp-content/cache/
+
+# Drupal
+sites/*/files/
+
+# Joomla
+images/
+cache/
+logs/
+
+# Magento
+var/
+media/
+
+# Shopify
+assets/
+
+# Development environment files
+.env.development
+.env.test
+.env.staging
+!env.example
+
+# Makefile
+Makefile
+makefile
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Ant
+build/
+
+# SBT
+target/
+project/target
+project/project
+
+# Leiningen
+pom.xml
+pom.xml.asc
+*.jar
+.lib/
+.nrepl-port
+
+# Boot
+.boot/
+target/
+
+# Clojure
+.cpcache/
+
+# Elixir
+_build/
+deps/
+*.ez
+
+# Mix
+mix.lock
+
+# Rebar3
+_build/
+.rebar3/
+
+# Erlang
+*.beam
+
+# Haskell
+dist/
+dist-newstyle/
+cabal.project.local
+.stack-work/
+
+# OCaml
+_build/
+.merlin
+
+# Reason/BuckleScript
+.bsb.lock
+lib/bs/
+
+# Elm
+elm-stuff/
+
+# Purescript
+output/
+.pulp-cache/
+
+# Idris
+build/
+
+# Perl
+Makefile.old
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Julia
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+
+# Fortran
+*.mod
+*.smod
+
+# Assembly
+*.lst
+*.o
+
+# COBOL
+*.int
+*.idy
+
+# Pascal
+*.ppu
+*.o
+*.compiled
+
+# Ada
+*.ali
+*.o
+
+# Lua
+*.luac
+
+# SQL
+*.sqlite
+*.db
+
+# Shell
+*.swp
+*.swo
+
+# PowerShell
+*.ps1xml
+
+# Batch
+*.bat
+
+# Vim
+*.swp
+*.swo
+*.un~
+
+# Emacs
+*~
+\#*
+.\#*
+
+# Nano
+*.save
+
+# Micro
+*.micro
+
+# Specific project files
+# Keep production configs, ignore development
+.config/nginx/sites-available/development*
+.config/prometheus/prometheus.dev.yml
+.config/grafana/provisioning/dev/
+
+# Development seeds
+database/supabase/seeds/development/
+!database/supabase/seeds/production/
+
+# Test data
+tests/fixtures/
+tests/mocks/
+
+# Performance testing
+.loadtest/
+.k6/
+
+# Load balancer
+.htaccess
+robots.txt
+
+# CDN
+.cdn/
+
+# PaaS
+Procfile
+.slugignore
+
+# Serverless
+.serverless/
+.webpack/
+
+# Firebase
+.firebase/
+.firebaserc
+
+# Netlify
+.netlify/
+
+# Vercel
+.vercel/
+
+# CloudFlare
+.cf/
+
+# Heroku
+.heroku/
+
+# AWS
+.aws/
+
+# GCP
+.gcloud/
+
+# Azure
+.azure/
+
+# DigitalOcean
+.digitalocean/
+
+# Linode
+.linode/
+
+# Vultr
+.vultr/
+
+# Upcloud
+.upcloud/
+
+# IBM Cloud
+.bluemix/
+
+# Oracle Cloud
+.oraclecloud/
+
+# Alibaba Cloud
+.alibabacloud/
+
+# Tencent Cloud
+.tencentcloud/
+
+# Local development server
+.local-ssl/
+.devserver/
+
+# PM2
+.pm2/
+
+# Supervisord
+supervisor.log
+
+# Systemd
+*.service
+*.timer
+
+# Cron
+cron.*
+
+# Backup tools
+.borg/
+.rdiff-backup/
+
+# Rsync
+.rsync/
+
+# SSH
+.ssh/
+known_hosts
+
+# GPG
+.gnupg/
+*.gpg
+*.asc
+
+# Password managers
+.keepass/
+.lastpass/
+
+# VPN
+.openvpn/
+.vpn/
+
+# Tor
+.tor/
+
+# Cryptocurrency
+.bitcoin/
+.ethereum/
+.wallet/
+
+# Game files
+.minecraft/
+.steam/
+
+# Messaging
+.skype/
+.telegram/
+.discord/
+
+# Social media
+.twitter/
+.facebook/
+.instagram/
+
+# Streaming
+.obs/
+.streamlabs/
+
+# Video conferencing
+.zoom/
+.teams/
+
+# Note: Keep production models and data
+!models/production/**
+!data/production/**
+
+# Note: Keep necessary config files
+!.env.example
+!docker-compose.yml
+!docker-compose.prod.yml
+!Makefile
+!README.md
+!LICENSE
+!SECURITY.md
+!ROADMAP.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!CHANGELOG.md
+
+# Note: Keep source code
+!backend/**
+!frontend/**
+!data-pipeline/**
+!infrastructure/**
+!mlops/**
+!scripts/**
+!tests/**
+
+# Note: Keep documentation
+!docs/**
+
+# Note: Keep database migrations
+!database/supabase/migrations/**
+!database/timescaledb/hypertables/**
+
+# Note: Keep monitoring configs
+!infrastructure/monitoring/**
+
+# Note: Keep terraform configs
+!infrastructure/terraform/**
+
+# Note: Keep Kubernetes configs
+!infrastructure/kubernetes/**
+
+# Note: Keep ML Ops configs
+!mlops/**
+
+# Note: Keep essential scripts
+!scripts/**
+
+# Note: Keep test structure (but not test data)
+!tests/**
