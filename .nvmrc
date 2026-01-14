@@ -1,1 +1,118 @@
+# Node Version Manager Configuration
+# This file specifies the Node.js version to use for the Goat Prediction Ultimate project
 
+# Main Node.js version (LTS - Long Term Support)
+18.18.2
+
+# Explanation of version choice:
+# - 18.18.2: Latest LTS version with security patches
+# - LTS support until April 2025
+# - Includes ES2022 full support
+# - Stable for production use
+
+# Version format: <major>.<minor>.<patch>
+# 
+# To use:
+# 1. Install nvm: https://github.com/nvm-sh/nvm
+# 2. Run: nvm install
+# 3. Run: nvm use
+#
+# Alternative commands:
+# - nvm install 18.18.2  # Install specific version
+# - nvm alias default 18.18.2  # Set as default
+# - nvm current  # Check current version
+# - nvm ls  # List installed versions
+
+# Development environment setup
+# For consistent development across team members
+
+# Minimum requirements:
+# - Node.js: 18.18.0 or higher
+# - npm: 9.x or higher
+# - nvm: 0.39.0 or higher
+
+# Node.js 18 features used in this project:
+# - Fetch API (stable)
+# - Node.js Test Runner (stable)
+# - Web Streams API (stable)
+# - JSON Import Assertions
+# - Built-in test coverage
+# - Pattern matching
+
+# Package manager: npm (included with Node.js)
+# We use npm for consistency with Node.js LTS releases
+
+# To verify installation:
+# node --version  # Should show v18.18.2
+# npm --version   # Should show 9.x.x or higher
+
+# For development tools:
+# - npx: Included with npm
+# - nodemon: For development auto-restart
+# - ts-node: For TypeScript execution
+
+# Production considerations:
+# - Docker images use node:18-alpine
+# - Alpine reduces image size significantly
+# - Security updates are applied automatically
+
+# Troubleshooting:
+# If nvm install fails, try:
+# 1. nvm install 18
+# 2. nvm install --lts
+# 3. Check network connectivity
+
+# For CI/CD pipelines:
+# Use this exact version to ensure consistency
+# GitHub Actions: actions/setup-node@v3 with '18.18.2'
+
+# Note: Do not use odd-numbered versions (19, 21, etc.)
+# as they are not LTS and have shorter support cycles
+
+# This project requires specific Node.js features:
+# - ES modules support
+# - Top-level await
+# - Import assertions
+# - Stable test runner
+# - Performance improvements in V8
+
+# Memory considerations:
+# Node.js 18 has improved memory management
+# Recommended: 4GB RAM minimum, 8GB+ for development
+
+# Platform support:
+# - Linux: Full support
+# - macOS: Full support
+# - Windows: WSL2 recommended for development
+
+# Security:
+# - Regular security updates
+# - OpenSSL 3.0
+# - Improved crypto APIs
+
+# Performance:
+# - V8 10.2
+# - Faster startup times
+# - Improved garbage collection
+
+# Development tools compatibility:
+# - TypeScript 5.x
+# - React 18
+# - Next.js 14
+# - Jest 29
+# - ESLint 8
+# - Prettier 3
+
+# To update to newer LTS versions:
+# 1. Check compatibility: nvm install 20
+# 2. Test: npm test
+# 3. Update .nvmrc file
+# 4. Update CI/CD configurations
+# 5. Update Dockerfiles
+
+# Backup version (if 18.18.2 has issues):
+# 18.17.1  # Previous stable LTS
+
+# Development only - not for production use:
+# node  # Latest (unstable)
+# 20    # Current LTS (after 18)
