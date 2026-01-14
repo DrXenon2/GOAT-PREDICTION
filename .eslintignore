@@ -1,1 +1,417 @@
-    
+# ============================================
+# GOAT PREDICTION ULTIMATE - ESLINT IGNORE
+# ============================================
+# Fichiers et dossiers à ignorer pour le linting
+# ============================================
+
+# ============================================
+# DEPENDENCIES & NODE MODULES
+# ============================================
+
+# Node modules (ignorer complètement)
+node_modules
+**/node_modules
+**/node_modules/*
+**/node_modules/**/*
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# ============================================
+# BUILD & DISTRIBUTION
+# ============================================
+
+# Build output directories
+.next
+.next/*
+**/.next
+**/.next/*
+**/.next/**/*
+
+dist
+dist/*
+**/dist
+**/dist/*
+**/dist/**/*
+
+build
+build/*
+**/build
+**/build/*
+**/build/**/*
+
+out
+out/*
+**/out
+**/out/*
+**/out/**/*
+
+# Compiled output
+*.js
+!src/**/*.js
+!scripts/**/*.js
+*.js.map
+*.d.ts
+*.d.ts.map
+
+# Bundles
+*.bundle.js
+*.bundle.js.map
+*.chunk.js
+*.chunk.js.map
+*.min.js
+
+# ============================================
+# CACHE & TEMPORARY FILES
+# ============================================
+
+# Cache directories
+.cache
+.cache/*
+**/.cache
+**/.cache/*
+**/.cache/**/*
+
+# Temporary files
+tmp
+tmp/*
+**/tmp
+**/tmp/*
+**/tmp/**/*
+
+.tmp
+.tmp/*
+**/.tmp
+**/.tmp/*
+**/.tmp/**/*
+
+# IDE and editor files
+*.swp
+*.swo
+*~
+*.sass-cache
+*.scssc
+
+# ============================================
+# LOGS & BACKUPS
+# ============================================
+
+# Log files
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+logs
+logs/*
+**/logs
+**/logs/*
+**/logs/**/*
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+.backups
+.backups/*
+**/.backups
+**/.backups/*
+**/.backups/**/*
+
+# ============================================
+# COVERAGE & TESTING
+# ============================================
+
+# Coverage reports
+coverage
+coverage/*
+**/coverage
+**/coverage/*
+**/coverage/**/*
+
+.nyc_output
+.nyc_output/*
+**/.nyc_output
+**/.nyc_output/*
+**/.nyc_output/**/*
+
+# Test snapshots
+__snapshots__
+__snapshots__/*
+**/__snapshots__
+**/__snapshots__/*
+**/__snapshots__/**/*
+
+# Test reports
+test-results
+test-results/*
+**/test-results
+**/test-results/*
+**/test-results/**/*
+
+junit.xml
+test-report.xml
+coverage.xml
+
+# ============================================
+# CONFIGURATION & SECRETS
+# ============================================
+
+# Environment files (sauf les templates)
+.env
+.env.local
+.env.production
+.env.staging
+!.env.example
+!.env.development
+
+# Secrets
+.secrets
+.secrets/*
+**/.secrets
+**/.secrets/*
+**/.secrets/**/*
+
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+*.pfx
+
+# Configuration personnelle
+.vscode
+.vscode/*
+**/.vscode
+**/.vscode/*
+**/.vscode/**/*
+
+.idea
+.idea/*
+**/.idea
+**/.idea/*
+**/.idea/**/*
+
+*.code-workspace
+
+# ============================================
+# DATA & STORAGE
+# ============================================
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Data files (gros fichiers)
+*.csv
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# Uploads
+uploads
+uploads/*
+**/uploads
+**/uploads/*
+**/uploads/**/*
+
+storage
+storage/*
+**/storage
+**/storage/*
+**/storage/**/*
+
+# ============================================
+# MACHINE LEARNING & MODELS
+# ============================================
+
+# ML model files
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.onnx
+*.pb
+*.tflite
+*.pt
+*.pth
+
+models
+models/*
+**/models
+**/models/*
+**/models/**/*
+
+# Training data
+*.npy
+*.npz
+*.tfrecord
+*.tfrecords
+
+# ============================================
+# DOCUMENTATION & ASSETS
+# ============================================
+
+# Documentation build
+docs/_build
+docs/_build/*
+**/docs/_build
+**/docs/_build/*
+**/docs/_build/**/*
+
+# Static assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webp
+*.avif
+*.mp4
+*.webm
+*.mp3
+*.wav
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# ============================================
+# OPERATING SYSTEM SPECIFIC
+# ============================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Linux
+*~
+
+# Windows
+desktop.ini
+Thumbs.db
+
+# ============================================
+# PROJECT SPECIFIC IGNORES
+# ============================================
+
+# Frontend specific
+public
+public/*
+**/public
+**/public/*
+**/public/**/*
+
+# ML specific
+mlops/feature-store/.feast
+mlops/model-registry/mlflow/mlruns
+
+# Data pipeline
+data-pipeline/storage
+data-pipeline/storage/*
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# Terraform
+.terraform
+.terraform/*
+**/.terraform
+**/.terraform/*
+**/.terraform/**/*
+
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# ============================================
+# TOOLS & UTILITIES
+# ============================================
+
+# Prettier
+.prettierignore
+.prettierrc
+
+# ESLint
+.eslintcache
+
+# Stylelint
+.stylelintcache
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Jest
+.jest-cache
+
+# Husky
+.husky
+.husky/*
+**/.husky
+**/.husky/*
+**/.husky/**/*
+
+# ============================================
+# EXCEPTIONS (DO NOT IGNORE)
+# ============================================
+
+# Ne pas ignorer les fichiers source
+!src/**/*
+
+# Ne pas ignorer les tests (sauf les snapshots)
+!**/__tests__/**/*
+!**/*.test.*
+!**/*.spec.*
+
+# Ne pas ignorer les fichiers de configuration importants
+!*.config.js
+!*.config.ts
+!.eslintrc.js
+!.prettierrc.js
+!tailwind.config.js
+!next.config.js
+
+# Ne pas ignorer les scripts utilitaires
+!scripts/**/*
+!**/scripts/**/*
+
+# Ne pas ignorer les dossiers de migration
+!**/migrations/**/*
+
+# ============================================
+# CUSTOM OVERRIDES
+# ============================================
+
+# Pour ignorer des patterns spécifiques au projet
+# Ajouter ci-dessous :
+
+# Exemple : Ignorer les fichiers de mock volumineux
+# data/mock/**/*.json
+
+# Exemple : Ignorer les exports de données temporaires
+# exports/**/*
+
+# ============================================
+# END OF ESLINT IGNORE
+# ============================================
