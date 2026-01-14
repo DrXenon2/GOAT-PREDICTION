@@ -1,1 +1,730 @@
+{
+  "$schema": "https://json.schemastore.org/stylelintrc",
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-recess-order",
+    "stylelint-config-prettier",
+    "stylelint-config-tailwindcss"
+  ],
+  "plugins": [
+    "stylelint-declaration-block-no-ignored-properties",
+    "stylelint-high-performance-animation",
+    "stylelint-no-indistinguishable-colors",
+    "stylelint-use-logical",
+    "stylelint-value-no-unknown-custom-properties",
+    "stylelint-media-use-custom-media",
+    "stylelint-selector-no-empty",
+    "stylelint-group-selectors",
+    "stylelint-at-rule-no-children",
+    "stylelint-color-format",
+    "stylelint-images",
+    "stylelint-z-index-value-constraint",
+    "stylelint-font-family-no-missing-generic-family-keyword",
+    "stylelint-css-modules",
+    "stylelint-scss",
+    "@stylistic/stylelint-plugin"
+  ],
+  "rules": {
+    "alpha-value-notation": "percentage",
+    "annotation-no-unknown": true,
+    "at-rule-allowed-list": null,
+    "at-rule-disallowed-list": null,
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": ["blockless-after-same-name-blockless", "first-nested"],
+        "ignore": ["after-comment"],
+        "ignoreAtRules": ["else"]
+      }
+    ],
+    "at-rule-no-deprecated": true,
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "tailwind",
+          "apply",
+          "variants",
+          "responsive",
+          "screen",
+          "layer",
+          "mixin",
+          "include",
+          "extend",
+          "function",
+          "return",
+          "if",
+          "else",
+          "each",
+          "for",
+          "while",
+          "debug",
+          "warn",
+          "error",
+          "use",
+          "forward",
+          "at-root",
+          "content"
+        ]
+      }
+    ],
+    "at-rule-no-vendor-prefix": true,
+    "at-rule-property-required-list": {
+      "font-face": ["font-family", "src"],
+      "viewport": ["width"]
+    },
+    "block-no-empty": true,
+    "color-function-notation": "modern",
+    "color-hex-alpha": "never",
+    "color-hex-length": "short",
+    "color-named": "never",
+    "color-no-hex": null,
+    "color-no-invalid-hex": true,
+    "comment-empty-line-before": [
+      "always",
+      {
+        "except": ["first-nested"],
+        "ignore": ["stylelint-commands", "after-comment"]
+      }
+    ],
+    "comment-no-empty": true,
+    "comment-whitespace-inside": "always",
+    "custom-media-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected custom media query name to be kebab-case"
+      }
+    ],
+    "custom-property-empty-line-before": [
+      "always",
+      {
+        "except": ["after-custom-property", "first-nested"],
+        "ignore": ["after-comment", "inside-single-line-block"]
+      }
+    ],
+    "custom-property-no-missing-var-function": true,
+    "custom-property-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected custom property name to be kebab-case"
+      }
+    ],
+    "declaration-block-no-duplicate-custom-properties": true,
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        "ignore": ["consecutive-duplicates-with-different-values"]
+      }
+    ],
+    "declaration-block-no-redundant-longhand-properties": true,
+    "declaration-block-no-shorthand-property-overrides": true,
+    "declaration-block-single-line-max-declarations": 1,
+    "declaration-block-trailing-semicolon": "always",
+    "declaration-colon-newline-after": "always-multi-line",
+    "declaration-colon-space-after": "always-single-line",
+    "declaration-colon-space-before": "never",
+    "declaration-empty-line-before": [
+      "never",
+      {
+        "except": ["after-declaration"],
+        "ignore": ["after-comment", "first-nested", "inside-single-line-block"]
+      }
+    ],
+    "declaration-no-important": true,
+    "declaration-property-max-values": {
+      "/^animation/": 1,
+      "/^transition/": 1,
+      "/^border/": 1,
+      "/^margin/": 2,
+      "/^padding/": 2,
+      "/^grid/": 1,
+      "/^flex/": 1
+    },
+    "declaration-property-unit-allowed-list": {
+      "/^animation/": ["s", "ms"],
+      "/^border/": ["px", "em", "rem", "%"],
+      "/^font/": ["px", "em", "rem", "%"],
+      "/^line-height/": ["unitless", "em", "rem", "%"],
+      "/^margin/": ["px", "em", "rem", "%", "vh", "vw"],
+      "/^padding/": ["px", "em", "rem", "%", "vh", "vw"],
+      "/^width/": ["px", "em", "rem", "%", "vh", "vw", "fr", "ch"],
+      "/^height/": ["px", "em", "rem", "%", "vh", "vw", "fr"],
+      "/^gap/": ["px", "em", "rem", "%"],
+      "/^grid/": ["px", "em", "rem", "%", "fr", "auto"]
+    },
+    "font-family-name-quotes": "always-where-recommended",
+    "font-family-no-duplicate-names": true,
+    "font-family-no-missing-generic-family-keyword": true,
+    "font-weight-notation": "numeric",
+    "function-calc-no-unspaced-operator": true,
+    "function-linear-gradient-no-nonstandard-direction": true,
+    "function-max-empty-lines": 0,
+    "function-name-case": "lower",
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "theme",
+          "screen",
+          "rgb",
+          "rgba",
+          "hsl",
+          "hsla",
+          "hwb",
+          "lab",
+          "lch",
+          "color",
+          "color-mix",
+          "color-contrast",
+          "light-dark",
+          "min",
+          "max",
+          "clamp",
+          "calc",
+          "var",
+          "env",
+          "constant"
+        ]
+      }
+    ],
+    "function-url-no-scheme-relative": true,
+    "function-url-quotes": "always",
+    "hue-degree-notation": "angle",
+    "import-notation": "string",
+    "keyframes-name-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected keyframe name to be kebab-case"
+      }
+    ],
+    "length-zero-no-unit": true,
+    "max-empty-lines": 1,
+    "max-nesting-depth": [
+      3,
+      {
+        "ignore": ["blockless-at-rules"],
+        "ignoreAtRules": ["media", "supports", "include", "mixin"]
+      }
+    ],
+    "media-feature-colon-space-after": "always",
+    "media-feature-colon-space-before": "never",
+    "media-feature-name-case": "lower",
+    "media-feature-name-no-unknown": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "media-feature-parentheses-space-inside": "never",
+    "media-feature-range-notation": "prefix",
+    "media-query-list-comma-newline-after": "always-multi-line",
+    "media-query-list-comma-space-after": "always-single-line",
+    "media-query-list-comma-space-before": "never",
+    "no-descending-specificity": [
+      true,
+      {
+        "ignore": ["selectors-within-list"]
+      }
+    ],
+    "no-duplicate-at-import-rules": true,
+    "no-duplicate-selectors": true,
+    "no-empty-source": true,
+    "no-irregular-whitespace": true,
+    "no-missing-end-of-source-newline": true,
+    "no-unknown-animations": true,
+    "number-leading-zero": "always",
+    "number-max-precision": 4,
+    "number-no-trailing-zeros": true,
+    "property-allowed-list": null,
+    "property-case": "lower",
+    "property-disallowed-list": [
+      "float",
+      "clear",
+      "text-decoration",
+      {
+        "message": "Use logical properties instead of physical properties"
+      }
+    ],
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "composes",
+          "container-type",
+          "container-name",
+          "scroll-margin",
+          "scroll-padding",
+          "scroll-snap-type",
+          "scroll-snap-align",
+          "scroll-snap-stop",
+          "overscroll-behavior",
+          "backdrop-filter",
+          "aspect-ratio",
+          "accent-color",
+          "view-transition-name",
+          "font-palette"
+        ]
+      }
+    ],
+    "property-no-vendor-prefix": true,
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "except": ["first-nested"],
+        "ignore": ["after-comment"]
+      }
+    ],
+    "selector-anb-no-unmatchable": true,
+    "selector-attribute-brackets-space-inside": "never",
+    "selector-attribute-operator-space-after": "never",
+    "selector-attribute-operator-space-before": "never",
+    "selector-class-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected class selector to be kebab-case"
+      }
+    ],
+    "selector-combinator-space-after": "always",
+    "selector-combinator-space-before": "always",
+    "selector-descendant-combinator-no-non-space": true,
+    "selector-id-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected id selector to be kebab-case"
+      }
+    ],
+    "selector-list-comma-newline-after": "always",
+    "selector-list-comma-space-before": "never",
+    "selector-max-attribute": 2,
+    "selector-max-class": 3,
+    "selector-max-combinators": 2,
+    "selector-max-compound-selectors": 3,
+    "selector-max-empty-lines": 0,
+    "selector-max-id": 0,
+    "selector-max-pseudo-class": 2,
+    "selector-max-specificity": "0,4,0",
+    "selector-max-type": 2,
+    "selector-max-universal": 1,
+    "selector-nested-pattern": [
+      "^&(:|\\[|>|\\.|\\+|-|_|[a-z])",
+      {
+        "message": "Expected nested selector to start with &"
+      }
+    ],
+    "selector-no-qualifying-type": [
+      true,
+      {
+        "ignore": ["attribute", "class"]
+      }
+    ],
+    "selector-no-vendor-prefix": true,
+    "selector-pseudo-class-allowed-list": [
+      "not",
+      "first-child",
+      "last-child",
+      "only-child",
+      "nth-child",
+      "nth-last-child",
+      "first-of-type",
+      "last-of-type",
+      "only-of-type",
+      "nth-of-type",
+      "nth-last-of-type",
+      "checked",
+      "disabled",
+      "enabled",
+      "focus",
+      "focus-within",
+      "focus-visible",
+      "hover",
+      "active",
+      "visited",
+      "link",
+      "target",
+      "root",
+      "empty",
+      "valid",
+      "invalid",
+      "required",
+      "optional",
+      "read-only",
+      "read-write",
+      "in-range",
+      "out-of-range",
+      "placeholder-shown",
+      "default",
+      "autofill",
+      "before",
+      "after",
+      "first-letter",
+      "first-line",
+      "selection",
+      "backdrop",
+      "marker",
+      "placeholder",
+      "file-selector-button"
+    ],
+    "selector-pseudo-class-case": "lower",
+    "selector-pseudo-class-disallowed-list": [
+      "global",
+      "local",
+      "export",
+      "import"
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": [
+          "global",
+          "local",
+          "export",
+          "import",
+          "deep",
+          "slotted"
+        ]
+      }
+    ],
+    "selector-pseudo-class-parentheses-space-inside": "never",
+    "selector-pseudo-element-case": "lower",
+    "selector-pseudo-element-colon-notation": "double",
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["v-deep", "v-global", "v-slotted"]
+      }
+    ],
+    "selector-type-case": "lower",
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignore": ["custom-elements"],
+        "ignoreTypes": [
+          "from",
+          "to",
+          "canvas",
+          "math",
+          "page",
+          "slot",
+          "template"
+        ]
+      }
+    ],
+    "shorthand-property-no-redundant-values": true,
+    "string-no-newline": true,
+    "string-quotes": "double",
+    "time-min-milliseconds": 100,
+    "unit-allowed-list": [
+      "px",
+      "em",
+      "rem",
+      "%",
+      "vh",
+      "vw",
+      "vmin",
+      "vmax",
+      "fr",
+      "ch",
+      "ex",
+      "deg",
+      "grad",
+      "rad",
+      "turn",
+      "s",
+      "ms",
+      "Hz",
+      "kHz",
+      "dpi",
+      "dpcm",
+      "dppx"
+    ],
+    "unit-case": "lower",
+    "unit-disallowed-list": ["in", "cm", "mm", "pt", "pc", "q"],
+    "unit-no-unknown": true,
+    "value-keyword-case": "lower",
+    "value-list-comma-newline-after": "always-multi-line",
+    "value-list-comma-space-after": "always-single-line",
+    "value-list-comma-space-before": "never",
+    "value-list-max-empty-lines": 0,
+    "value-no-vendor-prefix": true,
 
+    "scss/at-each-key-value-single-line": true,
+    "scss/at-extend-no-missing-placeholder": true,
+    "scss/at-function-named-arguments": "always",
+    "scss/at-function-parentheses-space-before": "never",
+    "scss/at-function-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected function name to be kebab-case"
+      }
+    ],
+    "scss/at-if-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-if-closing-brace-space-after": "always-intermediate",
+    "scss/at-import-no-partial-leading-underscore": true,
+    "scss/at-import-partial-extension": "never",
+    "scss/at-mixin-argumentless-call-parentheses": "always",
+    "scss/at-mixin-named-arguments": "always",
+    "scss/at-mixin-parentheses-space-before": "never",
+    "scss/at-mixin-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected mixin name to be kebab-case"
+      }
+    ],
+    "scss/at-rule-conditional-no-parentheses": true,
+    "scss/comment-no-empty": true,
+    "scss/declaration-nested-properties": "never",
+    "scss/declaration-nested-properties-no-divided-groups": true,
+    "scss/dimension-no-non-numeric-values": true,
+    "scss/dollar-variable-colon-newline-after": "always-multi-line",
+    "scss/dollar-variable-colon-space-after": "always-single-line",
+    "scss/dollar-variable-colon-space-before": "never",
+    "scss/dollar-variable-empty-line-after": [
+      "always",
+      {
+        "except": ["last-nested", "before-dollar-variable"],
+        "ignore": ["inside-single-line-block"]
+      }
+    ],
+    "scss/dollar-variable-empty-line-before": [
+      "always",
+      {
+        "except": ["after-dollar-variable", "first-nested"],
+        "ignore": ["after-comment", "inside-single-line-block"]
+      }
+    ],
+    "scss/dollar-variable-first-in-block": [
+      true,
+      {
+        "ignore": ["comments", "imports"]
+      }
+    ],
+    "scss/dollar-variable-no-missing-interpolation": true,
+    "scss/dollar-variable-pattern": [
+      "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+      {
+        "message": "Expected variable name to be kebab-case"
+      }
+    ],
+    "scss/function-color-relative": true,
+    "scss/function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "theme",
+          "config",
+          "global-variable-exists",
+          "mixin-exists",
+          "function-exists",
+          "inspect",
+          "type-of",
+          "unit",
+          "unitless",
+          "comparable",
+          "str-length",
+          "str-insert",
+          "str-index",
+          "str-slice",
+          "to-upper-case",
+          "to-lower-case",
+          "unique-id",
+          "random",
+          "length",
+          "nth",
+          "join",
+          "append",
+          "zip",
+          "index",
+          "list-separator",
+          "set-nth",
+          "map-get",
+          "map-merge",
+          "map-remove",
+          "map-keys",
+          "map-values",
+          "map-has-key",
+          "keywords",
+          "feature-exists",
+          "variable-exists",
+          "mixin-exists",
+          "function-exists",
+          "global-variable-exists",
+          "selector-nest",
+          "selector-append",
+          "selector-extend",
+          "selector-replace",
+          "selector-unify",
+          "is-superselector",
+          "simple-selectors",
+          "selector-parse"
+        ]
+      }
+    ],
+    "scss/function-quote-no-quoted-strings-inside": true,
+    "scss/function-unquote-no-unquoted-strings-inside": true,
+    "scss/map-keys-quotes": "always",
+    "scss/operator-no-newline-after": true,
+    "scss/operator-no-newline-before": true,
+    "scss/operator-no-unspaced": true,
+    "scss/partial-no-import": true,
+    "scss/selector-no-redundant-nesting-selector": true,
+    "scss/selector-no-union-class-name": true,
+
+    "stylelint-declaration-block-no-ignored-properties": true,
+    "stylelint-high-performance-animation": [
+      true,
+      {
+        "ignoreProperties": ["color", "background-color", "border-color"],
+        "ignoreKeywords": ["spin"]
+      }
+    ],
+    "stylelint-no-indistinguishable-colors": [
+      true,
+      {
+        "allowEquivalentNotation": true,
+        "threshold": 3
+      }
+    ],
+    "stylelint-use-logical": "always",
+    "stylelint-value-no-unknown-custom-properties": [
+      true,
+      {
+        "customProperties": [
+          "--goat-primary",
+          "--goat-secondary",
+          "--goat-accent",
+          "--goat-success",
+          "--goat-warning",
+          "--goat-error",
+          "--goat-info",
+          "--goat-background",
+          "--goat-surface",
+          "--goat-text",
+          "--goat-border",
+          "--goat-shadow",
+          "--goat-radius",
+          "--goat-spacing",
+          "--goat-font-family",
+          "--goat-font-size",
+          "--goat-font-weight",
+          "--goat-line-height",
+          "--goat-transition",
+          "--goat-z-index"
+        ]
+      }
+    ],
+    "stylelint-media-use-custom-media": [
+      true,
+      {
+        "ignoreMediaFeatures": ["orientation", "resolution", "display-mode"]
+      }
+    ],
+    "stylelint-selector-no-empty": true,
+    "stylelint-group-selectors": true,
+    "stylelint-at-rule-no-children": true,
+    "stylelint-color-format/format": [
+      "rgb",
+      {
+        "format": "rgb"
+      }
+    ],
+    "stylelint-images/baseline": 72,
+    "stylelint-images/optimization": 2,
+    "stylelint-z-index-value-constraint": {
+      "min": 0,
+      "max": 9999
+    },
+    "stylelint-css-modules/composed-classes": "always",
+    "stylelint-css-modules/no-undef-class": true,
+    "stylelint-css-modules/no-unused-class": true,
+
+    "@stylistic/block-closing-brace-empty-line-before": "never",
+    "@stylistic/block-closing-brace-newline-after": "always",
+    "@stylistic/block-closing-brace-newline-before": "always-multi-line",
+    "@stylistic/block-closing-brace-space-after": "always-single-line",
+    "@stylistic/block-closing-brace-space-before": "always-single-line",
+    "@stylistic/block-opening-brace-newline-after": "always-multi-line",
+    "@stylistic/block-opening-brace-space-after": "always-single-line",
+    "@stylistic/block-opening-brace-space-before": "always",
+    "@stylistic/declaration-bang-space-after": "never",
+    "@stylistic/declaration-bang-space-before": "always",
+    "@stylistic/declaration-block-semicolon-newline-after": "always-multi-line",
+    "@stylistic/declaration-block-semicolon-newline-before": "never-multi-line",
+    "@stylistic/declaration-block-semicolon-space-after": "always-single-line",
+    "@stylistic/declaration-block-semicolon-space-before": "never",
+    "@stylistic/indentation": 2,
+    "@stylistic/linebreaks": "unix",
+    "@stylistic/max-line-length": [
+      100,
+      {
+        "ignore": ["comments"]
+      }
+    ],
+    "@stylistic/no-eol-whitespace": true,
+    "@stylistic/no-extra-semicolons": true,
+    "@stylistic/no-missing-end-of-source-newline": true,
+    "@stylistic/unicode-bom": "never"
+  },
+  "ignoreFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.next/**",
+    "**/.nuxt/**",
+    "**/.output/**",
+    "**/coverage/**",
+    "**/*.min.css",
+    "**/*.bundle.css",
+    "**/vendor/**",
+    "**/public/**",
+    "**/static/**",
+    "**/assets/**",
+    "**/fonts/**",
+    "**/images/**"
+  ],
+  "defaultSeverity": "error",
+  "reportDescriptionlessDisables": true,
+  "reportInvalidScopeDisables": true,
+  "reportNeedlessDisables": true,
+  "fix": true,
+  "formatter": "string",
+  "cache": true,
+  "cacheLocation": ".cache/.stylelintcache",
+  "customSyntax": "postcss-scss",
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "customSyntax": "postcss"
+    },
+    {
+      "files": ["**/*.scss"],
+      "customSyntax": "postcss-scss"
+    },
+    {
+      "files": ["**/*.sass"],
+      "customSyntax": "postcss-sass"
+    },
+    {
+      "files": ["**/*.less"],
+      "customSyntax": "postcss-less"
+    },
+    {
+      "files": ["**/*.sss"],
+      "customSyntax": "sugarss"
+    },
+    {
+      "files": ["**/*.jsx", "**/*.tsx", "**/*.vue", "**/*.svelte", "**/*.astro"],
+      "customSyntax": "postcss-html"
+    },
+    {
+      "files": ["**/*.html"],
+      "customSyntax": "postcss-html"
+    },
+    {
+      "files": ["**/*.md", "**/*.mdx"],
+      "customSyntax": "postcss-markdown"
+    }
+  ],
+  "allowEmptyInput": false,
+  "quiet": false,
+  "color": true,
+  "help": true,
+  "version": true,
+  "debug": false
+}
