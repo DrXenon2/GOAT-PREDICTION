@@ -1,1 +1,839 @@
-
+{
+  "$schema": "http://json.schemastore.org/prettierrc",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "requirePragma": false,
+  "insertPragma": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "vueIndentScriptAndStyle": false,
+  "endOfLine": "lf",
+  "embeddedLanguageFormatting": "auto",
+  "singleAttributePerLine": false,
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": "*.yaml",
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.yml",
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "proseWrap": "always",
+        "embeddedLanguageFormatting": "off"
+      }
+    },
+    {
+      "files": "*.py",
+      "options": {
+        "printWidth": 88,
+        "tabWidth": 4,
+        "singleQuote": false
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": "*.tsx",
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": "*.jsx",
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.css",
+      "options": {
+        "parser": "css"
+      }
+    },
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
+      }
+    },
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "html",
+        "printWidth": 120
+      }
+    },
+    {
+      "files": "*.sql",
+      "options": {
+        "parser": "sql",
+        "keywordCase": "upper",
+        "dataTypeCase": "lower",
+        "functionCase": "lower",
+        "identifierCase": "lower",
+        "logicalOperatorNewline": "before",
+        "expressionWidth": 80,
+        "linesBetweenQueries": 2
+      }
+    },
+    {
+      "files": "Makefile",
+      "options": {
+        "parser": "yaml",
+        "tabWidth": 4,
+        "useTabs": true
+      }
+    },
+    {
+      "files": "Dockerfile*",
+      "options": {
+        "parser": "dockerfile"
+      }
+    },
+    {
+      "files": "*.tf",
+      "options": {
+        "parser": "hcl"
+      }
+    },
+    {
+      "files": "*.graphql",
+      "options": {
+        "parser": "graphql"
+      }
+    },
+    {
+      "files": "*.prisma",
+      "options": {
+        "parser": "graphql"
+      }
+    },
+    {
+      "files": ["package.json", "package-lock.json"],
+      "options": {
+        "parser": "json-stringify",
+        "tabWidth": 2,
+        "printWidth": 80
+      }
+    },
+    {
+      "files": ["tsconfig.json", "jsconfig.json"],
+      "options": {
+        "parser": "json-stringify",
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": [".eslintrc*", ".prettierrc*", ".babelrc*"],
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": ["*.toml"],
+      "options": {
+        "parser": "toml"
+      }
+    },
+    {
+      "files": ["*.xml"],
+      "options": {
+        "parser": "xml",
+        "xmlWhitespaceSensitivity": "ignore"
+      }
+    },
+    {
+      "files": ["*.svg"],
+      "options": {
+        "parser": "xml",
+        "xmlWhitespaceSensitivity": "ignore"
+      }
+    },
+    {
+      "files": ["*.sh"],
+      "options": {
+        "parser": "sh",
+        "tabWidth": 2,
+        "keepComments": true,
+        "functionNextLine": false
+      }
+    },
+    {
+      "files": ["*.bash"],
+      "options": {
+        "parser": "sh",
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.j2", "*.jinja", "*.jinja2"],
+      "options": {
+        "parser": "jinja-template"
+      }
+    },
+    {
+      "files": ["*.njk"],
+      "options": {
+        "parser": "nunjucks"
+      }
+    },
+    {
+      "files": ["*.hbs", "*.handlebars"],
+      "options": {
+        "parser": "glimmer"
+      }
+    },
+    {
+      "files": ["*.ejs"],
+      "options": {
+        "parser": "ejs"
+      }
+    },
+    {
+      "files": ["*.pug"],
+      "options": {
+        "parser": "pug"
+      }
+    },
+    {
+      "files": ["*.liquid"],
+      "options": {
+        "parser": "liquid"
+      }
+    },
+    {
+      "files": ["*.twig"],
+      "options": {
+        "parser": "twig"
+      }
+    },
+    {
+      "files": ["*.hcl"],
+      "options": {
+        "parser": "hcl"
+      }
+    },
+    {
+      "files": ["*.nomad"],
+      "options": {
+        "parser": "hcl"
+      }
+    },
+    {
+      "files": ["*.cue"],
+      "options": {
+        "parser": "cue"
+      }
+    },
+    {
+      "files": ["*.odin"],
+      "options": {
+        "parser": "odin"
+      }
+    },
+    {
+      "files": ["*.rs"],
+      "options": {
+        "parser": "rust"
+      }
+    },
+    {
+      "files": ["*.go"],
+      "options": {
+        "parser": "go"
+      }
+    },
+    {
+      "files": ["*.java"],
+      "options": {
+        "parser": "java"
+      }
+    },
+    {
+      "files": ["*.c", "*.h"],
+      "options": {
+        "parser": "c"
+      }
+    },
+    {
+      "files": ["*.cpp", "*.hpp", "*.cc", "*.hh"],
+      "options": {
+        "parser": "cpp"
+      }
+    },
+    {
+      "files": ["*.cs"],
+      "options": {
+        "parser": "csharp"
+      }
+    },
+    {
+      "files": ["*.php"],
+      "options": {
+        "parser": "php"
+      }
+    },
+    {
+      "files": ["*.rb"],
+      "options": {
+        "parser": "ruby"
+      }
+    },
+    {
+      "files": ["*.lua"],
+      "options": {
+        "parser": "lua"
+      }
+    },
+    {
+      "files": ["*.swift"],
+      "options": {
+        "parser": "swift"
+      }
+    },
+    {
+      "files": ["*.kt", "*.kts"],
+      "options": {
+        "parser": "kotlin"
+      }
+    },
+    {
+      "files": ["*.scala"],
+      "options": {
+        "parser": "scala"
+      }
+    },
+    {
+      "files": ["*.r"],
+      "options": {
+        "parser": "r"
+      }
+    },
+    {
+      "files": ["*.jl"],
+      "options": {
+        "parser": "julia"
+      }
+    },
+    {
+      "files": ["*.hs"],
+      "options": {
+        "parser": "haskell"
+      }
+    },
+    {
+      "files": ["*.elm"],
+      "options": {
+        "parser": "elm"
+      }
+    },
+    {
+      "files": ["*.clj", "*.cljs", "*.cljc", "*.edn"],
+      "options": {
+        "parser": "clojure"
+      }
+    },
+    {
+      "files": ["*.ex", "*.exs"],
+      "options": {
+        "parser": "elixir"
+      }
+    },
+    {
+      "files": ["*.erl", "*.hrl"],
+      "options": {
+        "parser": "erlang"
+      }
+    },
+    {
+      "files": ["*.fs", "*.fsx", "*.fsi"],
+      "options": {
+        "parser": "fsharp"
+      }
+    },
+    {
+      "files": ["*.ml", "*.mli"],
+      "options": {
+        "parser": "ocaml"
+      }
+    },
+    {
+      "files": ["*.purs"],
+      "options": {
+        "parser": "purescript"
+      }
+    },
+    {
+      "files": ["*.re", "*.rei"],
+      "options": {
+        "parser": "reason"
+      }
+    },
+    {
+      "files": ["*.res", "*.resi"],
+      "options": {
+        "parser": "rescript"
+      }
+    },
+    {
+      "files": ["*.v"],
+      "options": {
+        "parser": "verilog"
+      }
+    },
+    {
+      "files": ["*.vhd", "*.vhdl"],
+      "options": {
+        "parser": "vhdl"
+      }
+    },
+    {
+      "files": ["*.sol"],
+      "options": {
+        "parser": "solidity"
+      }
+    },
+    {
+      "files": ["*.vy"],
+      "options": {
+        "parser": "vyper"
+      }
+    },
+    {
+      "files": ["*.move"],
+      "options": {
+        "parser": "move"
+      }
+    },
+    {
+      "files": ["*.cadence"],
+      "options": {
+        "parser": "cadence"
+      }
+    }
+  ],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-sh",
+    "prettier-plugin-sql",
+    "prettier-plugin-jinja-template",
+    "prettier-plugin-organize-imports",
+    "prettier-plugin-style-order",
+    "prettier-plugin-jsdoc",
+    "prettier-plugin-multiline-arrays",
+    "prettier-plugin-curly"
+  ],
+  "importOrder": [
+    "^react$",
+    "^next/(.*)$",
+    "^@core/(.*)$",
+    "^@ui/(.*)$",
+    "^@hooks/(.*)$",
+    "^@utils/(.*)$",
+    "^@lib/(.*)$",
+    "^@services/(.*)$",
+    "^@types/(.*)$",
+    "^@constants/(.*)$",
+    "^@assets/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true,
+  "tailwindFunctions": ["clsx", "cn", "twMerge"],
+  "tailwindAttributes": ["className", "class"],
+  "tailwindConfig": "./tailwind.config.js",
+  "packageJsonSortOrder": [
+    "name",
+    "version",
+    "description",
+    "keywords",
+    "license",
+    "author",
+    "contributors",
+    "homepage",
+    "repository",
+    "bugs",
+    "funding",
+    "type",
+    "main",
+    "module",
+    "types",
+    "exports",
+    "bin",
+    "files",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "optionalDependencies",
+    "engines",
+    "os",
+    "cpu",
+    "private",
+    "publishConfig",
+    "workspaces",
+    "config"
+  ],
+  "sql": {
+    "keywordCase": "upper",
+    "dataTypeCase": "lower",
+    "functionCase": "lower",
+    "identifierCase": "lower",
+    "logicalOperatorNewline": "before",
+    "expressionWidth": 80,
+    "linesBetweenQueries": 2,
+    "denseOperators": true,
+    "newlineBeforeSemicolon": false
+  },
+  "sh": {
+    "keepComments": true,
+    "functionNextLine": false,
+    "spaceRedirects": true,
+    "switchCaseIndent": true,
+    "variants": "auto"
+  },
+  "jsdoc": {
+    "printWidth": 80,
+    "jsdocPrintWidth": 60,
+    "jsdocSeparateReturnsFromParam": false,
+    "jsdocSeparateTagGroups": false,
+    "jsdocPreferCodeFences": true,
+    "tsdoc": true
+  },
+  "multilineArrays": {
+    "threshold": 3,
+    "trailingComma": true,
+    "wrap": "always"
+  },
+  "curly": {
+    "all": true
+  },
+  "styleOrder": [
+    "position",
+    "z-index",
+    "top",
+    "right",
+    "bottom",
+    "left",
+    "display",
+    "flex",
+    "flex-direction",
+    "flex-wrap",
+    "flex-flow",
+    "flex-grow",
+    "flex-shrink",
+    "flex-basis",
+    "grid",
+    "grid-template-columns",
+    "grid-template-rows",
+    "grid-template-areas",
+    "grid-auto-columns",
+    "grid-auto-rows",
+    "grid-auto-flow",
+    "gap",
+    "row-gap",
+    "column-gap",
+    "align-items",
+    "align-self",
+    "align-content",
+    "justify-items",
+    "justify-self",
+    "justify-content",
+    "order",
+    "width",
+    "min-width",
+    "max-width",
+    "height",
+    "min-height",
+    "max-height",
+    "margin",
+    "margin-top",
+    "margin-right",
+    "margin-bottom",
+    "margin-left",
+    "padding",
+    "padding-top",
+    "padding-right",
+    "padding-bottom",
+    "padding-left",
+    "border",
+    "border-width",
+    "border-style",
+    "border-color",
+    "border-radius",
+    "background",
+    "background-color",
+    "background-image",
+    "background-repeat",
+    "background-position",
+    "background-size",
+    "color",
+    "font",
+    "font-family",
+    "font-size",
+    "font-weight",
+    "font-style",
+    "text-align",
+    "text-decoration",
+    "text-transform",
+    "line-height",
+    "letter-spacing",
+    "white-space",
+    "word-break",
+    "overflow",
+    "overflow-x",
+    "overflow-y",
+    "visibility",
+    "opacity",
+    "cursor",
+    "transition",
+    "animation",
+    "transform",
+    "box-shadow",
+    "outline",
+    "list-style",
+    "table-layout",
+    "border-collapse",
+    "border-spacing",
+    "empty-cells",
+    "caption-side",
+    "content",
+    "quotes",
+    "counter-reset",
+    "counter-increment",
+    "resize",
+    "user-select",
+    "pointer-events",
+    "scroll-behavior",
+    "scroll-snap-type",
+    "scroll-snap-align",
+    "scroll-margin",
+    "scroll-padding",
+    "overscroll-behavior",
+    "clip-path",
+    "mask",
+    "filter",
+    "backdrop-filter",
+    "mix-blend-mode",
+    "isolation",
+    "object-fit",
+    "object-position",
+    "float",
+    "clear",
+    "vertical-align",
+    "direction",
+    "unicode-bidi",
+    "writing-mode",
+    "text-orientation",
+    "word-wrap",
+    "word-spacing",
+    "text-indent",
+    "text-shadow",
+    "text-overflow",
+    "hyphens",
+    "tab-size",
+    "caret-color",
+    "appearance"
+  ],
+  "organizeImports": {
+    "groupImports": true,
+    "removeUnusedImports": true,
+    "collapseExtraBlankLines": true,
+    "collapseBlankLinesAroundMarkers": true
+  },
+  "vueIndentScriptAndStyle": false,
+  "vueSingleFileComponentIndent": true,
+  "vueTemplateIndent": true,
+  "vueComponentNameInTemplateCasing": ["PascalCase"],
+  "vueAttributesOrder": [
+    "DEFINITION",
+    "LIST_RENDERING",
+    "CONDITIONALS",
+    "RENDER_MODIFIERS",
+    "GLOBAL",
+    "UNIQUE",
+    "TWO_WAY_BINDING",
+    "OTHER_DIRECTIVES",
+    "OTHER_ATTR",
+    "EVENTS",
+    "CONTENT"
+  ],
+  "markdown": {
+    "proseWrap": "always",
+    "singleQuote": false,
+    "quoteProps": "preserve"
+  },
+  "mermaid": {
+    "theme": "default"
+  },
+  "plantuml": {
+    "server": "https://www.plantuml.com/plantuml"
+  },
+  "yaml": {
+    "singleQuote": false,
+    "bracketSpacing": true
+  },
+  "toml": {
+    "trailingComma": false,
+    "indent": 2
+  },
+  "json": {
+    "trailingComma": "none"
+  },
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.next/**",
+    "**/coverage/**",
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/tmp/**",
+    "**/temp/**",
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/pnpm-lock.yaml",
+    "**/bun.lockb",
+    "**/*.min.js",
+    "**/*.min.css",
+    "**/*.bundle.js",
+    "**/CHANGELOG.md"
+  ],
+  "experimentalTernaries": false,
+  "explicitMutation": false,
+  "arrowFunctionParentheses": "always",
+  "functionParentheses": "always",
+  "functionParameters": "default",
+  "generatorStarSpacing": true,
+  "yieldStarSpacing": true,
+  "spaceBeforeFunctionParen": false,
+  "spaceBeforeBlocks": true,
+  "spaceInParens": false,
+  "spaceInEmptyParens": false,
+  "spacedComment": true,
+  "commaSpacing": {
+    "before": false,
+    "after": true
+  },
+  "semiSpacing": {
+    "before": false,
+    "after": true
+  },
+  "keySpacing": {
+    "beforeColon": false,
+    "afterColon": true,
+    "mode": "strict"
+  },
+  "commaStyle": "last",
+  "commaDangle": [
+    "es5",
+    {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "always-multiline"
+    }
+  ],
+  "quoteProps": "as-needed",
+  "jsxQuoteProps": "consistent-as-needed",
+  "jsxBracketSameLine": false,
+  "jsxSingleQuote": false,
+  "jsxImportSource": "react",
+  "jsxRuntime": "automatic",
+  "jsxFragmentStyle": "syntax",
+  "jsxExpressionStyle": "syntax",
+  "jsxSelfClosingStyle": "syntax",
+  "jsxClosingTagStyle": "syntax",
+  "jsxAttributesStyle": "syntax",
+  "jsxChildrenStyle": "syntax",
+  "jsxSortProps": true,
+  "jsxMaxPropsPerLine": {
+    "single": 3,
+    "multi": 1
+  },
+  "jsxSortImportDeclarations": true,
+  "jsxSortImportSpecifiers": true,
+  "jsxSortDestructuringProperties": true,
+  "jsxWhitespaceSensitivity": "css",
+  "jsxIndentStyle": "space",
+  "jsxIndent": 2,
+  "jsxIndentProps": 2,
+  "jsxIndentChildren": 2,
+  "jsxIndentFragment": 2,
+  "jsxIndentSpread": 2,
+  "jsxIndentConditional": 2,
+  "jsxIndentLogical": 2,
+  "jsxIndentTernary": 2,
+  "jsxIndentAttribute": 2,
+  "jsxIndentScript": 2,
+  "jsxIndentStyle": 2,
+  "jsxIndentTemplate": 2,
+  "jsxIndentExpression": 2,
+  "jsxIndentComment": 2,
+  "jsxIndentText": 2,
+  "jsxIndentCdata": 2,
+  "jsxIndentDoctype": 2,
+  "jsxIndentProcessing": 2,
+  "jsxIndentDeclaration": 2,
+  "jsxIndentEntity": 2,
+  "jsxIndentNotation": 2,
+  "jsxIndentElement": 2,
+  "jsxIndentDocument": 2,
+  "editorconfig": true,
+  "requireConfig": false,
+  "configPrecedence": "cli-override",
+  "useEditorConfig": true,
+  "filepath": "",
+  "rangeStart": 0,
+  "rangeEnd": Infinity,
+  "locStart": 0,
+  "locEnd": Infinity,
+  "cursorOffset": -1,
+  "parser": "",
+  "filepath": "",
+  "originalText": "",
+  "ast": "",
+  "doc": "",
+  "options": {}
+}
