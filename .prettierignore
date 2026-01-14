@@ -1,1 +1,603 @@
+# Prettier Ignore File
+# Files and directories to exclude from formatting
 
+# Build outputs
+/dist
+/build
+/.next
+/.nuxt
+/.output
+/.svelte-kit
+/.astro
+/.vuepress/dist
+/out
+/public/build
+/storybook-static
+
+# Dependencies
+/node_modules
+/bower_components
+/jspm_packages
+/web_modules
+/packages/*/node_modules
+
+# Cache directories
+/.cache
+/.parcel-cache
+/.eslintcache
+/.stylelintcache
+/.yarn/cache
+/.pnp
+.pnp.*
+
+# Coverage directories
+/coverage
+/.nyc_output
+
+# Logs
+/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+/pids
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+/reports
+*.heapsnapshot
+*.cpuprofile
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging.local
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Tt]humbs.db
+desktop.ini
+
+# Temporary files
+/tmp
+/temp
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-shrinkwrap.json
+.yarn-integrity
+
+# Compiled binary addons
+*.node
+
+# Python files
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.tox/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Machine learning models
+/models/*.joblib
+/models/*.pkl
+/models/*.h5
+/models/*.pt
+/models/*.pth
+
+# Data files
+/data/*.csv
+/data/*.json
+/data/*.parquet
+/data/*.feather
+
+# Documentation
+/docs/_build
+/docs/_static
+/docs/_templates
+
+# Docker
+docker-compose.override.yml
+docker-compose.dev.yml
+docker-compose.test.yml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform.lock.hcl
+
+# Kubernetes
+.kube/
+
+# Helm
+*.lock
+charts/*/charts/
+
+# Generated files by tools
+*.min.js
+*.min.css
+*.bundle.js
+*.bundle.css
+
+# License files
+LICENSE
+LICENSE-*
+COPYING
+COPYING-*
+
+# Certificates and keys
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.der
+
+# Security files
+.secrets/
+*.secret
+*.private
+
+# Backup directories
+.backups/
+
+# Specific project directories to ignore
+/.logs
+/.tmp
+/.cache
+/.config/development/
+/.config/test/
+
+# Test files (format separately with test-specific rules)
+/tests/fixtures/
+/tests/mocks/
+/tests/__snapshots__/
+
+# E2E test files
+/cypress/videos/
+/cypress/screenshots/
+/playwright/.cache/
+playwright/test-results/
+
+# Performance test files
+.loadtest/
+.k6/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.mkv
+*.mp3
+*.wav
+*.flac
+*.aac
+
+# Image files
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.webp
+*.ico
+*.svg
+
+# Font files
+*.ttf
+*.otf
+*.woff
+*.woff2
+*.eot
+
+# Archive files
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Executable files
+*.exe
+*.msi
+*.bin
+*.app
+*.dmg
+*.pkg
+
+# Virtual machine files
+*.vdi
+*.vhd
+*.vmdk
+*.ova
+*.ovf
+
+# Backup tool files
+.borg/
+.rdiff-backup/
+
+# SSH files
+.ssh/
+known_hosts
+
+# GPG files
+.gnupg/
+*.gpg
+*.asc
+
+# Password manager files
+.keepass/
+.lastpass/
+
+# VPN files
+.openvpn/
+.vpn/
+
+# Tor files
+.tor/
+
+# Cryptocurrency files
+.bitcoin/
+.ethereum/
+.wallet/
+
+# Game files
+.minecraft/
+.steam/
+
+# Messaging app files
+.skype/
+.telegram/
+.discord/
+
+# Social media files
+.twitter/
+.facebook/
+.instagram/
+
+# Streaming files
+.obs/
+.streamlabs/
+
+# Video conferencing files
+.zoom/
+.teams/
+
+# Note: We want to format these
+!backend/**/*.js
+!backend/**/*.jsx
+!backend/**/*.ts
+!backend/**/*.tsx
+!backend/**/*.json
+!backend/**/*.md
+!backend/**/*.yml
+!backend/**/*.yaml
+
+!frontend/**/*.js
+!frontend/**/*.jsx
+!frontend/**/*.ts
+!frontend/**/*.tsx
+!frontend/**/*.json
+!frontend/**/*.md
+!frontend/**/*.css
+!frontend/**/*.scss
+!frontend/**/*.sass
+
+!data-pipeline/**/*.js
+!data-pipeline/**/*.ts
+!data-pipeline/**/*.py
+!data-pipeline/**/*.json
+!data-pipeline/**/*.yml
+!data-pipeline/**/*.yaml
+
+!mlops/**/*.js
+!mlops/**/*.ts
+!mlops/**/*.py
+!mlops/**/*.json
+!mlops/**/*.yml
+!mlops/**/*.yaml
+
+!infrastructure/**/*.js
+!infrastructure/**/*.ts
+!infrastructure/**/*.tf
+!infrastructure/**/*.json
+!infrastructure/**/*.yml
+!infrastructure/**/*.yaml
+
+!scripts/**/*.js
+!scripts/**/*.ts
+!scripts/**/*.sh
+!scripts/**/*.bash
+!scripts/**/*.py
+
+!tests/**/*.js
+!tests/**/*.ts
+!tests/**/*.jsx
+!tests/**/*.tsx
+
+# Configuration files to format
+!.eslintrc.js
+!.prettierrc.js
+!.babelrc.js
+!tailwind.config.js
+!next.config.js
+!postcss.config.js
+!jest.config.js
+!webpack.config.js
+!rollup.config.js
+!vite.config.js
+
+# Root configuration files
+!package.json
+!tsconfig.json
+!jsconfig.json
+!pyproject.toml
+!requirements.txt
+!Makefile
+!docker-compose.yml
+!docker-compose.prod.yml
+
+# Documentation files
+!README.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!SECURITY.md
+!ROADMAP.md
+!CHANGELOG.md
+
+# But ignore minified/compiled versions of these
+**/*.min.js
+**/*.min.css
+**/*.bundle.js
+
+# Ignore generated API docs
+/docs/api/generated/
+
+# Ignore auto-generated files from tools
+**/generated/
+**/auto-generated/
+**/__generated__/
+
+# Ignore specific file patterns
+.*.local.*
+.*.test.*
+.*.spec.*
+.*.bench.*
+.*.perf.*
+
+# Ignore data files that are machine-generated
+**/*.csv
+**/*.xlsx
+**/*.xls
+**/*.ods
+
+# Ignore lock files from package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-shrinkwrap.json
+
+# Ignore IDE-specific files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore coverage reports
+coverage/
+.nyc_output/
+
+# Ignore build artifacts
+dist/
+build/
+.next/
+.nuxt/
+.out/
+.gatsby/
+
+# Ignore dependencies
+node_modules/
+bower_components/
+jspm_packages/
+
+# Ignore cache directories
+.cache/
+.parcel-cache/
+.eslintcache/
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+
+# Ignore certificates
+*.pem
+*.crt
+*.key
+
+# Ignore backups
+*.bak
+*.backup
+
+# Ignore large media files
+*.mp4
+*.avi
+*.mov
+*.mp3
+*.wav
+
+# Ignore images (already handled by extensions)
+# But list them for clarity
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.svg
+
+# Ignore archives
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# Special case: Format these JSON files
+!package.json
+!tsconfig.json
+!jsconfig.json
+!*.code-workspace
+
+# But not these JSON files
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Format these YAML/yml files
+!docker-compose.yml
+!docker-compose.prod.yml
+!*.workflow.yml
+!*.github/workflows/*.yml
+
+# But not these
+**/.github/**/*.yml  # Except the ones above
+
+# Format these Markdown files
+!README.md
+!*.md
+
+# But not these
+**/node_modules/**/*.md
+**/CHANGELOG.md  # Handled by release tool
+
+# Format these TypeScript/JavaScript files
+!**/*.ts
+!**/*.tsx
+!**/*.js
+!**/*.jsx
+!**/*.mjs
+!**/*.cjs
+
+# But not these
+**/dist/**/*.js
+**/build/**/*.js
+**/*.min.js
+**/*.bundle.js
+
+# Format these Python files
+!**/*.py
+
+# But not these
+**/__pycache__/**/*.py
+**/.venv/**/*.py
+**/venv/**/*.py
+
+# Format these Shell files
+!**/*.sh
+!**/*.bash
+
+# But not these
+**/node_modules/**/*.sh
+
+# Format these HTML files
+!**/*.html
+
+# But not these
+**/dist/**/*.html
+**/build/**/*.html
+
+# Format these CSS files
+!**/*.css
+!**/*.scss
+!**/*.sass
+!**/*.less
+
+# But not these
+**/dist/**/*.css
+**/build/**/*.css
+**/*.min.css
+
+# Format these JSON files (with exceptions)
+!**/*.json
+!**/.vscode/*.json
+!**/tsconfig*.json
+!**/jsconfig*.json
+
+# But not these
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+**/npm-shrinkwrap.json
+**/coverage/**/*.json
+**/reports/**/*.json
+
+# Note: This file uses .gitignore syntax
+# Lines starting with ! are negations (include these)
+# Lines starting with # are comments
+# Patterns are relative to the project root
+
+# Last updated: 2024-01-14
+# Version: 2.0
