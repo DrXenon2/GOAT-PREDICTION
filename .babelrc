@@ -1,1 +1,499 @@
-
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "18.0.0",
+          "browsers": [
+            "last 2 Chrome versions",
+            "last 2 Firefox versions",
+            "last 2 Safari versions",
+            "last 2 Edge versions",
+            "iOS >= 13",
+            "Android >= 5"
+          ]
+        },
+        "useBuiltIns": "usage",
+        "corejs": "3.32",
+        "modules": false,
+        "debug": false,
+        "bugfixes": true,
+        "shippedProposals": true
+      }
+    ],
+    [
+      "@babel/preset-react",
+      {
+        "runtime": "automatic",
+        "development": false,
+        "throwIfNamespace": true,
+        "useBuiltIns": true,
+        "useSpread": true
+      }
+    ],
+    [
+      "@babel/preset-typescript",
+      {
+        "isTSX": true,
+        "allExtensions": true,
+        "allowDeclareFields": true,
+        "onlyRemoveTypeImports": true
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 3,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": true,
+        "absoluteRuntime": false,
+        "version": "7.23.5"
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-private-methods",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-private-property-in-object",
+      {
+        "loose": true
+      }
+    ],
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-function-bind",
+    "@babel/plugin-proposal-throw-expressions",
+    "@babel/plugin-proposal-logical-assignment-operators",
+    "@babel/plugin-proposal-nullish-coalescing-operator",
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-do-expressions",
+    "@babel/plugin-proposal-pipeline-operator",
+    "@babel/plugin-proposal-partial-application",
+    [
+      "@babel/plugin-proposal-object-rest-spread",
+      {
+        "useBuiltIns": true,
+        "loose": true
+      }
+    ],
+    [
+      "babel-plugin-transform-imports",
+      {
+        "@mui/material": {
+          "transform": "@mui/material/${member}",
+          "preventFullImport": true
+        },
+        "@mui/icons-material": {
+          "transform": "@mui/icons-material/${member}",
+          "preventFullImport": true
+        },
+        "@mui/lab": {
+          "transform": "@mui/lab/${member}",
+          "preventFullImport": true
+        }
+      }
+    ],
+    [
+      "babel-plugin-module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@": "./src",
+          "@components": "./src/components",
+          "@utils": "./src/utils",
+          "@hooks": "./src/hooks",
+          "@contexts": "./src/contexts",
+          "@lib": "./src/lib",
+          "@services": "./src/services",
+          "@types": "./src/types",
+          "@styles": "./src/styles",
+          "@assets": "./src/assets",
+          "@pages": "./src/pages",
+          "@api": "./src/api",
+          "@config": "./src/config",
+          "@store": "./src/store"
+        },
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]
+      }
+    ],
+    "babel-plugin-lodash",
+    "babel-plugin-date-fns",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": true,
+        "pure": true,
+        "minify": true,
+        "transpileTemplateLiterals": true,
+        "namespace": "goat-prediction"
+      }
+    ],
+    [
+      "babel-plugin-transform-react-remove-prop-types",
+      {
+        "mode": "remove",
+        "removeImport": true,
+        "ignoreFilenames": ["node_modules"]
+      }
+    ],
+    "babel-plugin-macros",
+    "babel-plugin-optimize-clsx",
+    [
+      "babel-plugin-jsx-remove-data-test-id",
+      {
+        "attributes": ["data-testid", "data-test", "data-cy"]
+      }
+    ],
+    [
+      "babel-plugin-direct-import",
+      {
+        "modules": ["@mui/material", "@mui/icons-material"]
+      }
+    ],
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-syntax-import-meta",
+    "@babel/plugin-proposal-json-strings",
+    "@babel/plugin-proposal-optional-catch-binding",
+    [
+      "babel-plugin-transform-react-inline-elements",
+      {
+        "ignoreMissing": true
+      }
+    ],
+    [
+      "babel-plugin-transform-react-constant-elements",
+      {
+        "allowMutablePropsOnTags": ["FormattedMessage"]
+      }
+    ],
+    "babel-plugin-transform-inline-environment-variables",
+    [
+      "babel-plugin-polyfill-corejs3",
+      {
+        "method": "usage-global",
+        "targets": {
+          "node": "18.0.0",
+          "browsers": [
+            "last 2 Chrome versions",
+            "last 2 Firefox versions",
+            "last 2 Safari versions",
+            "last 2 Edge versions",
+            "iOS >= 13",
+            "Android >= 5"
+          ]
+        },
+        "proposals": true,
+        "shippedProposals": true
+      }
+    ],
+    [
+      "babel-plugin-transform-define",
+      {
+        "process.env.NODE_ENV": "production",
+        "process.env.BABEL_ENV": "production",
+        "__VERSION__": "1.0.0",
+        "__BUILD_DATE__": "2024-01-14",
+        "__ENVIRONMENT__": "production",
+        "__APP_NAME__": "Goat Prediction Ultimate",
+        "__APP_VERSION__": "1.0.0"
+      }
+    ],
+    [
+      "babel-plugin-istanbul",
+      {
+        "exclude": ["**/*.spec.js", "**/*.test.js", "**/*.spec.ts", "**/*.test.ts"]
+      }
+    ],
+    [
+      "babel-plugin-console-source",
+      {
+        "segmentLength": 10
+      }
+    ]
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "18.0.0",
+              "browsers": [
+                "last 2 Chrome versions",
+                "last 2 Firefox versions",
+                "last 2 Safari versions",
+                "last 2 Edge versions",
+                "iOS >= 13",
+                "Android >= 5"
+              ]
+            },
+            "useBuiltIns": "usage",
+            "corejs": "3.32",
+            "modules": false,
+            "debug": false,
+            "bugfixes": true,
+            "shippedProposals": true
+          }
+        ],
+        [
+          "@babel/preset-react",
+          {
+            "runtime": "automatic",
+            "development": true,
+            "throwIfNamespace": true,
+            "useBuiltIns": true,
+            "useSpread": true
+          }
+        ]
+      ],
+      "plugins": [
+        [
+          "babel-plugin-styled-components",
+          {
+            "ssr": true,
+            "displayName": true,
+            "preprocess": false,
+            "pure": false,
+            "minify": false,
+            "transpileTemplateLiterals": true,
+            "namespace": "goat-prediction-dev"
+          }
+        ],
+        "react-refresh/babel",
+        [
+          "babel-plugin-transform-define",
+          {
+            "process.env.NODE_ENV": "development",
+            "process.env.BABEL_ENV": "development",
+            "__VERSION__": "1.0.0-dev",
+            "__BUILD_DATE__": "2024-01-14",
+            "__ENVIRONMENT__": "development",
+            "__APP_NAME__": "Goat Prediction Ultimate (Dev)",
+            "__APP_VERSION__": "1.0.0-dev"
+          }
+        ]
+      ],
+      "sourceMaps": "inline",
+      "retainLines": true
+    },
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            },
+            "modules": "commonjs",
+            "useBuiltIns": "usage",
+            "corejs": "3.32",
+            "debug": false
+          }
+        ],
+        [
+          "@babel/preset-react",
+          {
+            "runtime": "automatic",
+            "development": true,
+            "throwIfNamespace": true,
+            "useBuiltIns": true,
+            "useSpread": true
+          }
+        ]
+      ],
+      "plugins": [
+        [
+          "babel-plugin-transform-define",
+          {
+            "process.env.NODE_ENV": "test",
+            "process.env.BABEL_ENV": "test",
+            "__VERSION__": "1.0.0-test",
+            "__BUILD_DATE__": "2024-01-14",
+            "__ENVIRONMENT__": "test",
+            "__APP_NAME__": "Goat Prediction Ultimate (Test)",
+            "__APP_VERSION__": "1.0.0-test"
+          }
+        ],
+        [
+          "babel-plugin-istanbul",
+          {
+            "exclude": ["**/*.spec.js", "**/*.test.js", "**/*.spec.ts", "**/*.test.ts"]
+          }
+        ],
+        "@babel/plugin-transform-modules-commonjs"
+      ],
+      "sourceMaps": "inline",
+      "retainLines": true
+    },
+    "production": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "18.0.0",
+              "browsers": [
+                "last 2 Chrome versions",
+                "last 2 Firefox versions",
+                "last 2 Safari versions",
+                "last 2 Edge versions",
+                "iOS >= 13",
+                "Android >= 5"
+              ]
+            },
+            "useBuiltIns": "usage",
+            "corejs": "3.32",
+            "modules": false,
+            "debug": false,
+            "bugfixes": true,
+            "shippedProposals": true
+          }
+        ],
+        [
+          "@babel/preset-react",
+          {
+            "runtime": "automatic",
+            "development": false,
+            "throwIfNamespace": true,
+            "useBuiltIns": true,
+            "useSpread": true
+          }
+        ]
+      ],
+      "plugins": [
+        [
+          "babel-plugin-transform-define",
+          {
+            "process.env.NODE_ENV": "production",
+            "process.env.BABEL_ENV": "production",
+            "__VERSION__": "1.0.0",
+            "__BUILD_DATE__": "2024-01-14",
+            "__ENVIRONMENT__": "production",
+            "__APP_NAME__": "Goat Prediction Ultimate",
+            "__APP_VERSION__": "1.0.0"
+          }
+        ],
+        "babel-plugin-transform-react-remove-prop-types",
+        [
+          "babel-plugin-jsx-remove-data-test-id",
+          {
+            "attributes": ["data-testid", "data-test", "data-cy"]
+          }
+        ],
+        "babel-plugin-transform-inline-environment-variables"
+      ],
+      "comments": false,
+      "compact": true,
+      "minified": true,
+      "sourceMaps": true
+    }
+  },
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "**/*.spec.js",
+    "**/*.test.js",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.d.ts",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/__snapshots__/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/cypress/**",
+    "**/playwright/**",
+    "**/jest/**"
+  ],
+  "sourceType": "unambiguous",
+  "assumptions": {
+    "setPublicClassFields": true,
+    "privateFieldsAsProperties": true,
+    "constantReexports": true,
+    "noDocumentAll": true,
+    "pureGetters": true,
+    "setSpreadProperties": true,
+    "skipForOfIteratorClosing": true,
+    "iterableIsArray": true,
+    "ignoreFunctionLength": true,
+    "ignoreToPrimitiveHint": true,
+    "objectRestNoSymbols": true,
+    "privateFieldsAsSymbols": true
+  },
+  "exclude": [
+    "node_modules/**",
+    "bower_components/**",
+    "coverage/**",
+    "**/vendor/**"
+  ],
+  "overrides": [
+    {
+      "test": "./src",
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "esmodules": true
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "test": "**/*.ts",
+      "presets": [
+        "@babel/preset-typescript"
+      ]
+    },
+    {
+      "test": "**/*.tsx",
+      "presets": [
+        "@babel/preset-typescript",
+        "@babel/preset-react"
+      ]
+    }
+  ],
+  "comments": false,
+  "compact": "auto",
+  "minified": false,
+  "auxiliaryCommentBefore": "GOAT-PREDICTION-BEGIN",
+  "auxiliaryCommentAfter": "GOAT-PREDICTION-END",
+  "shouldPrintComment": (val) => !/^\s*eslint/.test(val),
+  "highlightCode": true,
+  "wrapPluginVisitorMethod": (pluginAlias, visitorType, callback) => {
+    return (...args) => {
+      try {
+        return callback(...args);
+      } catch (e) {
+        e.message = `[${pluginAlias}] ${e.message}`;
+        throw e;
+      }
+    };
+  }
+}
