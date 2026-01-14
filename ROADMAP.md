@@ -1,6 +1,6 @@
 # 🗺️ ROADMAP.md
 
-markdown
+```markdown
 # 🚀 Goat Prediction Ultimate - Roadmap
 
 ## 📋 Table of Contents
@@ -49,9 +49,11 @@ Build an AI-powered platform that delivers 85%+ accurate predictions across all 
 4. **Integrity**: Ethical operations and responsible gambling advocacy
 5. **Community**: Building value for sports fans worldwide
 
+---
 
 ## 📅 Timeline Overview
 
+```mermaid
 gantt
     title Goat Prediction Ultimate - 24 Month Roadmap
     dateFormat  YYYY-MM
@@ -1392,7 +1394,8 @@ class RevenueProjections:
 
 ## 🔮 Technology Evolution
 
-
+### Tech Stack Roadmap
+```yaml
 technology_evolution:
   phase_1:
     ml_frameworks: ["scikit-learn", "xgboost", "lightgbm"]
@@ -1420,7 +1423,7 @@ technology_evolution:
 ```
 
 ### Research & Development Focus
-
+```yaml
 rd_focus:
   year_1:
     - "Ensemble learning optimization"
@@ -1458,6 +1461,8 @@ rd_focus:
 
 ## 🌐 Market Expansion
 
+### Geographic Expansion Plan
+```yaml
 geographic_expansion:
   north_america:
     timeline: "Month 1-6"
