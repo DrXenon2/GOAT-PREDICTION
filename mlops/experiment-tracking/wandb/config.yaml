@@ -1,0 +1,562 @@
+# mlops/experiment-tracking/wandb/config.yaml
+
+# Configuration for Weights & Biases experiment tracking
+# Complete setup for ML experiment management, logging, and collaboration
+
+version: 2.0
+
+# Core W&B Settings
+wandb:
+  # Project configuration
+  project: goat-prediction-ultimate
+  entity: goat-ai-lab  # Change to your W&B team/username
+  job_type: training
+  
+  # API Settings
+  api_key: ${WANDB_API_KEY}  # Set via environment variable
+  base_url: https://api.wandb.ai
+  
+  # Run Settings
+  run_name: "${SPORT}_${MODEL_TYPE}_${TIMESTAMP}"
+  run_notes: "Training ${MODEL_TYPE} model for ${SPORT} predictions"
+  run_tags:
+    - ${SPORT}
+    - ${MODEL_TYPE}
+    - production
+    - daily-training
+    - goat-prediction
+  
+  # Save Settings
+  save_code: true
+  resume: allow
+  allow_val_change: true
+  
+  # Synchronization
+  sync_tensorboard: true
+  sync_async: true
+  reinit: false
+  
+  # Advanced Settings
+  mode: online  # online, offline, disabled
+  anonymous: never  # never, allow, must
+  quiet: false
+  show_errors: true
+
+# Experiment Metadata
+metadata:
+  # System Information
+  python_version: 3.11.0
+  framework: 
+    name: "PyTorch"
+    version: "2.0.1"
+  hardware:
+    gpu: true
+    gpu_count: ${NUM_GPUS:-1}
+    gpu_type: ${GPU_TYPE:-"NVIDIA A100"}
+    cuda_version: "11.8"
+  
+  # Model Information
+  model:
+    architecture: "${MODEL_ARCHITECTURE}"
+    parameters: ${MODEL_PARAMS}
+    input_shape: "${INPUT_SHAPE}"
+    output_shape: "${OUTPUT_SHAPE}"
+    
+  # Training Information
+  training:
+    batch_size: ${BATCH_SIZE}
+    learning_rate: ${LEARNING_RATE}
+    epochs: ${EPOCHS}
+    optimizer: "${OPTIMIZER}"
+    loss_function: "${LOSS_FUNCTION}"
+    metrics:
+      - accuracy
+      - precision
+      - recall
+      - f1_score
+      - roc_auc
+      - log_loss
+    
+  # Data Information
+  data:
+    source: "${DATA_SOURCE}"
+    size: ${DATA_SIZE}
+    splits:
+      train: 0.7
+      validation: 0.15
+      test: 0.15
+    preprocessing:
+      - normalization
+      - feature_scaling
+      - missing_value_imputation
+      - outlier_handling
+      
+  # Sports Specific
+  sport: "${SPORT}"
+  market_type: "${MARKET_TYPE}"
+  league: "${LEAGUE}"
+  season: "${SEASON}"
+  prediction_horizon: "${PREDICTION_HORIZON}"
+
+# Logging Configuration
+logging:
+  # Metrics Logging
+  metrics:
+    frequency: batch  # batch, epoch, or integer
+    batch_interval: 10  # Log every N batches
+    epoch_interval: 1   # Log every epoch
+    
+  # Artifacts to Track
+  artifacts:
+    # Model Artifacts
+    model:
+      save: true
+      format: ["pth", "onnx", "torchscript"]
+      metadata: true
+      aliases: ["latest", "best", "production"]
+      
+    # Data Artifacts
+    data:
+      save: false  # Large datasets, use references
+      reference: true
+      sample_size: 1000
+      
+    # Configuration Artifacts
+    config:
+      save: true
+      files:
+        - "config.yaml"
+        - "hyperparameters.yaml"
+        - "data_config.yaml"
+        
+    # Results Artifacts
+    results:
+      save: true
+      predictions: true
+      probabilities: true
+      confidence_intervals: true
+      
+  # System Metrics
+  system:
+    cpu: true
+    gpu: true
+    memory: true
+    disk: true
+    network: false
+    frequency: 60  # seconds
+    
+  # Custom Logging
+  custom:
+    # Feature Importance
+    feature_importance: true
+    shap_values: true
+    lime_explanations: true
+    
+    # Training Dynamics
+    gradients: true
+    weights: false  # Can be heavy
+    activations: false
+    
+    # Validation Metrics
+    confusion_matrix: true
+    roc_curve: true
+    precision_recall_curve: true
+    calibration_curve: true
+
+# Hyperparameter Sweep Configuration
+sweep:
+  enabled: false  # Set to true for hyperparameter optimization
+  
+  # When enabled, configure sweep
+  method: bayes  # grid, random, bayes
+  metric:
+    name: validation_accuracy
+    goal: maximize
+  early_terminate:
+    type: hyperband
+    min_iter: 5
+    max_iter: 50
+    s: 2
+    eta: 3
+    
+  # Hyperparameter Space
+  parameters:
+    learning_rate:
+      distribution: log_uniform
+      min: 1e-5
+      max: 1e-1
+    batch_size:
+      values: [16, 32, 64, 128, 256]
+    optimizer:
+      values: ["adam", "sgd", "rmsprop"]
+    hidden_layers:
+      values: [1, 2, 3, 4]
+    hidden_units:
+      values: [64, 128, 256, 512]
+    dropout_rate:
+      distribution: uniform
+      min: 0.0
+      max: 0.5
+
+# Alerting and Notifications
+notifications:
+  enabled: true
+  
+  # Email Notifications
+  email:
+    enabled: true
+    recipients:
+      - "ml-team@goat-prediction.com"
+      - "alerts@goat-prediction.com"
+    events:
+      - run_started
+      - run_finished
+      - run_failed
+      - best_model
+      - sweep_completed
+      
+  # Slack Integration
+  slack:
+    enabled: true
+    webhook_url: ${SLACK_WEBHOOK_URL}
+    channel: "#ml-alerts"
+    events:
+      - run_failed
+      - best_model
+      - accuracy_threshold
+      
+  # Webhook Integration
+  webhooks:
+    enabled: true
+    endpoints:
+      - url: "https://api.goat-prediction.com/webhooks/ml-events"
+        secret: ${WEBHOOK_SECRET}
+        
+# Model Registry Integration
+model_registry:
+  enabled: true
+  
+  # MLflow Integration
+  mlflow:
+    enabled: true
+    tracking_uri: "http://mlflow-service:5000"
+    registry_uri: "http://mlflow-service:5000"
+    
+  # Model Promotion
+  stages:
+    - name: "None"
+      description: "Initial training"
+    - name: "Staging"
+      description: "Ready for testing"
+    - name: "Production"
+      description: "Live deployment"
+    - name: "Archived"
+      description: "Retired models"
+      
+  # Quality Gates
+  quality_gates:
+    minimum_accuracy: 0.65
+    maximum_loss: 0.5
+    minimum_precision: 0.60
+    minimum_recall: 0.60
+    data_drift_threshold: 0.1
+    concept_drift_threshold: 0.15
+
+# Advanced Features
+advanced:
+  # Distributed Training
+  distributed:
+    strategy: "ddp"  # distributed data parallel
+    num_nodes: ${NUM_NODES:-1}
+    num_processes: ${NUM_GPUS:-1}
+    
+  # Checkpointing
+  checkpoint:
+    enabled: true
+    save_best_only: true
+    monitor: "validation_loss"
+    mode: "min"
+    save_frequency: "epoch"
+    max_checkpoints: 3
+    
+  # Debugging
+  debugging:
+    log_graph: true
+    log_gradients: true
+    log_parameters: true
+    watch_model: true
+    
+  # Performance Optimization
+  performance:
+    profile: true
+    profile_batch:
+      start: 10
+      end: 15
+    profile_memory: true
+    profile_warmup: 5
+
+# Integration with Other Tools
+integrations:
+  # TensorBoard
+  tensorboard:
+    enabled: true
+    log_dir: "./logs/tensorboard"
+    update_freq: "batch"
+    
+  # Docker
+  docker:
+    enabled: true
+    image: "goat-prediction/ml-training:latest"
+    build_context: "./"
+    dockerfile: "Dockerfile.training"
+    
+  # Kubernetes
+  kubernetes:
+    enabled: true
+    namespace: "ml-training"
+    resources:
+      requests:
+        cpu: "4"
+        memory: "16Gi"
+        nvidia.com/gpu: "1"
+      limits:
+        cpu: "8"
+        memory: "32Gi"
+        nvidia.com/gpu: "1"
+        
+  # CI/CD
+  ci_cd:
+    github_actions:
+      enabled: true
+      workflow: "ml-training.yml"
+    gitlab_ci:
+      enabled: false
+    jenkins:
+      enabled: false
+
+# Environment Variables (for reference)
+environment:
+  # Required Variables
+  required:
+    - WANDB_API_KEY
+    - SPORT
+    - MODEL_TYPE
+    - DATA_PATH
+    
+  # Optional Variables
+  optional:
+    - GPU_COUNT: "1"
+    - BATCH_SIZE: "32"
+    - LEARNING_RATE: "0.001"
+    - EPOCHS: "100"
+    - OPTIMIZER: "adam"
+    - LOSS_FUNCTION: "binary_crossentropy"
+    - EARLY_STOPPING_PATIENCE: "10"
+    - MODEL_SAVE_PATH: "./models"
+    - LOG_DIR: "./logs"
+    
+  # Security Variables
+  secrets:
+    - DATABASE_URL
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - GCP_CREDENTIALS
+
+# Sport-Specific Configurations
+sport_configs:
+  football:
+    features:
+      historical_matches: 10
+      form_window: 5
+      h2h_matches: 5
+      include_player_stats: true
+      include_weather: true
+      include_referee: false
+    markets:
+      - match_winner
+      - over_under
+      - both_teams_to_score
+      - exact_score
+      - asian_handicap
+      
+  basketball:
+    features:
+      historical_games: 10
+      form_window: 5
+      include_player_stats: true
+      include_injuries: true
+      include_travel: true
+    markets:
+      - moneyline
+      - point_spread
+      - total_points
+      - player_points
+      - quarters
+      
+  tennis:
+    features:
+      historical_matches: 15
+      surface_history: true
+      head_to_head: true
+      recent_form: true
+      include_rankings: true
+    markets:
+      - match_winner
+      - set_winner
+      - total_games
+      - handicap_games
+      
+  esports:
+    features:
+      historical_matches: 20
+      map_history: true
+      player_form: true
+      team_composition: true
+      patch_version: true
+    markets:
+      - match_winner
+      - map_winner
+      - total_kills
+      - first_blood
+
+# Monitoring and Observability
+monitoring:
+  # Performance Metrics
+  performance:
+    inference_latency:
+      threshold_ms: 100
+      alert: true
+    training_time:
+      threshold_hours: 2
+      alert: true
+    memory_usage:
+      threshold_gb: 8
+      alert: true
+      
+  # Model Metrics
+  model_health:
+    accuracy_drop:
+      threshold: 0.05
+      window: 100
+      alert: true
+    loss_increase:
+      threshold: 0.1
+      window: 50
+      alert: true
+    confidence_drop:
+      threshold: 0.15
+      alert: true
+      
+  # Data Quality
+  data_quality:
+    missing_values:
+      threshold: 0.05
+      alert: true
+    outlier_percentage:
+      threshold: 0.03
+      alert: true
+    feature_drift:
+      threshold: 0.1
+      alert: true
+
+# Backup and Recovery
+backup:
+  enabled: true
+  frequency: daily
+  retention_days: 30
+  locations:
+    - s3://goat-prediction-backups/wandb
+    - gs://goat-prediction-backups/wandb
+  include:
+    - runs
+    - artifacts
+    - models
+    - logs
+  encryption: true
+
+# Compliance and Security
+compliance:
+  # Data Protection
+  data_protection:
+    anonymize_pii: true
+    encrypt_sensitive_data: true
+    data_retention_days: 365
+    
+  # Access Control
+  access_control:
+    team_based: true
+    project_visibility: private
+    api_rate_limit: 1000/hour
+    
+  # Audit Logging
+  audit:
+    enabled: true
+    log_events:
+      - run_created
+      - run_modified
+      - artifact_uploaded
+      - model_registered
+      - sweep_created
+      
+  # Regulatory Compliance
+  regulations:
+    gdpr_compliant: true
+    ccpa_compliant: true
+    hipaa_compliant: false
+
+# Template Variables for Dynamic Configuration
+templates:
+  run_name: |
+    {% if sport and model_type %}
+      {{ sport }}_{{ model_type }}_{{ now.strftime('%Y%m%d_%H%M%S') }}
+    {% else %}
+      run_{{ now.strftime('%Y%m%d_%H%M%S') }}
+    {% endif %}
+    
+  run_tags: |
+    {% if sport %}{{ sport }},{% endif %}
+    {% if model_type %}{{ model_type }},{% endif %}
+    {{ env_type }},
+    training,
+    goat-prediction
+    
+  model_path: |
+    models/{{ sport }}/{{ model_type }}/version_{{ version }}
+
+# Documentation Links
+documentation:
+  setup_guide: "https://docs.goat-prediction.com/ml/wandb-setup"
+  api_reference: "https://docs.goat-prediction.com/api/wandb"
+  troubleshooting: "https://docs.goat-prediction.com/troubleshooting/wandb"
+  best_practices: "https://docs.goat-prediction.com/best-practices/ml-ops"
+  support: "support@goat-prediction.com"
+
+# Notes and Comments
+notes: |
+  This configuration file sets up comprehensive experiment tracking with W&B.
+  
+  Key Features:
+  1. Complete experiment metadata tracking
+  2. Hyperparameter sweep configuration
+  3. Model registry integration
+  4. Multi-sport support
+  5. Performance monitoring
+  6. Compliance and security settings
+  
+  Environment Variables Required:
+  - WANDB_API_KEY: Your W&B API key
+  - SPORT: Sport being predicted (football, basketball, tennis, esports)
+  - MODEL_TYPE: Type of model being trained
+  - DATA_PATH: Path to training data
+  
+  To use this configuration:
+  1. Copy to your project directory
+  2. Set environment variables
+  3. Initialize W&B in your training script:
+     
+     import wandb
+     wandb.init(config="path/to/config.yaml")
+     
+  4. Run your training script
+  
+  For questions: ml-team@goat-prediction.com
