@@ -1,0 +1,768 @@
+# TimescaleDB Configuration for Goat Prediction Ultimate
+# Hyper-optimized for time-series sports prediction data
+
+# Global TimescaleDB Configuration
+version: "2.8.1"
+timescaledb:
+  telemetry_level: "off"
+  
+  # Performance Optimizations
+  max_connections: 500
+  shared_buffers: "8GB"
+  effective_cache_size: "24GB"
+  maintenance_work_mem: "2GB"
+  checkpoint_completion_target: 0.9
+  wal_buffers: "16MB"
+  default_statistics_target: 500
+  random_page_cost: 1.1
+  effective_io_concurrency: 200
+  work_mem: "32MB"
+  min_wal_size: "2GB"
+  max_wal_size: "8GB"
+  max_worker_processes: 32
+  max_parallel_workers_per_gather: 8
+  max_parallel_workers: 32
+  max_parallel_maintenance_workers: 8
+  
+  # TimescaleDB Specific Tuning
+  timescaledb:
+    # Chunk configuration
+    max_chunk_size: "2GB"
+    max_chunks_per_query: 1000
+    chunk_target_size: "1GB"
+    chunk_time_interval: "24 hours"
+    
+    # Compression configuration
+    compression:
+      default_chunk_size: "1GB"
+      compression_algorithm: "zstd"
+      compress_segmentby: "sport_id, league_id"
+      compress_orderby: "created_at DESC"
+      
+    # Continuous aggregates
+    continuous_aggregate:
+      materialization_workers: 4
+      max_interval_per_job: "7 days"
+      refresh_lag: "1 hour"
+      refresh_policy:
+        start_offset: "1 day"
+        end_offset: "1 hour"
+        schedule_interval: "1 hour"
+        
+    # Data retention policies
+    retention:
+      drop_after: "365 days"
+      schedule_interval: "1 day"
+      
+    # Distributed hypertables (if using multi-node)
+    distributed:
+      enable: false
+      # Configuration for multi-node setup would go here
+
+# Database Configuration
+database:
+  # Main database
+  name: "goat_prediction"
+  encoding: "UTF8"
+  locale: "en_US.UTF-8"
+  template: "template0"
+  
+  # Extensions to install
+  extensions:
+    - "timescaledb"
+    - "postgis"
+    - "pg_stat_statements"
+    - "pgcrypto"
+    - "uuid-ossp"
+    - "btree_gin"
+    - "btree_gist"
+    - "hstore"
+    - "unaccent"
+    
+  # Schemas
+  schemas:
+    - "public"
+    - "predictions"
+    - "analytics"
+    - "realtime"
+    - "archive"
+    
+  # Roles and Privileges
+  roles:
+    - name: "prediction_service"
+      password: "${PREDICTION_SERVICE_PASSWORD}"
+      privileges:
+        - "CONNECT"
+        - "CREATE"
+        - "TEMPORARY"
+        - "SELECT"
+        - "INSERT"
+        - "UPDATE"
+        - "DELETE"
+        - "EXECUTE"
+        - "USAGE"
+        
+    - name: "analytics_service"
+      password: "${ANALYTICS_SERVICE_PASSWORD}"
+      privileges:
+        - "CONNECT"
+        - "SELECT"
+        - "EXECUTE"
+        - "USAGE"
+        
+    - name: "admin_user"
+      password: "${ADMIN_PASSWORD}"
+      privileges:
+        - "ALL PRIVILEGES"
+        
+    - name: "readonly_user"
+      password: "${READONLY_PASSWORD}"
+      privileges:
+        - "CONNECT"
+        - "SELECT"
+        - "USAGE"
+        
+  # Default privileges
+  default_privileges:
+    - role: "prediction_service"
+      schema: "public"
+      privileges: "ALL"
+    - role: "analytics_service"
+      schema: "analytics"
+      privileges: "SELECT, INSERT, UPDATE"
+
+# Hypertables Configuration
+hypertables:
+  
+  # Predictions hypertable - Core prediction data
+  predictions:
+    table_name: "predictions"
+    schema: "predictions"
+    time_column: "prediction_time"
+    partitioning_column: "sport_id"
+    number_partitions: 32
+    chunk_time_interval: "6 hours"
+    compression:
+      enabled: true
+      segmentby:
+        - "sport_id"
+        - "league_id"
+        - "market_type"
+      orderby:
+        - "prediction_time DESC"
+        - "confidence DESC"
+      compress_after: "7 days"
+    indexes:
+      - name: "idx_predictions_sport_time"
+        columns: ["sport_id", "prediction_time"]
+        type: "BTREE"
+      - name: "idx_predictions_match"
+        columns: ["match_id", "prediction_time"]
+        type: "BTREE"
+      - name: "idx_predictions_confidence"
+        columns: ["confidence"]
+        type: "BTREE"
+        where: "confidence > 0.7"
+        
+  # Odds hypertable - Real-time odds data
+  odds:
+    table_name: "odds"
+    schema: "realtime"
+    time_column: "timestamp"
+    partitioning_column: "bookmaker_id"
+    number_partitions: 16
+    chunk_time_interval: "1 hour"
+    compression:
+      enabled: true
+      segmentby:
+        - "bookmaker_id"
+        - "market_type"
+      orderby:
+        - "timestamp DESC"
+        - "match_id"
+      compress_after: "3 days"
+    indexes:
+      - name: "idx_odds_match_bookmaker"
+        columns: ["match_id", "bookmaker_id", "timestamp"]
+        type: "BTREE"
+      - name: "idx_odds_value"
+        columns: ["value"]
+        type: "BTREE"
+        where: "value > 1.5"
+        
+  # Betting events hypertable
+  betting_events:
+    table_name: "betting_events"
+    schema: "analytics"
+    time_column: "event_time"
+    partitioning_column: "event_type"
+    number_partitions: 8
+    chunk_time_interval: "12 hours"
+    compression:
+      enabled: true
+      segmentby:
+        - "event_type"
+        - "user_id"
+      orderby:
+        - "event_time DESC"
+      compress_after: "14 days"
+    indexes:
+      - name: "idx_betting_events_user_time"
+        columns: ["user_id", "event_time"]
+        type: "BTREE"
+      - name: "idx_betting_events_type"
+        columns: ["event_type", "event_time"]
+        type: "BTREE"
+        
+  # Model performance hypertable
+  model_performance:
+    table_name: "model_performance"
+    schema: "analytics"
+    time_column: "evaluation_time"
+    partitioning_column: "model_type"
+    number_partitions: 16
+    chunk_time_interval: "1 day"
+    compression:
+      enabled: true
+      segmentby:
+        - "model_type"
+        - "sport_id"
+      orderby:
+        - "evaluation_time DESC"
+        - "accuracy DESC"
+      compress_after: "30 days"
+    indexes:
+      - name: "idx_model_performance_model_time"
+        columns: ["model_type", "evaluation_time"]
+        type: "BTREE"
+      - name: "idx_model_performance_accuracy"
+        columns: ["accuracy"]
+        type: "BTREE"
+        where: "accuracy > 0.6"
+        
+  # Live match data hypertable
+  live_matches:
+    table_name: "live_matches"
+    schema: "realtime"
+    time_column: "update_time"
+    partitioning_column: "sport_id"
+    number_partitions: 8
+    chunk_time_interval: "15 minutes"
+    compression:
+      enabled: true
+      segmentby:
+        - "sport_id"
+        - "match_status"
+      orderby:
+        - "update_time DESC"
+      compress_after: "7 days"
+    indexes:
+      - name: "idx_live_matches_match_time"
+        columns: ["match_id", "update_time"]
+        type: "BTREE"
+      - name: "idx_live_matches_status"
+        columns: ["match_status", "update_time"]
+        type: "BTREE"
+        
+  # Financial transactions hypertable
+  financial_transactions:
+    table_name: "financial_transactions"
+    schema: "analytics"
+    time_column: "transaction_time"
+    partitioning_column: "transaction_type"
+    number_partitions: 4
+    chunk_time_interval: "1 day"
+    compression:
+      enabled: true
+      segmentby:
+        - "transaction_type"
+        - "user_id"
+      orderby:
+        - "transaction_time DESC"
+      compress_after: "90 days"
+    indexes:
+      - name: "idx_financial_transactions_user_time"
+        columns: ["user_id", "transaction_time"]
+        type: "BTREE"
+      - name: "idx_financial_transactions_amount"
+        columns: ["amount"]
+        type: "BTREE"
+
+# Continuous Aggregates Configuration
+continuous_aggregates:
+  
+  # Hourly predictions summary
+  hourly_predictions:
+    view_name: "hourly_predictions_summary"
+    schema: "analytics"
+    source_table: "predictions.predictions"
+    schedule_interval: "1 hour"
+    refresh_lag: "15 minutes"
+    materialized_only: false
+    with_data: true
+    query: |
+      SELECT 
+        time_bucket('1 hour', prediction_time) as hour,
+        sport_id,
+        league_id,
+        market_type,
+        COUNT(*) as prediction_count,
+        AVG(confidence) as avg_confidence,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY confidence) as median_confidence,
+        SUM(CASE WHEN confidence >= 0.8 THEN 1 ELSE 0 END) as high_confidence_count,
+        SUM(CASE WHEN confidence < 0.6 THEN 1 ELSE 0 END) as low_confidence_count
+      FROM predictions.predictions
+      GROUP BY 1, 2, 3, 4
+      
+  # Daily betting performance
+  daily_betting_performance:
+    view_name: "daily_betting_performance"
+    schema: "analytics"
+    source_table: "analytics.betting_events"
+    schedule_interval: "1 day"
+    refresh_lag: "1 hour"
+    materialized_only: true
+    with_data: true
+    query: |
+      SELECT 
+        time_bucket('1 day', event_time) as day,
+        user_id,
+        event_type,
+        COUNT(*) as event_count,
+        SUM(CASE WHEN event_type = 'BET_WON' THEN 1 ELSE 0 END) as wins,
+        SUM(CASE WHEN event_type = 'BET_LOST' THEN 1 ELSE 0 END) as losses,
+        AVG(stake) as avg_stake,
+        SUM(CASE WHEN event_type = 'BET_WON' THEN profit ELSE 0 END) as total_profit,
+        SUM(CASE WHEN event_type = 'BET_LOST' THEN stake ELSE 0 END) as total_loss
+      FROM analytics.betting_events
+      WHERE event_type IN ('BET_WON', 'BET_LOST', 'BET_PLACED')
+      GROUP BY 1, 2, 3
+      
+  # Real-time market insights (5-minute intervals)
+  realtime_market_insights:
+    view_name: "realtime_market_insights"
+    schema: "realtime"
+    source_table: "realtime.odds"
+    schedule_interval: "5 minutes"
+    refresh_lag: "1 minute"
+    materialized_only: false
+    with_data: true
+    query: |
+      SELECT 
+        time_bucket('5 minutes', timestamp) as interval_start,
+        match_id,
+        market_type,
+        bookmaker_id,
+        COUNT(DISTINCT timestamp) as updates_count,
+        MIN(value) as min_odds,
+        MAX(value) as max_odds,
+        AVG(value) as avg_odds,
+        LAST(value, timestamp) as latest_odds,
+        STDDEV(value) as odds_volatility
+      FROM realtime.odds
+      GROUP BY 1, 2, 3, 4
+      
+  # Model accuracy over time (daily)
+  model_accuracy_daily:
+    view_name: "model_accuracy_daily"
+    schema: "analytics"
+    source_table: "analytics.model_performance"
+    schedule_interval: "1 day"
+    refresh_lag: "6 hours"
+    materialized_only: true
+    with_data: true
+    query: |
+      SELECT 
+        time_bucket('1 day', evaluation_time) as day,
+        model_type,
+        sport_id,
+        COUNT(*) as evaluations_count,
+        AVG(accuracy) as avg_accuracy,
+        MIN(accuracy) as min_accuracy,
+        MAX(accuracy) as max_accuracy,
+        AVG(precision) as avg_precision,
+        AVG(recall) as avg_recall,
+        AVG(f1_score) as avg_f1_score
+      FROM analytics.model_performance
+      GROUP BY 1, 2, 3
+
+# Retention Policies
+retention_policies:
+  
+  # Raw predictions - keep 90 days
+  predictions_raw:
+    hypertable: "predictions.predictions"
+    drop_after: "90 days"
+    schedule_interval: "1 day"
+    
+  # Compressed predictions - keep 365 days
+  predictions_compressed:
+    hypertable: "predictions.predictions"
+    drop_after: "365 days"
+    schedule_interval: "1 day"
+    compress_after: "7 days"
+    
+  # Real-time odds - keep 30 days
+  odds_realtime:
+    hypertable: "realtime.odds"
+    drop_after: "30 days"
+    schedule_interval: "6 hours"
+    
+  # Betting events - keep 180 days
+  betting_events:
+    hypertable: "analytics.betting_events"
+    drop_after: "180 days"
+    schedule_interval: "1 day"
+    
+  # Live matches - keep 14 days
+  live_matches:
+    hypertable: "realtime.live_matches"
+    drop_after: "14 days"
+    schedule_interval: "6 hours"
+
+# Replication and High Availability
+replication:
+  enabled: true
+  synchronous_commit: "remote_apply"
+  max_wal_senders: 10
+  max_replication_slots: 10
+  wal_keep_size: "2GB"
+  hot_standby: true
+  hot_standby_feedback: true
+  
+  # Standby servers configuration
+  standby_servers:
+    - name: "timescaledb-replica-1"
+      host: "timescaledb-replica-1"
+      port: 5432
+      application_name: "goat_prediction_replica"
+      synchronous_standby_names: "timescaledb-replica-1"
+      
+  # Streaming replication
+  streaming:
+    enabled: true
+    wal_receiver_timeout: "60s"
+    wal_receiver_status_interval: "10s"
+    wal_receiver_connect_retry: "5s"
+
+# Monitoring and Statistics
+monitoring:
+  
+  # Statistics collection
+  stats:
+    track_activities: true
+    track_counts: true
+    track_io_timing: true
+    track_functions: "all"
+    
+  # Query monitoring
+  query_monitoring:
+    pg_stat_statements:
+      track: "all"
+      max: 10000
+      track_utility: true
+      save: true
+      
+  # TimescaleDB monitoring
+  timescaledb_stats:
+    telemetry: false
+    stats: true
+    information_schema: true
+    
+  # Alert thresholds
+  alerts:
+    max_chunk_size: "2GB"
+    max_chunks_per_table: 1000
+    compression_ratio_warning: 3.0
+    compression_ratio_critical: 1.5
+
+# Backup Configuration
+backup:
+  
+  # WAL archiving
+  archive_mode: "on"
+  archive_command: "test ! -f /var/lib/postgresql/wal_archive/%f && cp %p /var/lib/postgresql/wal_archive/%f"
+  archive_timeout: "300s"
+  
+  # Base backups
+  base_backups:
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention: "30 days"
+    compression: "zstd"
+    
+  # Point-in-time recovery
+  pitr:
+    enabled: true
+    recovery_target_time: "latest"
+    recovery_target_inclusive: true
+    
+  # Backup destinations
+  destinations:
+    - type: "local"
+      path: "/var/backups/timescaledb"
+      retention: "30 days"
+      
+    - type: "s3"
+      bucket: "${S3_BACKUP_BUCKET}"
+      region: "${AWS_REGION}"
+      path_prefix: "timescaledb-backups/"
+      retention: "90 days"
+      
+    - type: "gcs"
+      bucket: "${GCS_BACKUP_BUCKET}"
+      path_prefix: "timescaledb-backups/"
+      retention: "90 days"
+
+# Resource Management
+resources:
+  
+  # Memory limits
+  memory:
+    max_memory: "32GB"
+    shared_memory: "8GB"
+    temp_buffers: "128MB"
+    
+  # CPU configuration
+  cpu:
+    cpu_shared_quota: 0.8
+    cpu_worker_quota: 0.2
+    
+  # Disk I/O
+  disk_io:
+    effective_io_concurrency: 200
+    random_page_cost: 1.1
+    seq_page_cost: 1.0
+    
+  # Network
+  network:
+    listen_addresses: "0.0.0.0"
+    port: 5432
+    max_connections: 500
+    superuser_reserved_connections: 3
+
+# Security Configuration
+security:
+  
+  # Authentication
+  authentication:
+    method: "scram-sha-256"
+    password_encryption: "scram-sha-256"
+    
+  # SSL/TLS
+  ssl:
+    enabled: true
+    certificate: "/etc/timescaledb/ssl/server.crt"
+    key: "/etc/timescaledb/ssl/server.key"
+    ca_file: "/etc/timescaledb/ssl/ca.crt"
+    cipher_list: "HIGH:!aNULL:!MD5:!RC4"
+    prefer_server_ciphers: true
+    
+  # Network security
+  network_security:
+    pg_hba:
+      - type: "local"
+        database: "all"
+        user: "all"
+        method: "peer"
+        
+      - type: "host"
+        database: "goat_prediction"
+        user: "prediction_service"
+        address: "10.0.0.0/8"
+        method: "scram-sha-256"
+        
+      - type: "hostssl"
+        database: "all"
+        user: "all"
+        address: "0.0.0.0/0"
+        method: "scram-sha-256"
+        
+  # Audit logging
+  audit:
+    enabled: true
+    log_statement: "ddl"
+    log_connections: true
+    log_disconnections: true
+    log_duration: true
+
+# Maintenance Configuration
+maintenance:
+  
+  # Vacuum configuration
+  vacuum:
+    autovacuum: true
+    autovacuum_max_workers: 6
+    autovacuum_vacuum_cost_limit: 2000
+    autovacuum_vacuum_scale_factor: 0.05
+    autovacuum_analyze_scale_factor: 0.02
+    
+  # Analyze configuration
+  analyze:
+    autovacuum_analyze_threshold: 50
+    autovacuum_analyze_scale_factor: 0.01
+    
+  # TimescaleDB maintenance jobs
+  timescaledb_jobs:
+    
+    # Compression jobs
+    - job_type: "compression"
+      schedule_interval: "15 minutes"
+      max_runtime: "1 hour"
+      max_retries: 3
+      retry_period: "10 minutes"
+      
+    # Retention jobs
+    - job_type: "retention"
+      schedule_interval: "1 hour"
+      max_runtime: "2 hours"
+      max_retries: 5
+      retry_period: "30 minutes"
+      
+    # Continuous aggregate refresh jobs
+    - job_type: "continuous_aggregate"
+      schedule_interval: "5 minutes"
+      max_runtime: "30 minutes"
+      max_retries: 3
+      retry_period: "5 minutes"
+      
+    # Reorder jobs
+    - job_type: "reorder"
+      schedule_interval: "1 hour"
+      max_runtime: "30 minutes"
+      max_retries: 3
+      retry_period: "10 minutes"
+
+# Environment Variables
+environment:
+  
+  # Database connection
+  - name: "PGDATA"
+    value: "/var/lib/timescaledb/data"
+    
+  - name: "PGPORT"
+    value: "5432"
+    
+  - name: "PGHOST"
+    value: "localhost"
+    
+  # TimescaleDB specific
+  - name: "TIMESCALEDB_TELEMETRY"
+    value: "off"
+    
+  - name: "TIMESCALEDB_MAX_BACKGROUND_WORKERS"
+    value: "16"
+    
+  # Performance tuning
+  - name: "PG_BUFFER_CACHE_SIZE"
+    value: "8GB"
+    
+  - name: "PG_SHARED_BUFFERS"
+    value: "8GB"
+    
+  - name: "PG_EFFECTIVE_CACHE_SIZE"
+    value: "24GB"
+    
+  # Locale and encoding
+  - name: "LANG"
+    value: "en_US.UTF-8"
+    
+  - name: "LC_ALL"
+    value: "en_US.UTF-8"
+
+# Health Checks
+health_checks:
+  
+  # Readiness probe
+  readiness:
+    command: ["pg_isready", "-U", "postgres"]
+    initial_delay_seconds: 30
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+    
+  # Liveness probe
+  liveness:
+    command: ["pg_isready", "-U", "postgres"]
+    initial_delay_seconds: 60
+    period_seconds: 30
+    timeout_seconds: 10
+    success_threshold: 1
+    failure_threshold: 3
+    
+  # Startup probe
+  startup:
+    command: ["pg_isready", "-U", "postgres"]
+    initial_delay_seconds: 0
+    period_seconds: 5
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 30
+
+# Metrics Export
+metrics_export:
+  
+  # Prometheus exporter
+  prometheus:
+    enabled: true
+    port: 9187
+    path: "/metrics"
+    
+    # Custom metrics
+    custom_metrics:
+      - name: "timescaledb_chunk_count"
+        query: "SELECT COUNT(*) FROM timescaledb_information.chunks"
+        
+      - name: "timescaledb_compression_ratio"
+        query: "SELECT AVG(compression_ratio) FROM timescaledb_information.compressed_chunk_stats"
+        
+      - name: "timescaledb_hypertable_size"
+        query: "SELECT hypertable_name, total_bytes FROM timescaledb_information.hypertable"
+        
+  # Stats collection
+  stats_collection:
+    enabled: true
+    interval: "60s"
+    
+    # Collect database stats
+    database_stats: true
+    
+    # Collect table stats
+    table_stats: true
+    
+    # Collect query stats
+    query_stats: true
+    
+    # Collect replication stats
+    replication_stats: true
+
+# Notes and Recommendations
+notes: |
+  This TimescaleDB configuration is optimized for:
+  
+  1. High-frequency sports prediction data (predictions every minute)
+  2. Real-time odds updates (multiple updates per second)
+  3. Time-series analytics with 1-year retention
+  4. High concurrency (up to 500 connections)
+  5. Mixed workload (OLTP + OLAP)
+  
+  Key optimizations:
+  - Chunk size optimized for 6-hour intervals
+  - Compression enabled after 7 days with ZSTD
+  - Continuous aggregates for common queries
+  - Retention policies for data lifecycle
+  - SSL encryption for security
+  - Point-in-time recovery enabled
+  
+  To apply this configuration:
+  1. Set environment variables for passwords
+  2. Adjust memory settings based on available RAM
+  3. Configure backup destinations
+  4. Set up replication for high availability
+  5. Monitor compression ratios and adjust segmentby columns
+  
+  Performance tuning tips:
+  - Monitor chunk_count per hypertable
+  - Adjust chunk_time_interval based on data volume
+  - Review compression ratios monthly
+  - Monitor query performance with pg_stat_statements
