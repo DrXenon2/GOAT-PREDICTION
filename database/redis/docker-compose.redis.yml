@@ -1,0 +1,723 @@
+# database/redis/docker-compose.redis.yml
+# Configuration Docker Compose pour Redis Goat Prediction
+# Version: 2.0.0
+# Date: 2026-01-16
+
+version: '3.8'
+
+services:
+  # ============================================
+  # REDIS CLUSTER MASTER NODES
+  # ============================================
+  
+  redis-master-1:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-master-1
+    hostname: redis-master-1
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7001:6379"
+      - "17001:16379"
+    
+    volumes:
+      - redis-master-1-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-master-1:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-master-1
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "--cluster", "check", "redis-master-1:6379"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-master-2:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-master-2
+    hostname: redis-master-2
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7002:6379"
+      - "17002:16379"
+    
+    volumes:
+      - redis-master-2-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-master-2:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-master-2
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-master-3:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-master-3
+    hostname: redis-master-3
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7003:6379"
+      - "17003:16379"
+    
+    volumes:
+      - redis-master-3-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-master-3:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============================================
+  # REDIS CLUSTER REPLICA NODES
+  # ============================================
+  
+  redis-replica-1:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-replica-1
+    hostname: redis-replica-1
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --replicaof redis-master-1 6379
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7004:6379"
+      - "17004:16379"
+    
+    volumes:
+      - redis-replica-1-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-replica-1:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=replica
+      - REDIS_MASTER_HOST=redis-master-1
+      - REDIS_MASTER_PORT=6379
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-replica-1
+    
+    depends_on:
+      - redis-master-1
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-replica-2:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-replica-2
+    hostname: redis-replica-2
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --replicaof redis-master-2 6379
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7005:6379"
+      - "17005:16379"
+    
+    volumes:
+      - redis-replica-2-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-replica-2:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=replica
+      - REDIS_MASTER_HOST=redis-master-2
+      - REDIS_MASTER_PORT=6379
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-replica-2
+    
+    depends_on:
+      - redis-master-2
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-replica-3:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-replica-3
+    hostname: redis-replica-3
+    restart: unless-stopped
+    
+    command: >
+      redis-server
+      --cluster-enabled yes
+      --cluster-config-file /data/nodes.conf
+      --cluster-node-timeout 5000
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+      --masterauth ${REDIS_PASSWORD}
+      --replicaof redis-master-3 6379
+      --maxmemory 8gb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+      --loglevel notice
+      --logfile /var/log/redis/redis-server.log
+    
+    ports:
+      - "7006:6379"
+      - "17006:16379"
+    
+    volumes:
+      - redis-replica-3-data:/data
+      - ./configurations/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./scripts/lua:/scripts/lua
+      - ./logs/redis-replica-3:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=6379
+      - REDIS_REPLICATION_MODE=replica
+      - REDIS_MASTER_HOST=redis-master-3
+      - REDIS_MASTER_PORT=6379
+      - REDIS_CLUSTER_ANNOUNCE_IP=redis-replica-3
+    
+    depends_on:
+      - redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============================================
+  # REDIS SENTINEL (Haute disponibilité)
+  # ============================================
+  
+  redis-sentinel-1:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-sentinel-1
+    hostname: redis-sentinel-1
+    restart: unless-stopped
+    
+    command: >
+      redis-sentinel
+      /usr/local/etc/redis/sentinel.conf
+      --sentinel
+    
+    ports:
+      - "26379:26379"
+    
+    volumes:
+      - ./configurations/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./logs/redis-sentinel-1:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - SENTINEL_PASSWORD=${REDIS_PASSWORD}
+      - SENTINEL_MASTER_NAME=goat-prediction-master
+      - SENTINEL_QUORUM=2
+    
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-sentinel-2:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-sentinel-2
+    hostname: redis-sentinel-2
+    restart: unless-stopped
+    
+    command: >
+      redis-sentinel
+      /usr/local/etc/redis/sentinel.conf
+      --sentinel
+    
+    ports:
+      - "26380:26379"
+    
+    volumes:
+      - ./configurations/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./logs/redis-sentinel-2:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - SENTINEL_PASSWORD=${REDIS_PASSWORD}
+      - SENTINEL_MASTER_NAME=goat-prediction-master
+      - SENTINEL_QUORUM=2
+    
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  redis-sentinel-3:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-sentinel-3
+    hostname: redis-sentinel-3
+    restart: unless-stopped
+    
+    command: >
+      redis-sentinel
+      /usr/local/etc/redis/sentinel.conf
+      --sentinel
+    
+    ports:
+      - "26381:26379"
+    
+    volumes:
+      - ./configurations/sentinel.conf:/usr/local/etc/redis/sentinel.conf
+      - ./logs/redis-sentinel-3:/var/log/redis
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - SENTINEL_PASSWORD=${REDIS_PASSWORD}
+      - SENTINEL_MASTER_NAME=goat-prediction-master
+      - SENTINEL_QUORUM=2
+    
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "-p", "26379", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============================================
+  # REDIS INSIGHT (Interface d'administration)
+  # ============================================
+  
+  redis-insight:
+    image: redislabs/redisinsight:latest
+    container_name: goat-prediction-redis-insight
+    hostname: redis-insight
+    restart: unless-stopped
+    
+    ports:
+      - "5540:5540"
+    
+    volumes:
+      - redis-insight-data:/db
+      - ./logs/redis-insight:/var/log/redisinsight
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDISINSIGHT_HOST=0.0.0.0
+      - REDISINSIGHT_PORT=5540
+      - REDISINSIGHT_AUTH_ENABLED=true
+      - REDISINSIGHT_AUTH_USER=admin
+      - REDISINSIGHT_AUTH_PASSWORD=${REDISINSIGHT_PASSWORD:-admin123}
+    
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5540"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============================================
+  # REDIS EXPORTER (Prometheus metrics)
+  # ============================================
+  
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: goat-prediction-redis-exporter
+    hostname: redis-exporter
+    restart: unless-stopped
+    
+    ports:
+      - "9121:9121"
+    
+    networks:
+      - goat-prediction-network
+    
+    command: >
+      --redis.addr=redis://redis-master-1:6379
+      --redis.password=${REDIS_PASSWORD}
+      --web.listen-address=:9121
+      --namespace=goat_prediction_redis
+      --check-keys="prediction:*,match:*,model_cache:*,session:*,rate_limit:*,leaderboard:*,realtime:*"
+    
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_ADDR=redis-master-1:6379
+    
+    depends_on:
+      - redis-master-1
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9121"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ============================================
+  # INITIALISATION DU CLUSTER
+  # ============================================
+  
+  redis-cluster-init:
+    image: redis:7.2-alpine
+    container_name: goat-prediction-redis-cluster-init
+    hostname: redis-cluster-init
+    restart: "no"
+    
+    depends_on:
+      - redis-master-1
+      - redis-master-2
+      - redis-master-3
+      - redis-replica-1
+      - redis-replica-2
+      - redis-replica-3
+    
+    networks:
+      - goat-prediction-network
+    
+    command: >
+      /bin/sh -c "
+      sleep 30
+      echo 'Initializing Redis cluster...'
+      redis-cli -a ${REDIS_PASSWORD} --cluster create \
+        redis-master-1:6379 \
+        redis-master-2:6379 \
+        redis-master-3:6379 \
+        redis-replica-1:6379 \
+        redis-replica-2:6379 \
+        redis-replica-3:6379 \
+        --cluster-replicas 1 \
+        --cluster-yes
+      echo 'Redis cluster initialized successfully'
+      "
+
+  # ============================================
+  # BACKUP AUTOMATIQUE
+  # ============================================
+  
+  redis-backup:
+    image: alpine:latest
+    container_name: goat-prediction-redis-backup
+    hostname: redis-backup
+    restart: unless-stopped
+    
+    volumes:
+      - ./scripts/shell/backup.sh:/scripts/backup.sh
+      - redis-backup-data:/backups
+      - ./configurations/redis.conf:/etc/redis/redis.conf
+    
+    networks:
+      - goat-prediction-network
+    
+    environment:
+      - REDIS_HOST=redis-master-1
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - BACKUP_DIR=/backups
+      - BACKUP_RETENTION_DAYS=30
+      - BACKUP_COMPRESSION=true
+      - BACKUP_ENCRYPTION=false
+      - S3_ENABLED=false
+      - SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
+      - CRON_SCHEDULE="0 2 * * *"
+    
+    command: >
+      /bin/sh -c "
+      chmod +x /scripts/backup.sh
+      echo '$${CRON_SCHEDULE} /scripts/backup.sh >> /var/log/backup.log 2>&1' > /etc/crontabs/root
+      crond -f
+      "
+    
+    depends_on:
+      - redis-master-1
+    
+    healthcheck:
+      test: ["CMD", "test", "-f", "/backups/latest_backup.txt"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+# ============================================
+# VOLUMES
+# ============================================
+
+volumes:
+  redis-master-1-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-master-1
+      o: bind
+
+  redis-master-2-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-master-2
+      o: bind
+
+  redis-master-3-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-master-3
+      o: bind
+
+  redis-replica-1-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-replica-1
+      o: bind
+
+  redis-replica-2-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-replica-2
+      o: bind
+
+  redis-replica-3-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-replica-3
+      o: bind
+
+  redis-insight-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/redis-insight
+      o: bind
+
+  redis-backup-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/backups/redis
+      o: bind
+
+# ============================================
+# RÉSEAUX
+# ============================================
+
+networks:
+  goat-prediction-network:
+    driver: bridge
+    name: goat-prediction-redis-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+          gateway: 172.20.0.1
+
+# ============================================
+# CONFIGURATION AVANCÉE
+# ============================================
+
+x-redis-defaults: &redis-defaults
+  stop_grace_period: 60s
+  stop_signal: SIGTERM
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+  sysctls:
+    - net.core.somaxconn=65535
+    - vm.overcommit_memory=1
+  ulimits:
+    nofile:
+      soft: 65536
+      hard: 65536
+    memlock:
+      soft: -1
+      hard: -1
+
+# Appliquer les configurations par défaut
+services:
+  redis-master-1:
+    <<: *redis-defaults
+  redis-master-2:
+    <<: *redis-defaults
+  redis-master-3:
+    <<: *redis-defaults
+  redis-replica-1:
+    <<: *redis-defaults
+  redis-replica-2:
+    <<: *redis-defaults
+  redis-replica-3:
+    <<: *redis-defaults
+
+# ============================================
+# ENVIRONMENT FILE
+# ============================================
+
+# Créer un fichier .env avec les variables suivantes:
+# REDIS_PASSWORD=your_secure_password_here
+# REDISINSIGHT_PASSWORD=your_admin_password_here
+# SLACK_WEBHOOK=https://hooks.slack.com/services/...
+# AWS_ACCESS_KEY_ID=your_access_key
+# AWS_SECRET_ACCESS_KEY=your_secret_key
+# S3_BUCKET=goat-prediction-redis-backups
