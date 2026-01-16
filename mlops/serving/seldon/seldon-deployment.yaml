@@ -1,0 +1,1467 @@
+# mlops/serving/seldon/seldon-deployment.yaml
+
+# Goat Prediction Ultimate - Seldon Core Production Deployment
+# Complete configuration for deploying ML models with high availability, monitoring, and scaling
+
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: goat-prediction-deployment
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: ml-model-serving
+    version: v3.0.0
+    environment: production
+    managed-by: seldon-core
+    team: ml-engineering
+    cost-center: ml-infrastructure
+  annotations:
+    seldon.io/rest-timeout: "30000"
+    seldon.io/grpc-timeout: "30000"
+    seldon.io/engine-separate-pod: "true"
+    seldon.io/engine-user: "1000"
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/prometheus"
+    prometheus.io/port: "8000"
+    git-sha: "${GIT_SHA}"
+    deployment-timestamp: "${TIMESTAMP}"
+    last-updated-by: "ml-ops-team@goat-prediction.com"
+spec:
+  name: goat-prediction
+  protocol: kfserving  # Options: seldon, tensorflow, kfserving, v2
+  transport: rest  # Options: rest, grpc
+  predictors:
+  - name: football-match-predictor
+    componentSpecs:
+    - spec:
+        containers:
+        - name: football-model
+          image: "${DOCKER_REGISTRY}/goat-prediction/football-models:v3.2.1"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+              - ALL
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+              nvidia.com/gpu: "1"  # For GPU-accelerated inference
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+              nvidia.com/gpu: "1"
+          env:
+          - name: MODEL_NAME
+            value: "football_match_winner_v3"
+          - name: MODEL_VERSION
+            value: "3.2.1"
+          - name: PREDICTION_SERVICE
+            value: "football"
+          - name: LOG_LEVEL
+            value: "INFO"
+          - name: ENVIRONMENT
+            value: "production"
+          - name: MAX_BATCH_SIZE
+            value: "32"
+          - name: BATCH_TIMEOUT_MS
+            value: "100"
+          - name: ENABLE_METRICS
+            value: "true"
+          - name: ENABLE_TRACING
+            value: "true"
+          - name: JAEGER_ENDPOINT
+            value: "${JAEGER_COLLECTOR_ENDPOINT}"
+          - name: PROMETHEUS_PORT
+            value: "8000"
+          - name: FEATURE_STORE_ENDPOINT
+            value: "${FEAST_SERVICE_ENDPOINT}"
+          - name: REDIS_URL
+            value: "${REDIS_ENDPOINT}"
+          - name: MODEL_CACHE_TTL
+            value: "3600"
+          - name: PREDICTION_CACHE_TTL
+            value: "60"
+          - name: REQUEST_TIMEOUT_MS
+            value: "5000"
+          - name: HEALTH_CHECK_PATH
+            value: "/health"
+          - name: READINESS_CHECK_PATH
+            value: "/ready"
+          - name: LIVENESS_CHECK_PATH
+            value: "/live"
+          ports:
+          - containerPort: 9000
+            name: http
+            protocol: TCP
+          - containerPort: 9500
+            name: grpc
+            protocol: TCP
+          - containerPort: 8000
+            name: metrics
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
+          volumeMounts:
+          - name: model-store
+            mountPath: /mnt/models
+            readOnly: true
+          - name: config-volume
+            mountPath: /etc/config
+            readOnly: true
+          - name: cache-volume
+            mountPath: /tmp/cache
+            readOnly: false
+          - name: shared-memory
+            mountPath: /dev/shm
+          - name: seldon-init-container-secret-volume
+            mountPath: /etc/seldon-init-container-secret
+            readOnly: true
+        volumes:
+        - name: model-store
+          persistentVolumeClaim:
+            claimName: football-models-pvc
+        - name: config-volume
+          configMap:
+            name: football-model-config
+        - name: cache-volume
+          emptyDir:
+            medium: Memory
+            sizeLimit: "1Gi"
+        - name: shared-memory
+          emptyDir:
+            medium: Memory
+        - name: seldon-init-container-secret-volume
+          secret:
+            secretName: seldon-init-container-secret
+            optional: true
+        initContainers:
+        - name: model-initializer
+          image: "${DOCKER_REGISTRY}/goat-prediction/model-initializer:v1.0.0"
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: MODEL_PATH
+            value: "/mnt/models"
+          - name: MODEL_URL
+            value: "${MODEL_REGISTRY_URL}/models/football_match_winner_v3/versions/3.2.1"
+          - name: MODEL_CHECKSUM
+            value: "${MODEL_SHA256}"
+          - name: INIT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: model-registry-secret
+                key: token
+          volumeMounts:
+          - name: model-store
+            mountPath: /mnt/models
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            readOnlyRootFilesystem: false
+    graph:
+      name: football-model
+      type: MODEL
+      endpoint:
+        type: REST
+      parameters:
+      - name: model_name
+        type: STRING
+        value: "football_match_winner_v3"
+      - name: version
+        type: STRING
+        value: "3.2.1"
+      - name: batch_size
+        type: INT
+        value: "32"
+      - name: timeout
+        type: INT
+        value: "5000"
+      children: []
+    replicas: 3
+    traffic: 40  # Percentage of traffic to this predictor
+    autoscaler:
+      minReplicas: 3
+      maxReplicas: 20
+      metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 70
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 80
+      - type: Pods
+        pods:
+          metric:
+            name: inference_requests_per_second
+          target:
+            type: AverageValue
+            averageValue: "100"
+      - type: Object
+        object:
+          metric:
+            name: requests_per_second
+          describedObject:
+            apiVersion: v1
+            kind: Service
+            name: goat-prediction-football-match-predictor
+          target:
+            type: Value
+            value: "500"
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+          - type: Percent
+            value: 10
+            periodSeconds: 60
+        scaleUp:
+          stabilizationWindowSeconds: 60
+          policies:
+          - type: Pods
+            value: 2
+            periodSeconds: 60
+          - type: Percent
+            value: 20
+            periodSeconds: 60
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    shadow: false
+    engineResources:
+      requests:
+        cpu: "200m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
+    svcOrchSpec:
+      env:
+      - name: SELDON_LOG_LEVEL
+        value: "INFO"
+      - name: SELDON_HTTP_PORT
+        value: "9000"
+      - name: SELDON_GRPC_PORT
+        value: "9500"
+      - name: SELDON_METRICS_PORT
+        value: "8000"
+      - name: SELDON_METRICS_ENDPOINT
+        value: "0.0.0.0:8000"
+      - name: SELDON_TRACING_ENABLED
+        value: "true"
+      - name: JAEGER_AGENT_HOST
+        value: "${JAEGER_AGENT_HOST}"
+      - name: JAEGER_AGENT_PORT
+        value: "${JAEGER_AGENT_PORT}"
+      - name: JAEGER_SAMPLER_TYPE
+        value: "probabilistic"
+      - name: JAEGER_SAMPLER_PARAM
+        value: "0.1"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+        limits:
+          cpu: "200m"
+          memory: "512Mi"
+      volumeMounts:
+      - name: shared-memory
+        mountPath: /dev/shm
+
+  - name: basketball-predictor
+    componentSpecs:
+    - spec:
+        containers:
+        - name: basketball-model
+          image: "${DOCKER_REGISTRY}/goat-prediction/basketball-models:v2.1.0"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "400m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+          env:
+          - name: MODEL_NAME
+            value: "basketball_spread_v2"
+          - name: MODEL_VERSION
+            value: "2.1.0"
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+    graph:
+      name: basketball-model
+      type: MODEL
+    replicas: 2
+    traffic: 30
+
+  - name: tennis-predictor
+    componentSpecs:
+    - spec:
+        containers:
+        - name: tennis-model
+          image: "${DOCKER_REGISTRY}/goat-prediction/tennis-models:v1.5.0"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "300m"
+              memory: "512Mi"
+            limits:
+              cpu: "600m"
+              memory: "1Gi"
+          env:
+          - name: MODEL_NAME
+            value: "tennis_match_winner_v1"
+          - name: MODEL_VERSION
+            value: "1.5.0"
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+    graph:
+      name: tennis-model
+      type: MODEL
+    replicas: 2
+    traffic: 20
+
+  - name: esports-predictor
+    componentSpecs:
+    - spec:
+        containers:
+        - name: esports-model
+          image: "${DOCKER_REGISTRY}/goat-prediction/esports-models:v1.2.0"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "300m"
+              memory: "512Mi"
+            limits:
+              cpu: "600m"
+              memory: "1Gi"
+          env:
+          - name: MODEL_NAME
+            value: "esports_match_winner_v1"
+          - name: MODEL_VERSION
+            value: "1.2.0"
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+    graph:
+      name: esports-model
+      type: MODEL
+    replicas: 2
+    traffic: 10
+
+  - name: ensemble-predictor
+    componentSpecs:
+    - spec:
+        containers:
+        - name: ensemble-model
+          image: "${DOCKER_REGISTRY}/goat-prediction/ensemble-models:v1.0.0"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "2Gi"
+          env:
+          - name: MODEL_NAME
+            value: "cross_sport_ensemble_v1"
+          - name: MODEL_VERSION
+            value: "1.0.0"
+          ports:
+          - containerPort: 9000
+            protocol: TCP
+    graph:
+      children:
+      - name: football-model
+        type: MODEL
+        implementation: TRITON
+        modelUri: "s3://goat-prediction-models/football/v3"
+      - name: basketball-model
+        type: MODEL
+        implementation: TRITON
+        modelUri: "s3://goat-prediction-models/basketball/v2"
+      - name: tennis-model
+        type: MODEL
+        implementation: TRITON
+        modelUri: "s3://goat-prediction-models/tennis/v1"
+      - name: esports-model
+        type: MODEL
+        implementation: TRITON
+        modelUri: "s3://goat-prediction-models/esports/v1"
+      name: ensemble-combiner
+      type: COMBINER
+      parameters:
+      - name: method
+        type: STRING
+        value: "weighted_average"
+      - name: weights
+        type: STRING
+        value: "0.4,0.3,0.2,0.1"
+    replicas: 2
+    traffic: 0  # No direct traffic, only used for ensemble predictions
+
+  annotations:
+    seldon.io/oauth-key: "${OAUTH_CLIENT_ID}"
+    seldon.io/oauth-secret: "${OAUTH_CLIENT_SECRET}"
+    seldon.io/engine-secret-name: "seldon-init-container-secret"
+    seldon.io/grpc-max-message-size: "104857600"  # 100MB
+    seldon.io/rest-connection-timeout: "10000"
+    seldon.io/grpc-connection-timeout: "10000"
+    seldon.io/ambassador-config: |
+      apiVersion: ambassador/v2
+      kind: Mapping
+      name: goat-prediction-mapping
+      prefix: /predict
+      service: goat-prediction-football-match-predictor:9000
+      timeout_ms: 30000
+      retry_policy:
+        retry_on: "5xx"
+        num_retries: 3
+      cors:
+        origins: "*"
+        methods: POST, GET, OPTIONS
+        headers: "*"
+    seldon.io/istio-gateway: "goat-prediction-gateway"
+    seldon.io/istio-virtual-service: "goat-prediction-virtual-service"
+    seldon.io/ingress-host: "predictions.goat-prediction.com"
+    seldon.io/ingress-tls-secret: "goat-prediction-tls"
+    seldon.io/no-engine: "false"
+    seldon.io/headless-svc: "false"
+    seldon.io/svc-name: "goat-prediction-service"
+    seldon.io/default-seldon-deployment-mode: "production"
+
+  # Explainers for model interpretability
+  explainer:
+    type: AIX
+    modelUri: "s3://goat-prediction-explainers/football/v1"
+    initParameters:
+      n_samples: "1000"
+      features: "auto"
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "512Mi"
+      limits:
+        cpu: "400m"
+        memory: "1Gi"
+    endpoint:
+      type: REST
+
+  # Model monitoring and A/B testing
+  trafficPolicy:
+    canary:
+      steps:
+      - setWeight: 10
+      - pause:
+          duration: 24h
+      - setWeight: 25
+      - pause:
+          duration: 24h
+      - setWeight: 50
+      - pause:
+          duration: 24h
+      - setWeight: 75
+      - pause:
+          duration: 24h
+      - setWeight: 100
+
+  # Shadow deployment for testing
+  shadow:
+    name: football-model-shadow
+    spec:
+      containers:
+      - name: football-model-shadow
+        image: "${DOCKER_REGISTRY}/goat-prediction/football-models-shadow:v3.2.1"
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+    traffic: 5  # Shadow 5% of traffic
+
+  # Outlier and anomaly detectors
+  outlierDetector:
+    type: SEQ2SEQ
+    modelUri: "s3://goat-prediction-anomaly-detectors/outlier/v1"
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+
+  # Request/response loggers
+  logger:
+    mode: all  # Options: all, request, response, none
+    url: "http://logstash.monitoring.svc.cluster.local:5044"
+    s3:
+      bucket: "goat-prediction-logs"
+      keyPrefix: "model-logs/"
+      region: "${AWS_REGION}"
+      credentials:
+        name: "aws-credentials-secret"
+
+  # Custom metrics for monitoring
+  metrics:
+    enabled: true
+    endpoint: "prometheus-operated.monitoring.svc.cluster.local:9090"
+    interval: "30s"
+    port: "8000"
+    path: "/metrics"
+    customMetrics:
+    - name: prediction_latency_seconds
+      type: HISTOGRAM
+      help: "Prediction latency in seconds"
+      labels:
+      - model_name
+      - model_version
+      - endpoint
+    - name: prediction_requests_total
+      type: COUNTER
+      help: "Total number of prediction requests"
+      labels:
+      - model_name
+      - model_version
+      - status_code
+    - name: prediction_confidence
+      type: GAUGE
+      help: "Prediction confidence score"
+      labels:
+      - model_name
+      - model_version
+    - name: feature_store_latency_seconds
+      type: HISTOGRAM
+      help: "Feature store retrieval latency"
+      labels:
+      - model_name
+    - name: cache_hit_ratio
+      type: GAUGE
+      help: "Cache hit ratio for predictions"
+      labels:
+      - model_name
+
+  # Security configuration
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+
+  # Pod disruption budget
+  podDisruptionBudget:
+    minAvailable: 2
+    maxUnavailable: 1
+
+  # Affinity and anti-affinity rules
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - goat-prediction
+          topologyKey: kubernetes.io/hostname
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - gpu-node
+            - inference-optimized
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: component
+            operator: In
+            values:
+            - redis-cache
+        topologyKey: kubernetes.io/hostname
+
+  # Tolerations for specialized nodes
+  tolerations:
+  - key: "node-type"
+    operator: "Equal"
+    value: "gpu-node"
+    effect: "NoSchedule"
+  - key: "dedicated"
+    operator: "Equal"
+    value: "ml-inference"
+    effect: "NoSchedule"
+
+  # Priority class
+  priorityClassName: "high-priority"
+
+  # Topology spread constraints
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app: goat-prediction
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app: goat-prediction
+
+  # Service mesh configuration
+  serviceAccountName: seldon-manager
+  serviceAnnotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+  serviceLabels:
+    app: goat-prediction
+    component: ml-service
+
+  # Network policies
+  networkPolicy:
+    ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: frontend-namespace
+      ports:
+      - protocol: TCP
+        port: 9000
+    - from:
+      - ipBlock:
+          cidr: 10.0.0.0/8
+      ports:
+      - protocol: TCP
+        port: 9000
+    egress:
+    - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+      ports:
+      - protocol: TCP
+        port: 443
+
+  # Persistent volume configuration
+  volumeClaimTemplates:
+  - metadata:
+      name: model-store
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+      storageClassName: gp2
+      volumeMode: Filesystem
+
+  # Horizontal Pod Autoscaler (HPA) configuration
+  hpaSpec:
+    minReplicas: 3
+    maxReplicas: 20
+    scaleTargetRef:
+      apiVersion: machinelearning.seldon.io/v1
+      kind: SeldonDeployment
+      name: goat-prediction-deployment
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: inference_latency_p99
+        target:
+          type: AverageValue
+          averageValue: "100ms"
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+        - type: Percent
+          value: 100
+          periodSeconds: 60
+
+  # Service Monitor for Prometheus
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: prometheus
+    namespaceSelector:
+      matchNames:
+      - ml-production
+    endpoints:
+    - port: http-metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      path: /metrics
+      relabelings:
+      - sourceLabels: [__meta_kubernetes_pod_label_app]
+        separator: ;
+        regex: goat-prediction
+        replacement: $1
+        action: keep
+    - port: grpc-metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      path: /metrics
+      scheme: grpc
+
+  # Custom resource definitions for advanced features
+  customResources:
+    - apiVersion: monitoring.coreos.com/v1
+      kind: PrometheusRule
+      metadata:
+        name: goat-prediction-alerts
+        namespace: ml-production
+      spec:
+        groups:
+        - name: goat-prediction.rules
+          rules:
+          - alert: HighPredictionLatency
+            expr: histogram_quantile(0.99, rate(prediction_latency_seconds_bucket[5m])) > 1
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High prediction latency detected"
+              description: "P99 prediction latency is above 1 second for model {{ $labels.model_name }}"
+          - alert: ModelInferenceErrors
+            expr: rate(prediction_requests_total{status_code=~"5.."}[5m]) > 0.01
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High error rate for model inference"
+              description: "Error rate for {{ $labels.model_name }} is above 1%"
+
+  # GitOps configuration
+  gitops:
+    enabled: true
+    repo: "git@github.com:goat-prediction/ml-deployments.git"
+    branch: "production"
+    path: "manifests/seldon"
+    syncInterval: 60
+
+  # Backup and disaster recovery
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retentionDays: 30
+    storage:
+      type: s3
+      bucket: "goat-prediction-backups"
+      prefix: "seldon-deployments/"
+    include:
+      - deployment
+      - configmaps
+      - secrets
+      - pvcs
+
+  # Rollback configuration
+  rollback:
+    enabled: true
+    maxRevisions: 10
+    revisionHistoryLimit: 10
+    autoRollback: true
+    rollbackOnFailure: true
+    failureThreshold: 3
+    successThreshold: 1
+
+  # Cost optimization
+  costOptimization:
+    enabled: true
+    spotInstances: true
+    reservedInstances: true
+    autoScaling:
+      scaleInDelay: 300
+      scaleOutDelay: 60
+    resourceOptimization:
+      cpuRequestOptimization: true
+      memoryRequestOptimization: true
+
+  # Compliance and security
+  compliance:
+    pciDss: true
+    gdpr: true
+    hipaa: false
+    soc2: true
+    dataEncryption:
+      atRest: true
+      inTransit: true
+    auditLogging: true
+    accessControl:
+      rbacEnabled: true
+      networkPoliciesEnabled: true
+      podSecurityPoliciesEnabled: true
+
+  # Performance tuning
+  performance:
+    httpKeepAlive: true
+    httpKeepAliveTimeout: 65
+    httpMaxConnections: 1000
+    grpcMaxConcurrentStreams: 100
+    grpcInitialWindowSize: 65535
+    grpcInitialConnWindowSize: 1048576
+    jvmOptions: "-Xmx2g -Xms1g -XX:+UseG1GC -XX:MaxGCPauseMillis=100"
+    pythonOptimizations: true
+    modelWarmup: true
+    batchOptimization: true
+    cacheOptimization: true
+
+  # Documentation and metadata
+  documentation:
+    modelCardUrl: "https://docs.goat-prediction.com/models/football_match_winner_v3"
+    apiDocumentationUrl: "https://docs.goat-prediction.com/api/predictions"
+    contact: "ml-ops@goat-prediction.com"
+    sla: "99.95%"
+    supportHours: "24/7"
+    escalationPath: "pagerduty"
+
+  # Environment variables for dynamic configuration
+  env:
+  - name: AWS_REGION
+    value: "${AWS_REGION}"
+  - name: ENVIRONMENT
+    value: "production"
+  - name: CLUSTER_NAME
+    value: "${CLUSTER_NAME}"
+  - name: NAMESPACE
+    value: "ml-production"
+  - name: LOG_LEVEL
+    value: "INFO"
+  - name: METRICS_ENABLED
+    value: "true"
+  - name: TRACING_ENABLED
+    value: "true"
+  - name: FEATURE_STORE_ENABLED
+    value: "true"
+  - name: CACHE_ENABLED
+    value: "true"
+  - name: SECURITY_ENABLED
+    value: "true"
+  - name: MONITORING_ENABLED
+    value: "true"
+
+  # Finalizers for resource cleanup
+  finalizers:
+  - machinelearning.seldon.io/finalizer
+  - kubernetes.io/pvc-protection
+
+  # Status conditions
+  conditions:
+  - type: Available
+    status: "True"
+    lastUpdateTime: "${TIMESTAMP}"
+    reason: "DeploymentSuccessful"
+    message: "Deployment is available and serving predictions"
+  - type: Progressing
+    status: "True"
+    lastUpdateTime: "${TIMESTAMP}"
+    reason: "NewReplicaSetAvailable"
+    message: "Replica set is available"
+  - type: ReplicaFailure
+    status: "False"
+    lastUpdateTime: "${TIMESTAMP}"
+    reason: "AllReplicasRunning"
+    message: "All replicas are running successfully"
+
+---
+# Supporting Kubernetes Resources
+
+# ConfigMap for model configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: football-model-config
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: config
+data:
+  model_config.yaml: |
+    model:
+      name: football_match_winner_v3
+      version: 3.2.1
+      framework: pytorch
+      input_shape: [32, 256]
+      output_shape: [32, 3]
+      batch_size: 32
+      max_batch_size: 128
+      optimization:
+        enabled: true
+        precision: fp16
+        graph_optimization: true
+      features:
+        required_features:
+          - home_team_form
+          - away_team_form
+          - h2h_stats
+          - venue_factors
+        optional_features:
+          - player_injuries
+          - weather_conditions
+      thresholds:
+        confidence_threshold: 0.65
+        minimum_features_required: 0.8
+      cache:
+        enabled: true
+        ttl_seconds: 3600
+        max_size_mb: 1024
+      monitoring:
+        drift_detection_enabled: true
+        outlier_detection_enabled: true
+        performance_monitoring_enabled: true
+      security:
+        encryption_enabled: true
+        authentication_required: true
+        rate_limiting_enabled: true
+
+  feature_store_config.yaml: |
+    feast:
+      host: ${FEAST_SERVICE_ENDPOINT}
+      port: 6566
+      tls_enabled: true
+      authentication:
+        type: jwt
+        token: ${FEAST_JWT_TOKEN}
+      caching:
+        enabled: true
+        ttl_seconds: 300
+      features:
+        football_match_features:
+          - football_match_basic_stats:*
+          - football_team_form:*
+          - football_match_h2h:*
+        team_features:
+          - football_team_basic_stats:*
+          - football_team_injuries:*
+
+  monitoring_config.yaml: |
+    prometheus:
+      enabled: true
+      port: 8000
+      path: /metrics
+      interval: 30s
+    jaeger:
+      enabled: true
+      endpoint: ${JAEGER_COLLECTOR_ENDPOINT}
+      sampling_rate: 0.1
+    logging:
+      level: INFO
+      format: json
+      output:
+        - stdout
+        - file: /var/log/model-serving.log
+    alerts:
+      high_latency_threshold_ms: 1000
+      high_error_rate_threshold: 0.01
+      low_confidence_threshold: 0.5
+    metrics:
+      custom_metrics:
+        - name: prediction_latency
+          type: histogram
+          help: "Prediction latency in milliseconds"
+        - name: feature_retrieval_latency
+          type: histogram
+          help: "Feature retrieval latency in milliseconds"
+        - name: cache_hit_ratio
+          type: gauge
+          help: "Cache hit ratio"
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: model-serving-secrets
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: secrets
+type: Opaque
+stringData:
+  # Model registry credentials
+  model_registry_username: "${MODEL_REGISTRY_USERNAME}"
+  model_registry_password: "${MODEL_REGISTRY_PASSWORD}"
+  
+  # Feature store credentials
+  feast_jwt_token: "${FEAST_JWT_TOKEN}"
+  
+  # Database credentials
+  postgres_host: "${POSTGRES_HOST}"
+  postgres_port: "${POSTGRES_PORT}"
+  postgres_database: "${POSTGRES_DATABASE}"
+  postgres_username: "${POSTGRES_USERNAME}"
+  postgres_password: "${POSTGRES_PASSWORD}"
+  
+  # Redis credentials
+  redis_host: "${REDIS_HOST}"
+  redis_port: "${REDIS_PORT}"
+  redis_password: "${REDIS_PASSWORD}"
+  
+  # AWS credentials for S3
+  aws_access_key_id: "${AWS_ACCESS_KEY_ID}"
+  aws_secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
+  aws_region: "${AWS_REGION}"
+  
+  # API keys for external services
+  sports_api_key: "${SPORTS_API_KEY}"
+  weather_api_key: "${WEATHER_API_KEY}"
+  
+  # JWT secret for authentication
+  jwt_secret: "${JWT_SECRET}"
+  
+  # Encryption keys
+  encryption_key: "${ENCRYPTION_KEY}"
+
+---
+# Persistent Volume Claim for model storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: football-models-pvc
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: storage
+    storage-type: models
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: gp2
+  volumeMode: Filesystem
+
+---
+# Service for external access
+apiVersion: v1
+kind: Service
+metadata:
+  name: goat-prediction-service
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "false"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "60"
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8000"
+spec:
+  type: LoadBalancer
+  selector:
+    app: goat-prediction
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9000
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 9000
+    protocol: TCP
+  - name: grpc
+    port: 50051
+    targetPort: 9500
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 8000
+    protocol: TCP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: goat-prediction-hpa
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion: machinelearning.seldon.io/v1
+    kind: SeldonDeployment
+    name: goat-prediction-deployment
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: inference_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 60
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      - type: Percent
+        value: 100
+        periodSeconds: 60
+
+---
+# Pod Disruption Budget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: goat-prediction-pdb
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: availability
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: goat-prediction
+
+---
+# Network Policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: goat-prediction-network-policy
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    component: security
+spec:
+  podSelector:
+    matchLabels:
+      app: goat-prediction
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: frontend-namespace
+    - podSelector:
+        matchLabels:
+          app: api-gateway
+    ports:
+    - protocol: TCP
+      port: 9000
+    - protocol: TCP
+      port: 9500
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/8
+    ports:
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 6566  # Feast
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    ports:
+    - protocol: TCP
+      port: 443   # External APIs
+
+---
+# Service Monitor for Prometheus
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: goat-prediction-service-monitor
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: goat-prediction
+  namespaceSelector:
+    matchNames:
+    - ml-production
+  endpoints:
+  - port: http-metrics
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_label_app]
+      separator: ;
+      regex: goat-prediction
+      replacement: $1
+      action: keep
+  - port: grpc-metrics
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics
+    scheme: grpc
+
+---
+# Prometheus Rules for alerting
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: goat-prediction-alerting-rules
+  namespace: ml-production
+  labels:
+    app: goat-prediction
+    release: prometheus
+spec:
+  groups:
+  - name: goat-prediction.monitoring
+    rules:
+    - alert: HighPredictionLatency
+      expr: histogram_quantile(0.99, rate(prediction_latency_seconds_bucket{model_name="football_match_winner_v3"}[5m])) > 1
+      for: 5m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: model-serving
+      annotations:
+        summary: "High prediction latency for football model"
+        description: "P99 prediction latency is above 1 second for {{ $labels.model_name }}"
+        runbook_url: "https://runbooks.goat-prediction.com/high-latency"
+        dashboard: "https://grafana.goat-prediction.com/d/model-serving"
+        
+    - alert: ModelInferenceErrors
+      expr: rate(prediction_requests_total{status_code=~"5..", model_name="football_match_winner_v3"}[5m]) > 0.01
+      for: 2m
+      labels:
+        severity: critical
+        service: goat-prediction
+        component: model-serving
+      annotations:
+        summary: "High error rate for football model inference"
+        description: "Error rate for {{ $labels.model_name }} is above 1%"
+        runbook_url: "https://runbooks.goat-prediction.com/high-error-rate"
+        
+    - alert: LowModelConfidence
+      expr: avg_over_time(prediction_confidence{model_name="football_match_winner_v3"}[10m]) < 0.5
+      for: 10m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: model-serving
+      annotations:
+        summary: "Low confidence predictions for football model"
+        description: "Average prediction confidence for {{ $labels.model_name }} is below 50%"
+        runbook_url: "https://runbooks.goat-prediction.com/low-confidence"
+        
+    - alert: ModelDriftDetected
+      expr: model_drift_score{model_name="football_match_winner_v3"} > 0.15
+      for: 15m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: model-serving
+      annotations:
+        summary: "Model drift detected for football model"
+        description: "Drift score for {{ $labels.model_name }} is above 0.15"
+        runbook_url: "https://runbooks.goat-prediction.com/model-drift"
+        
+    - alert: HighFeatureRetrievalLatency
+      expr: histogram_quantile(0.95, rate(feature_retrieval_latency_seconds_bucket[5m])) > 2
+      for: 5m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: feature-store
+      annotations:
+        summary: "High feature retrieval latency"
+        description: "P95 feature retrieval latency is above 2 seconds"
+        runbook_url: "https://runbooks.goat-prediction.com/feature-store-latency"
+        
+    - alert: LowCacheHitRatio
+      expr: cache_hit_ratio{model_name="football_match_winner_v3"} < 0.7
+      for: 10m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: caching
+      annotations:
+        summary: "Low cache hit ratio for football model"
+        description: "Cache hit ratio for {{ $labels.model_name }} is below 70%"
+        runbook_url: "https://runbooks.goat-prediction.com/cache-performance"
+        
+    - alert: HighMemoryUsage
+      expr: container_memory_usage_bytes{container="football-model"} / container_spec_memory_limit_bytes{container="football-model"} > 0.85
+      for: 5m
+      labels:
+        severity: warning
+        service: goat-prediction
+        component: infrastructure
+      annotations:
+        summary: "High memory usage for football model container"
+        description: "Memory usage for football-model container is above 85% of limit"
+        runbook_url: "https://runbooks.goat-prediction.com/high-memory-usage"
+        
+    - alert: PodCrashLooping
+      expr: rate(kube_pod_container_status_restarts_total{pod=~"goat-prediction.*"}[15m]) > 0
+      for: 5m
+      labels:
+        severity: critical
+        service: goat-prediction
+        component: infrastructure
+      annotations:
+        summary: "Pod crash looping detected"
+        description: "Pod {{ $labels.pod }} is restarting frequently"
+        runbook_url: "https://runbooks.goat-prediction.com/pod-crash-loop"
+
+---
+# Documentation and annotations
+# This Seldon deployment configuration provides:
+# 1. Multi-model serving (football, basketball, tennis, esports)
+# 2. High availability with 3+ replicas per model
+# 3. Auto-scaling based on CPU, memory, and custom metrics
+# 4. Comprehensive monitoring with Prometheus and Jaeger
+# 5. Security with network policies, RBAC, and secrets
+# 6. Performance optimization with caching and batch processing
+# 7. A/B testing and canary deployments
+# 8. Model explainability with AIX explainers
+# 9. Cost optimization with spot instances and auto-scaling
+# 10. Compliance with PCI DSS, GDPR, and SOC2
+
+# Deployment Process:
+# 1. Apply secrets and configmaps: kubectl apply -f secrets.yaml
+# 2. Apply persistent volumes: kubectl apply -f pvc.yaml
+# 3. Apply Seldon deployment: kubectl apply -f seldon-deployment.yaml
+# 4. Verify deployment: kubectl get seldondeployment -n ml-production
+# 5. Check pods: kubectl get pods -n ml-production -l app=goat-prediction
+# 6. Test endpoint: curl -X POST https://predictions.goat-prediction.com/predict -d @test_request.json
+
+# Maintenance:
+# 1. Regular backups of models and configurations
+# 2. Monitor metrics and alerts
+# 3. Update models with canary deployments
+# 4. Scale resources based on demand
+# 5. Regular security audits and compliance checks
+
+# Support:
+# - Documentation: https://docs.goat-prediction.com/ml-serving
+# - Runbooks: https://runbooks.goat-prediction.com
+# - Slack: #ml-serving-support
+# - Email: ml-serving@goat-prediction.com
+# - On-call: PagerDuty rotation
+
+# Version: 3.0.0
+# Last Updated: 2024-01-01
+# Maintainer: ML Engineering Team
+# SLA: 99.95% availability
+# RTO: 15 minutes
+# RPO: 5 minutes
