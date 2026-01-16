@@ -1,0 +1,736 @@
+# infrastructure/kubernetes/configmaps/app-config.yaml
+# Configuration globale de l'application Goat Prediction
+# Version: 2.0.0
+# Date: 2026-01-16
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-app-config
+  namespace: goat-prediction
+  labels:
+    app: goat-prediction
+    component: configuration
+    version: "2.0.0"
+    environment: production
+  annotations:
+    config-version: "2026.01.16.1"
+    managed-by: terraform
+    last-updated: "2026-01-16T16:30:00Z"
+
+data:
+  # 1. CONFIGURATION GÉNÉRALE DE L'APPLICATION
+  app.name: "Goat Prediction Ultimate"
+  app.version: "2.0.0"
+  app.environment: "production"
+  app.instance.id: "${HOSTNAME}"
+  app.region: "${AWS_REGION:-eu-west-1}"
+  
+  # 2. CONFIGURATION DES LOGS
+  logging.level: "INFO"
+  logging.format: "json"
+  logging.output: "stdout"
+  logging.sampling.rate: "0.1"
+  logging.structured: "true"
+  
+  log.retention.days: "30"
+  log.buffer.size: "10000"
+  log.flush.interval.seconds: "5"
+  
+  # 3. CONFIGURATION DES MÉTRIQUES
+  metrics.enabled: "true"
+  metrics.port: "9090"
+  metrics.path: "/metrics"
+  metrics.interval.seconds: "30"
+  metrics.namespace: "goat_prediction"
+  
+  # 4. CONFIGURATION DE SANTÉ
+  health.check.enabled: "true"
+  health.check.port: "8081"
+  health.check.path: "/health"
+  health.check.interval.seconds: "30"
+  health.check.timeout.seconds: "5"
+  
+  readiness.probe.initial.delay: "10"
+  readiness.probe.period: "5"
+  readiness.probe.timeout: "3"
+  readiness.probe.failure.threshold: "3"
+  
+  liveness.probe.initial.delay: "30"
+  liveness.probe.period: "10"
+  liveness.probe.timeout: "5"
+  liveness.probe.failure.threshold: "3"
+  
+  startup.probe.enabled: "true"
+  startup.probe.period: "5"
+  startup.probe.failure.threshold: "30"
+  
+  # 5. CONFIGURATION DES CONCURRENTS
+  concurrency.max.threads: "100"
+  concurrency.max.connections: "1000"
+  concurrency.queue.size: "10000"
+  concurrency.timeout.seconds: "30"
+  
+  # 6. CONFIGURATION DU CACHE
+  cache.type: "redis"
+  cache.ttl.seconds: "300"
+  cache.max.size.mb: "1000"
+  cache.enabled: "true"
+  
+  # 7. CONFIGURATION DE SÉCURITÉ
+  security.cors.enabled: "true"
+  security.cors.allowed.origins: "https://app.goat-prediction.com,https://admin.goat-prediction.com,http://localhost:3000"
+  security.cors.allowed.methods: "GET,POST,PUT,DELETE,OPTIONS"
+  security.cors.allowed.headers: "Content-Type,Authorization,X-API-Key"
+  security.cors.allow.credentials: "true"
+  
+  security.rate.limiting.enabled: "true"
+  security.rate.limit.requests.per.minute: "100"
+  security.rate.limit.burst.size: "50"
+  
+  security.request.validation.enabled: "true"
+  security.request.max.size.mb: "10"
+  security.request.timeout.seconds: "30"
+  
+  # 8. CONFIGURATION DES BASE DE DONNÉES
+  database.postgres.host: "postgres-primary.goat-prediction.svc.cluster.local"
+  database.postgres.port: "5432"
+  database.postgres.name: "goat_prediction"
+  database.postgres.pool.min: "5"
+  database.postgres.pool.max: "20"
+  database.postgres.pool.timeout.seconds: "30"
+  database.postgres.ssl.mode: "require"
+  database.postgres.statement.timeout.seconds: "30"
+  database.postgres.idle.timeout.seconds: "300"
+  
+  database.timescale.host: "timescale-primary.goat-prediction.svc.cluster.local"
+  database.timescale.port: "5432"
+  database.timescale.name: "goat_prediction_metrics"
+  database.timescale.pool.min: "10"
+  database.timescale.pool.max: "50"
+  
+  database.redis.host: "redis-master.goat-prediction.svc.cluster.local"
+  database.redis.port: "6379"
+  database.redis.db: "0"
+  database.redis.password.enabled: "true"
+  database.redis.connection.timeout.seconds: "5"
+  database.redis.socket.timeout.seconds: "10"
+  database.redis.max.connections: "100"
+  database.redis.max.idle.connections: "10"
+  
+  # 9. CONFIGURATION DES SERVICES EXTERNES
+  services.mlflow.host: "mlflow-server.goat-prediction.svc.cluster.local"
+  services.mlflow.port: "5000"
+  services.mlflow.timeout.seconds: "30"
+  
+  services.kafka.bootstrap.servers: "kafka-0.kafka.goat-prediction.svc.cluster.local:9092,kafka-1.kafka.goat-prediction.svc.cluster.local:9092,kafka-2.kafka.goat-prediction.svc.cluster.local:9092"
+  services.kafka.group.id: "goat-prediction-app"
+  services.kafka.auto.offset.reset: "latest"
+  services.kafka.enable.auto.commit: "true"
+  
+  services.elasticsearch.host: "elasticsearch-master.goat-prediction.svc.cluster.local"
+  services.elasticsearch.port: "9200"
+  services.elasticsearch.timeout.seconds: "30"
+  
+  # 10. CONFIGURATION DES APIS EXTERNES
+  api.statsbomb.base.url: "https://api.statsbomb.com/v3"
+  api.statsbomb.timeout.seconds: "60"
+  api.statsbomb.retry.count: "3"
+  api.statsbomb.retry.delay.seconds: "2"
+  
+  api.opta.base.url: "https://api.opta.net"
+  api.opta.timeout.seconds: "60"
+  
+  api.sportradar.base.url: "https://api.sportradar.com"
+  api.sportradar.timeout.seconds: "60"
+  
+  api.betfair.base.url: "https://api.betfair.com"
+  api.betfair.timeout.seconds: "30"
+  
+  api.pinnacle.base.url: "https://api.pinnacle.com"
+  api.pinnacle.timeout.seconds: "30"
+  
+  # 11. CONFIGURATION DU MODÈLE ML
+  ml.model.cache.enabled: "true"
+  ml.model.cache.size.mb: "5000"
+  ml.model.warmup.enabled: "true"
+  ml.model.warmup.parallelism: "4"
+  
+  ml.inference.batch.size: "100"
+  ml.inference.timeout.seconds: "10"
+  ml.inference.max.retries: "3"
+  
+  ml.feature.cache.enabled: "true"
+  ml.feature.cache.ttl.minutes: "60"
+  
+  # 12. CONFIGURATION DES PRÉDICTIONS
+  prediction.realtime.enabled: "true"
+  prediction.realtime.buffer.size: "1000"
+  prediction.realtime.flush.interval.seconds: "1"
+  
+  prediction.batch.enabled: "true"
+  prediction.batch.size: "10000"
+  prediction.batch.interval.seconds: "60"
+  
+  prediction.accuracy.target: "0.85"
+  prediction.confidence.threshold: "0.70"
+  prediction.max.prediction.age.hours: "24"
+  
+  # 13. CONFIGURATION DU BETTING
+  betting.bankroll.initial: "10000"
+  betting.bankroll.max.risk.per.day: "0.02"
+  betting.bankroll.max.risk.per.bet: "0.002"
+  
+  betting.kelly.fraction: "0.25"
+  betting.min.edge: "0.05"
+  betting.max.odds: "10.0"
+  betting.min.odds: "1.1"
+  
+  betting.portfolio.max.open.bets: "50"
+  betting.portfolio.max.correlation: "0.7"
+  
+  # 14. CONFIGURATION DE LA SURVEILLANCE
+  monitoring.alerting.enabled: "true"
+  monitoring.alerting.cooldown.minutes: "15"
+  
+  monitoring.metrics.retention.days: "90"
+  monitoring.traces.retention.days: "30"
+  monitoring.logs.retention.days: "30"
+  
+  monitoring.sla.availability: "0.9999"
+  monitoring.sla.latency.p95.ms: "100"
+  monitoring.sla.error.rate: "0.001"
+  
+  # 15. CONFIGURATION DES NOTIFICATIONS
+  notifications.enabled: "true"
+  notifications.queue.size: "10000"
+  notifications.retry.count: "3"
+  notifications.retry.delay.seconds: "5"
+  
+  notifications.email.enabled: "true"
+  notifications.email.queue: "email-notifications"
+  
+  notifications.push.enabled: "true"
+  notifications.push.queue: "push-notifications"
+  
+  notifications.sms.enabled: "false"
+  notifications.sms.queue: "sms-notifications"
+  
+  # 16. CONFIGURATION DES TÂCHES PLANIFIÉES
+  scheduler.enabled: "true"
+  scheduler.thread.pool.size: "10"
+  scheduler.queue.size: "1000"
+  
+  scheduler.tasks.data.collection.cron: "0 */15 * * * *"
+  scheduler.tasks.model.retraining.cron: "0 0 3 * * SUN"
+  scheduler.tasks.report.generation.cron: "0 0 6 * * *"
+  scheduler.tasks.cleanup.cron: "0 0 2 * * *"
+  
+  # 17. CONFIGURATION DU RAPPORT D'ERREURS
+  error.reporting.enabled: "true"
+  error.reporting.sentry.dsn: "${SENTRY_DSN}"
+  error.reporting.sentry.environment: "production"
+  error.reporting.sentry.sample.rate: "0.1"
+  
+  error.handling.max.stack.trace.depth: "10"
+  error.handling.mask.sensitive.data: "true"
+  
+  # 18. CONFIGURATION DES FONCTIONNALITÉS
+  features.prediction.realtime.enabled: "true"
+  features.prediction.batch.enabled: "true"
+  features.betting.auto.enabled: "true"
+  features.betting.manual.enabled: "true"
+  features.analytics.dashboard.enabled: "true"
+  features.notifications.enabled: "true"
+  features.api.external.enabled: "true"
+  
+  features.ab.testing.enabled: "true"
+  features.ab.testing.allocation.rate: "0.1"
+  
+  # 19. CONFIGURATION DES PERFORMANCES
+  performance.gzip.compression.enabled: "true"
+  performance.gzip.level: "6"
+  performance.gzip.threshold.bytes: "1024"
+  
+  performance.response.cache.enabled: "true"
+  performance.response.cache.ttl.seconds: "300"
+  
+  performance.connection.pool.enabled: "true"
+  performance.connection.pool.max.size: "100"
+  performance.connection.pool.idle.timeout.seconds: "300"
+  
+  # 20. CONFIGURATION DU DÉBOGAGE
+  debug.enabled: "false"
+  debug.profiling.enabled: "false"
+  debug.tracing.enabled: "false"
+  debug.metrics.detailed: "false"
+  
+  debug.request.logging: "false"
+  debug.response.logging: "false"
+  debug.sql.logging: "false"
+  
+  # 21. CONFIGURATION DES LIMITES
+  limits.requests.per.user.per.day: "10000"
+  limits.predictions.per.user.per.day: "1000"
+  limits.bets.per.user.per.day: "100"
+  limits.api.calls.per.minute: "1000"
+  
+  limits.memory.max.mb: "4096"
+  limits.cpu.max.cores: "2"
+  limits.disk.max.mb: "10240"
+  
+  # 22. CONFIGURATION DES SECRETS
+  secrets.rotation.enabled: "true"
+  secrets.rotation.interval.days: "90"
+  
+  secrets.encryption.algorithm: "AES-256-GCM"
+  secrets.encryption.key.rotation.enabled: "true"
+  
+  # 23. CONFIGURATION DE LA CONFORMITÉ
+  compliance.gdpr.enabled: "true"
+  compliance.ccpa.enabled: "true"
+  compliance.soc2.enabled: "true"
+  
+  compliance.data.retention.days: "730"
+  compliance.audit.logging.enabled: "true"
+  compliance.pii.masking.enabled: "true"
+  
+  # 24. CONFIGURATION DES DÉPLOIEMENTS
+  deployment.blue.green.enabled: "true"
+  deployment.canary.enabled: "true"
+  deployment.rollback.automatic.enabled: "true"
+  
+  deployment.health.check.grace.period.seconds: "60"
+  deployment.min.ready.seconds: "30"
+  deployment.max.unavailable: "0"
+  deployment.max.surge: "1"
+  
+  # 25. CONFIGURATION DES TESTS
+  testing.in.production.enabled: "true"
+  testing.in.production.traffic.percentage: "0.01"
+  
+  testing.chaos.enabled: "false"
+  testing.chaos.probability: "0.001"
+  
+  testing.load.enabled: "true"
+  testing.load.frequency.hours: "24"
+  
+  # 26. CONFIGURATION DES MÉTADONNÉES
+  metadata.version: "2.0.0"
+  metadata.environment: "production"
+  metadata.region: "${AWS_REGION}"
+  metadata.deployment.id: "${DEPLOYMENT_ID}"
+  metadata.build.number: "${BUILD_NUMBER}"
+  metadata.git.commit: "${GIT_COMMIT}"
+  metadata.git.branch: "${GIT_BRANCH}"
+  
+  # 27. CONFIGURATION DES JOURNAUX D'AUDIT
+  audit.logging.enabled: "true"
+  audit.logging.level: "INFO"
+  audit.logging.events:
+    - "user.login"
+    - "user.logout"
+    - "prediction.request"
+    - "bet.placement"
+    - "model.deployment"
+    - "config.change"
+    - "data.access"
+    
+  audit.logging.retention.days: "365"
+  audit.logging.encryption.enabled: "true"
+  
+  # 28. CONFIGURATION DU MONITORING PERSONNALISÉ
+  custom.metrics.enabled: "true"
+  custom.metrics.prefix: "goat_prediction_custom"
+  
+  custom.metrics.business:
+    - "predictions.total"
+    - "predictions.accurate"
+    - "bets.placed"
+    - "bets.won"
+    - "revenue.total"
+    - "users.active"
+    
+  custom.metrics.technical:
+    - "model.inference.time.p95"
+    - "feature.cache.hit.rate"
+    - "database.query.time.p95"
+    - "api.response.time.p95"
+    - "memory.usage.percent"
+    - "cpu.usage.percent"
+    
+  # 29. CONFIGURATION DES ALERTES
+  alerting.enabled: "true"
+  alerting.providers:
+    - "pagerduty"
+    - "slack"
+    - "email"
+    - "sms"
+    
+  alerting.rules.file: "/etc/alerts/rules.yaml"
+  alerting.evaluation.interval.seconds: "30"
+  alerting.group.wait.seconds: "30"
+  alerting.group.interval.seconds: "300"
+  alerting.repeat.interval.seconds: "3600"
+  
+  # 30. CONFIGURATION DES FUSEAUX HORAIRES
+  timezone.default: "UTC"
+  timezone.supported:
+    - "UTC"
+    - "Europe/London"
+    - "America/New_York"
+    - "Asia/Tokyo"
+    - "Australia/Sydney"
+    
+  timezone.user.override.enabled: "true"
+  
+  # 31. CONFIGURATION DES LOCALES
+  locale.default: "en_US"
+  locale.supported:
+    - "en_US"
+    - "en_GB"
+    - "fr_FR"
+    - "de_DE"
+    - "es_ES"
+    - "it_IT"
+    
+  locale.user.override.enabled: "true"
+  
+  # 32. CONFIGURATION DES FORMATS
+  currency.default: "USD"
+  currency.supported:
+    - "USD"
+    - "EUR"
+    - "GBP"
+    - "JPY"
+    - "AUD"
+    
+  number.format.decimal.separator: "."
+  number.format.thousands.separator: ","
+  number.format.decimal.places: "2"
+  
+  date.format.default: "YYYY-MM-DD"
+  date.time.format.default: "YYYY-MM-DD HH:mm:ss"
+  
+  # 33. CONFIGURATION DES FONCTIONNALITÉS EXPÉRIMENTALES
+  experimental.features.enabled: "false"
+  experimental.features.allow.list:
+    - "predictive.analytics.v2"
+    - "ai.assisted.betting"
+    - "social.trading"
+    - "predictions.marketplace"
+    
+  experimental.features.user.percentage: "0.05"
+  
+  # 34. CONFIGURATION DE LA QUALITÉ DE SERVICE
+  qos.priority.levels: "3"
+  qos.default.level: "2"
+  
+  qos.guarantees:
+    level.1:
+      availability: "0.9999"
+      latency.p95.ms: "50"
+      throughput.rps: "1000"
+      
+    level.2:
+      availability: "0.999"
+      latency.p95.ms: "100"
+      throughput.rps: "500"
+      
+    level.3:
+      availability: "0.99"
+      latency.p95.ms: "200"
+      throughput.rps: "100"
+  
+  # 35. CONFIGURATION DE LA RÉSILIENCE
+  resilience.circuit.breaker.enabled: "true"
+  resilience.circuit.breaker.failure.threshold: "5"
+  resilience.circuit.breaker.wait.duration.seconds: "60"
+  resilience.circuit.breaker.success.threshold: "3"
+  
+  resilience.retry.enabled: "true"
+  resilience.retry.max.attempts: "3"
+  resilience.retry.backoff.multiplier: "2"
+  resilience.retry.initial.delay.seconds: "1"
+  
+  resilience.bulkhead.enabled: "true"
+  resilience.bulkhead.max.concurrent.calls: "100"
+  resilience.bulkhead.max.wait.duration.seconds: "10"
+  
+  resilience.timeout.enabled: "true"
+  resilience.timeout.duration.seconds: "30"
+  
+  # 36. CONFIGURATION DES MIGRATIONS
+  migrations.enabled: "true"
+  migrations.auto.apply: "false"
+  migrations.rollback.enabled: "true"
+  
+  migrations.backup.before.apply: "true"
+  migrations.verify.after.apply: "true"
+  
+  migrations.timeout.minutes: "60"
+  migrations.max.retries: "3"
+  
+  # 37. CONFIGURATION DES SAUVEGARDES
+  backup.enabled: "true"
+  backup.schedule.cron: "0 2 * * *"
+  backup.retention.days: "30"
+  backup.compression.enabled: "true"
+  backup.encryption.enabled: "true"
+  
+  backup.types:
+    - "database"
+    - "configurations"
+    - "models"
+    - "logs"
+    
+  backup.storage.locations:
+    - "s3://goat-prediction-backups/production"
+    - "gcs://goat-prediction-backups/production"
+  
+  # 38. CONFIGURATION DES RAPPORTS
+  reporting.enabled: "true"
+  reporting.schedule.cron: "0 6 * * *"
+  
+  reporting.types:
+    - "daily.performance"
+    - "weekly.analytics"
+    - "monthly.financial"
+    - "quarterly.business"
+    
+  reporting.formats:
+    - "pdf"
+    - "csv"
+    - "json"
+    - "html"
+    
+  reporting.delivery.methods:
+    - "email"
+    - "s3"
+    - "api"
+  
+  # 39. CONFIGURATION DE L'ANALYTICS
+  analytics.enabled: "true"
+  analytics.collection.interval.minutes: "5"
+  analytics.retention.days: "365"
+  
+  analytics.metrics:
+    - "user.engagement"
+    - "feature.usage"
+    - "prediction.accuracy"
+    - "betting.performance"
+    - "system.performance"
+    
+  analytics.privacy.compliant: "true"
+  analytics.anonymization.enabled: "true"
+  
+  # 40. CONFIGURATION DES WEBHOOKS
+  webhooks.enabled: "true"
+  webhooks.max.retries: "3"
+  webhooks.retry.delay.seconds: "5"
+  webhooks.timeout.seconds: "10"
+  
+  webhooks.signature.verification.enabled: "true"
+  webhooks.signature.header: "X-Webhook-Signature"
+  webhooks.signature.algorithm: "sha256"
+  
+  webhooks.events:
+    - "prediction.completed"
+    - "bet.settled"
+    - "model.updated"
+    - "system.alert"
+    
+---
+# ConfigMap pour les environnements spécifiques
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-environment-config
+  namespace: goat-prediction
+
+data:
+  # Configuration développement
+  development.app.name: "Goat Prediction (Dev)"
+  development.app.environment: "development"
+  development.logging.level: "DEBUG"
+  development.debug.enabled: "true"
+  development.features.experimental.enabled: "true"
+  
+  # Configuration staging
+  staging.app.name: "Goat Prediction (Staging)"
+  staging.app.environment: "staging"
+  staging.logging.level: "INFO"
+  staging.debug.enabled: "false"
+  
+  # Configuration production
+  production.app.name: "Goat Prediction"
+  production.app.environment: "production"
+  production.logging.level: "WARN"
+  production.debug.enabled: "false"
+  production.monitoring.alerting.enabled: "true"
+  
+---
+# ConfigMap pour les secrets (références seulement)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-secrets-config
+  namespace: goat-prediction
+
+data:
+  # Références aux secrets
+  database.postgres.password.secret: "postgres-credentials"
+  database.postgres.password.key: "password"
+  
+  database.redis.password.secret: "redis-credentials"
+  database.redis.password.key: "password"
+  
+  api.statsbomb.key.secret: "statsbomb-credentials"
+  api.statsbomb.key.key: "api-key"
+  
+  api.opta.key.secret: "opta-credentials"
+  api.opta.key.key: "api-key"
+  
+  api.betfair.key.secret: "betfair-credentials"
+  api.betfair.key.key: "api-key"
+  
+  sentry.dsn.secret: "sentry-credentials"
+  sentry.dsn.key: "dsn"
+  
+  encryption.master.key.secret: "encryption-keys"
+  encryption.master.key.key: "master-key"
+  
+  jwt.secret.secret: "jwt-credentials"
+  jwt.secret.key: "secret"
+  
+  # Configuration des secrets
+  secrets.rotation.schedule: "0 0 1 * *"
+  secrets.encryption.enabled: "true"
+  secrets.vault.integration.enabled: "true"
+  
+---
+# ConfigMap pour les limites de ressources
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-resource-limits
+  namespace: goat-prediction
+
+data:
+  # Limites par service
+  api.gateway.cpu.limit: "2000m"
+  api.gateway.cpu.request: "500m"
+  api.gateway.memory.limit: "4Gi"
+  api.gateway.memory.request: "1Gi"
+  
+  prediction.engine.cpu.limit: "4000m"
+  prediction.engine.cpu.request: "1000m"
+  prediction.engine.memory.limit: "8Gi"
+  prediction.engine.memory.request: "2Gi"
+  
+  data.processor.cpu.limit: "2000m"
+  data.processor.cpu.request: "500m"
+  data.processor.memory.limit: "4Gi"
+  data.processor.memory.request: "1Gi"
+  
+  model.serving.cpu.limit: "2000m"
+  model.serving.cpu.request: "500m"
+  model.serving.memory.limit: "4Gi"
+  model.serving.memory.request: "1Gi"
+  
+  # Auto-scaling configuration
+  autoscaling.enabled: "true"
+  autoscaling.min.replicas: "2"
+  autoscaling.max.replicas: "10"
+  autoscaling.target.cpu.utilization: "70"
+  autoscaling.target.memory.utilization: "80"
+  autoscaling.target.requests.per.second: "100"
+  
+  # Quality of Service
+  qos.guaranteed.services: "api.gateway,prediction.engine"
+  qos.burstable.services: "data.processor,model.serving"
+  qos.best.effort.services: "monitoring,logging"
+  
+---
+# ConfigMap pour le monitoring
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-monitoring-config
+  namespace: goat-prediction
+
+data:
+  # Prometheus scraping
+  prometheus.scrape.interval: "30s"
+  prometheus.scrape.timeout: "10s"
+  prometheus.metrics.path: "/metrics"
+  
+  # Métriques à collecter
+  metrics.collect.application: "true"
+  metrics.collect.business: "true"
+  metrics.collect.infrastructure: "true"
+  metrics.collect.custom: "true"
+  
+  # Alertes de base
+  alerts.cpu.threshold.warning: "80"
+  alerts.cpu.threshold.critical: "90"
+  alerts.memory.threshold.warning: "85"
+  alerts.memory.threshold.critical: "95"
+  alerts.disk.threshold.warning: "80"
+  alerts.disk.threshold.critical: "90"
+  
+  # Alertes métier
+  alerts.prediction.accuracy.threshold.warning: "0.80"
+  alerts.prediction.accuracy.threshold.critical: "0.75"
+  alerts.inference.latency.threshold.warning: "100"
+  alerts.inference.latency.threshold.critical: "200"
+  alerts.error.rate.threshold.warning: "0.01"
+  alerts.error.rate.threshold.critical: "0.05"
+  
+  # Configuration des dashboards
+  dashboards.refresh.interval: "30s"
+  dashboards.retention.days: "90"
+  
+  # Logging configuration
+  logs.collection.enabled: "true"
+  logs.parsing.rules.file: "/etc/logging/parsing-rules.yaml"
+  logs.index.retention.days: "30"
+  
+---
+# ConfigMap pour les fonctionnalités
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-features-config
+  namespace: goat-prediction
+
+data:
+  # Fonctionnalités activées
+  feature.predictions.realtime: "true"
+  feature.predictions.batch: "true"
+  feature.betting.automatic: "true"
+  feature.betting.manual: "true"
+  feature.analytics.advanced: "true"
+  feature.notifications.realtime: "true"
+  feature.api.public: "true"
+  feature.api.private: "true"
+  
+  # Fonctionnalités expérimentales
+  feature.experimental.predictive.analytics: "false"
+  feature.experimental.social.trading: "false"
+  feature.experimental.ai.coach: "false"
+  
+  # Configuration A/B testing
+  ab.testing.enabled: "true"
+  ab.testing.groups:
+    - name: "control"
+      percentage: "50"
+    - name: "variant_a"
+      percentage: "25"
+    - name: "variant_b"
+      percentage: "25"
+  
+  # Rollout progressif
+  feature.rollout.percentage: "100"
+  feature.rollout.regions: "all"
+  feature.rollout.user.tiers: "all"
