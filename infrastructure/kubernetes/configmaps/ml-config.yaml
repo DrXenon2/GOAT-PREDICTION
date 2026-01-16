@@ -1,0 +1,717 @@
+# infrastructure/kubernetes/configmaps/ml-config.yaml
+# Configuration Machine Learning pour Goat Prediction
+# Version: 2.0.0
+# Date: 2026-01-16
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goat-prediction-ml-config
+  namespace: goat-prediction
+  labels:
+    app: goat-prediction
+    component: machine-learning
+    version: "2.0.0"
+    environment: production
+  annotations:
+    config-version: "2026.01.16.1"
+    managed-by: terraform
+    last-updated: "2026-01-16T17:00:00Z"
+
+data:
+  # 1. CONFIGURATION GÉNÉRALE ML
+  ml.environment: "production"
+  ml.framework: "ensemble"
+  ml.version: "2.0.0"
+  ml.region: "${AWS_REGION:-eu-west-1}"
+  ml.team: "sports_ai_research"
+  
+  # 2. CONFIGURATION DU PIPELINE ML
+  ml.pipeline.batch.size: "1000"
+  ml.pipeline.max.workers: "8"
+  ml.pipeline.queue.size: "10000"
+  ml.pipeline.timeout.seconds: "3600"
+  
+  ml.pipeline.stages:
+    - "data_validation"
+    - "feature_engineering"
+    - "feature_selection"
+    - "model_training"
+    - "model_evaluation"
+    - "model_validation"
+    - "model_deployment"
+  
+  # 3. CONFIGURATION DES DONNÉES
+  ml.data.sources: "statsbomb,opta,understat,sportradar"
+  ml.data.retention.days: "1095"
+  ml.data.cache.enabled: "true"
+  ml.data.cache.size.mb: "50000"
+  ml.data.cache.ttl.minutes: "1440"
+  
+  ml.data.validation.enabled: "true"
+  ml.data.validation.schema.file: "/etc/ml/schemas/data_schema.yaml"
+  ml.data.validation.strict: "true"
+  
+  # 4. CONFIGURATION DES FEATURES
+  ml.features.engineering.enabled: "true"
+  ml.features.cache.enabled: "true"
+  ml.features.cache.ttl.minutes: "60"
+  ml.features.catalog.file: "/etc/ml/features/feature_catalog.yaml"
+  
+  ml.features.scaling.method: "robust"
+  ml.features.imputation.method: "iterative"
+  ml.features.outlier.detection: "isolation_forest"
+  ml.features.selection.method: "recursive"
+  
+  ml.features.count.max: "200"
+  ml.features.importance.threshold: "0.001"
+  
+  # 5. CONFIGURATION DES MODÈLES
+  ml.models.cache.enabled: "true"
+  ml.models.cache.size.mb: "20000"
+  ml.models.cache.ttl.minutes: "2880"
+  
+  ml.models.warmup.enabled: "true"
+  ml.models.warmup.batch.size: "100"
+  ml.models.warmup.parallelism: "4"
+  
+  ml.models.autoupdate.enabled: "true"
+  ml.models.autoupdate.check.interval.hours: "1"
+  ml.models.autoupdate.retry.count: "3"
+  ml.models.autoupdate.rollback.enabled: "true"
+  
+  ml.models.registry.type: "mlflow"
+  ml.models.registry.uri: "http://mlflow-server.goat-prediction.svc.cluster.local:5000"
+  ml.models.staging.environment: "staging"
+  ml.models.production.environment: "production"
+  
+  # 6. CONFIGURATION DES SPORTS
+  ## 6.1. FOOTBALL
+  ml.sports.football.enabled: "true"
+  ml.sports.football.leagues: "premier_league,la_liga,serie_a,bundesliga,ligue_1"
+  ml.sports.football.markets: "match_winner,over_under,exact_score,btts,corners,cards"
+  ml.sports.football.models.count: "8"
+  ml.sports.football.accuracy.target: "0.85"
+  ml.sports.football.roi.target: "0.15"
+  
+  ## 6.2. BASKETBALL
+  ml.sports.basketball.enabled: "true"
+  ml.sports.basketball.leagues: "nba,euroleague"
+  ml.sports.basketball.markets: "moneyline,point_spread,total_points,player_props"
+  ml.sports.basketball.models.count: "6"
+  ml.sports.basketball.accuracy.target: "0.82"
+  ml.sports.basketball.roi.target: "0.12"
+  
+  ## 6.3. TENNIS
+  ml.sports.tennis.enabled: "true"
+  ml.sports.tennis.tours: "atp,wta"
+  ml.sports.tennis.markets: "match_winner,set_handicap,total_games"
+  ml.sports.tennis.models.count: "4"
+  ml.sports.tennis.accuracy.target: "0.80"
+  ml.sports.tennis.roi.target: "0.10"
+  
+  ## 6.4. E-SPORTS
+  ml.sports.esports.enabled: "true"
+  ml.sports.esports.games: "csgo,lol,dota2,valorant"
+  ml.sports.esports.markets: "match_winner,map_winner,handicap,total_kills"
+  ml.sports.esports.models.count: "5"
+  ml.sports.esports.accuracy.target: "0.78"
+  ml.sports.esports.roi.target: "0.08"
+  
+  # 7. CONFIGURATION DES ALGORITHMES
+  ml.algorithms.ensemble.enabled: "true"
+  ml.algorithms.ensemble.method: "stacking"
+  ml.algorithms.ensemble.base.models: "xgboost,lightgbm,catboost,neural_network"
+  ml.algorithms.ensemble.meta.model: "logistic_regression"
+  
+  ml.algorithms.xgboost.default.params: '{"n_estimators":500,"max_depth":7,"learning_rate":0.05,"subsample":0.8,"colsample_bytree":0.8}'
+  ml.algorithms.lightgbm.default.params: '{"n_estimators":500,"num_leaves":63,"learning_rate":0.05,"feature_fraction":0.8,"bagging_fraction":0.8}'
+  ml.algorithms.neural_network.default.params: '{"hidden_layers":[256,128,64],"dropout_rate":0.3,"learning_rate":0.001,"batch_size":128}'
+  
+  ml.algorithms.hyperparameter.tuning.enabled: "true"
+  ml.algorithms.hyperparameter.tuning.method: "bayesian"
+  ml.algorithms.hyperparameter.tuning.max.iterations: "100"
+  ml.algorithms.hyperparameter.tuning.cv.folds: "5"
+  
+  # 8. CONFIGURATION DE L'ENTRAÎNEMENT
+  ml.training.batch.size: "128"
+  ml.training.epochs.max: "1000"
+  ml.training.early.stopping.patience: "20"
+  ml.training.early.stopping.metric: "val_loss"
+  ml.training.learning.rate.scheduler: "reduce_on_plateau"
+  ml.training.checkpoint.enabled: "true"
+  ml.training.checkpoint.save.best.only: "true"
+  
+  ml.training.data.split.train: "0.7"
+  ml.training.data.split.validation: "0.15"
+  ml.training.data.split.test: "0.15"
+  ml.training.cross.validation.folds: "5"
+  ml.training.cross.validation.strategy: "temporal"
+  
+  ml.training.distributed.enabled: "true"
+  ml.training.distributed.backend: "horovod"
+  ml.training.distributed.workers: "4"
+  ml.training.distributed.gpu.per.worker: "1"
+  
+  # 9. CONFIGURATION DE L'INFÉRENCE
+  ml.inference.batch.size: "100"
+  ml.inference.timeout.seconds: "10"
+  ml.inference.max.retries: "3"
+  ml.inference.fallback.enabled: "true"
+  ml.inference.fallback.model: "baseline_v1"
+  
+  ml.inference.realtime.enabled: "true"
+  ml.inference.realtime.buffer.size: "1000"
+  ml.inference.realtime.flush.interval.ms: "100"
+  
+  ml.inference.batch.enabled: "true"
+  ml.inference.batch.job.size: "10000"
+  ml.inference.batch.schedule.cron: "*/15 * * * *"
+  
+  ml.inference.accuracy.target: "0.85"
+  ml.inference.confidence.threshold: "0.70"
+  ml.inference.latency.target.p95.ms: "100"
+  ml.inference.throughput.target.rps: "1000"
+  
+  # 10. CONFIGURATION DES MÉTRIQUES
+  ml.metrics.accuracy.target: "0.85"
+  ml.metrics.precision.target: "0.85"
+  ml.metrics.recall.target: "0.85"
+  ml.metrics.f1.target: "0.85"
+  ml.metrics.auc.target: "0.90"
+  ml.metrics.logloss.target: "0.40"
+  ml.metrics.brier.target: "0.15"
+  
+  ml.metrics.betting.roi.target: "0.15"
+  ml.metrics.betting.sharpe.target: "2.0"
+  ml.metrics.betting.max.drawdown.target: "0.10"
+  ml.metrics.betting.win.rate.target: "0.55"
+  ml.metrics.betting.profit.factor.target: "1.5"
+  
+  ml.metrics.technical.inference.time.target: "100"
+  ml.metrics.technical.model.size.target: "100"
+  ml.metrics.technical.memory.usage.target: "500"
+  
+  ml.metrics.fairness.demographic.parity.target: "0.95"
+  ml.metrics.fairness.equal.opportunity.target: "0.95"
+  ml.metrics.fairness.disparate.impact.target: "0.80"
+  
+  # 11. CONFIGURATION DE LA VALIDATION
+  ml.validation.enabled: "true"
+  ml.validation.strict: "true"
+  ml.validation.schema.file: "/etc/ml/validation/model_validation_schema.yaml"
+  
+  ml.validation.data.drift.enabled: "true"
+  ml.validation.data.drift.method: "ks_test"
+  ml.validation.data.drift.threshold: "0.05"
+  ml.validation.data.drift.check.interval.hours: "24"
+  
+  ml.validation.concept.drift.enabled: "true"
+  ml.validation.concept.drift.method: "accuracy_drop"
+  ml.validation.concept.drift.threshold: "0.05"
+  ml.validation.concept.drift.check.interval.hours: "24"
+  
+  ml.validation.model.degradation.enabled: "true"
+  ml.validation.model.degradation.window.size: "1000"
+  ml.validation.model.degradation.threshold: "0.03"
+  
+  # 12. CONFIGURATION DU MONITORING ML
+  ml.monitoring.enabled: "true"
+  ml.monitoring.alerting.enabled: "true"
+  
+  ml.monitoring.metrics:
+    - "prediction_accuracy"
+    - "inference_latency"
+    - "model_memory_usage"
+    - "feature_distribution"
+    - "data_drift_score"
+    - "concept_drift_score"
+    - "prediction_confidence"
+    - "business_metrics"
+  
+  ml.monitoring.alert.rules.file: "/etc/ml/monitoring/alert_rules.yaml"
+  ml.monitoring.dashboard.url: "https://grafana.goat-prediction.com/d/ml-metrics"
+  ml.monitoring.refresh.interval.seconds: "30"
+  
+  ml.monitoring.logging.level: "INFO"
+  ml.monitoring.logging.format: "json"
+  ml.monitoring.logging.retention.days: "90"
+  
+  # 13. CONFIGURATION DES ALERTES ML
+  ml.alerting.enabled: "true"
+  ml.alerting.channels: "slack,email,pagerduty"
+  
+  ml.alerting.rules.accuracy.drop: "prediction_accuracy < 0.75 for 1h"
+  ml.alerting.rules.latency.increase: "inference_latency_p95 > 200ms for 30m"
+  ml.alerting.rules.data.drift: "data_drift_score > 0.10"
+  ml.alerting.rules.concept.drift: "concept_drift_score > 0.05"
+  ml.alerting.rules.model.degradation: "model_degradation_score > 0.03 for 24h"
+  ml.alerting.rules.memory.leak: "model_memory_usage increase > 10% per hour"
+  
+  ml.alerting.cooldown.minutes: "15"
+  ml.alerting.escalation.enabled: "true"
+  ml.alerting.escalation.after.hours: "4"
+  
+  # 14. CONFIGURATION DE L'AUTO-ML
+  ml.automl.enabled: "true"
+  ml.automl.max.models: "50"
+  ml.automl.max.runtime.hours: "24"
+  ml.automl.parallel.jobs: "4"
+  ml.automl.metric.to.optimize: "roc_auc"
+  ml.automl.hyperparameter.tuning: "true"
+  ml.automl.feature.engineering: "true"
+  ml.automl.ensemble.building: "true"
+  
+  ml.automl.algorithms:
+    - "xgboost"
+    - "lightgbm"
+    - "catboost"
+    - "random_forest"
+    - "gradient_boosting"
+    - "logistic_regression"
+    - "neural_network"
+    - "svm"
+  
+  # 15. CONFIGURATION DE LA RÉENTRAÎNEMENT AUTOMATIQUE
+  ml.retraining.enabled: "true"
+  ml.retraining.strategy: "performance_based"
+  
+  ml.retraining.triggers:
+    - "accuracy_drop_below:0.80"
+    - "data_drift_above:0.10"
+    - "concept_drift_above:0.05"
+    - "time_since_last_training_days:30"
+    - "new_data_percentage:10"
+  
+  ml.retraining.schedule.cron: "0 3 * * 0"
+  ml.retraining.max.duration.hours: "12"
+  ml.retraining.validation.required: "true"
+  ml.retraining.approval.required: "true"
+  ml.retraining.rollback.enabled: "true"
+  
+  # 16. CONFIGURATION DE L'A/B TESTING DES MODÈLES
+  ml.abtesting.enabled: "true"
+  ml.abtesting.traffic.split.method: "weighted"
+  ml.abtesting.metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "roi"
+    - "user_satisfaction"
+  
+  ml.abtesting.min.sample.size: "1000"
+  ml.abtesting.confidence.level: "0.95"
+  ml.abtesting.min.difference: "0.02"
+  ml.abtesting.max.duration.days: "14"
+  
+  ml.abtesting.winning.criteria: "accuracy > baseline + 0.02 AND roi > baseline + 0.01"
+  ml.abtesting.auto.promote: "true"
+  
+  # 17. CONFIGURATION DE L'EXPLICABILITÉ
+  ml.explainability.enabled: "true"
+  ml.explainability.methods: "shap,lime,feature_importance"
+  
+  ml.explainability.shap.samples: "100"
+  ml.explainability.shap.max.features: "20"
+  ml.explainability.shap.cache.enabled: "true"
+  
+  ml.explainability.reporting.enabled: "true"
+  ml.explainability.reporting.format: "html,pdf"
+  ml.explainability.reporting.audience: "technical,business,compliance"
+  
+  ml.explainability.monitoring.enabled: "true"
+  ml.explainability.monitoring.feature.stability.threshold: "0.1"
+  
+  # 18. CONFIGURATION DE LA FAIRNESS
+  ml.fairness.enabled: "true"
+  ml.fairness.protected.attributes: "team_rank,league,home_away"
+  
+  ml.fairness.metrics:
+    - "demographic_parity"
+    - "equal_opportunity"
+    - "disparate_impact"
+    - "statistical_parity"
+  
+  ml.fairness.thresholds:
+    demographic_parity: "0.95"
+    equal_opportunity: "0.95"
+    disparate_impact: "0.80"
+  
+  ml.fairness.monitoring.enabled: "true"
+  ml.fairness.monitoring.alert.threshold: "0.90"
+  
+  # 19. CONFIGURATION DE L'UNCERTAINTY
+  ml.uncertainty.quantification.enabled: "true"
+  ml.uncertainty.methods: "monte_carlo_dropout,ensemble,conformal"
+  
+  ml.uncertainty.confidence.intervals.enabled: "true"
+  ml.uncertainty.confidence.level: "0.95"
+  ml.uncertainty.calibration.enabled: "true"
+  ml.uncertainty.calibration.method: "isotonic"
+  
+  ml.uncertainty.usage.in.betting: "true"
+  ml.uncertainty.kelly.adjustment: "true"
+  ml.uncertainty.min.confidence: "0.70"
+  
+  # 20. CONFIGURATION DE LA CALIBRATION
+  ml.calibration.enabled: "true"
+  ml.calibration.method: "isotonic"
+  ml.calibration.cv.folds: "5"
+  ml.calibration.recalibrate.interval.days: "7"
+  
+  ml.calibration.metrics:
+    - "brier_score"
+    - "reliability_score"
+    - "ece"
+    - "mce"
+  
+  ml.calibration.targets:
+    brier_score: "0.15"
+    reliability_score: "0.95"
+  
+  # 21. CONFIGURATION DES ENSEMBLES
+  ml.ensemble.enabled: "true"
+  ml.ensemble.method: "stacking"
+  ml.ensemble.diversity.measure: "correlation"
+  ml.ensemble.diversity.threshold: "0.7"
+  
+  ml.ensemble.model.selection: "performance_based"
+  ml.ensemble.max.models: "10"
+  ml.ensemble.min.models: "3"
+  ml.ensemble.weight.optimization: "true"
+  ml.ensemble.weight.method: "linear_regression"
+  
+  ml.ensemble.monitoring.enabled: "true"
+  ml.ensemble.component.importance.enabled: "true"
+  ml.ensemble.component.swapping.enabled: "true"
+  
+  # 22. CONFIGURATION DES TRANSFER LEARNING
+  ml.transfer.learning.enabled: "true"
+  ml.transfer.learning.source.sports: "football"
+  ml.transfer.learning.target.sports: "basketball,tennis,esports"
+  
+  ml.transfer.learning.method: "feature_extraction"
+  ml.transfer.learning.fine.tuning.layers: "last_2"
+  ml.transfer.learning.learning.rate.multiplier: "0.1"
+  
+  ml.transfer.learning.evaluation.metric: "accuracy_gain"
+  ml.transfer.learning.min.improvement: "0.05"
+  
+  # 23. CONFIGURATION DES RESSOURCES ML
+  ml.resources.cpu.cores: "8"
+  ml.resources.memory.gb: "32"
+  ml.resources.gpu.enabled: "true"
+  ml.resources.gpu.count: "2"
+  ml.resources.gpu.memory.gb: "16"
+  ml.resources.storage.gb: "1000"
+  
+  ml.resources.training.cpu.cores: "16"
+  ml.resources.training.memory.gb: "64"
+  ml.resources.training.gpu.count: "4"
+  
+  ml.resources.inference.cpu.cores: "4"
+  ml.resources.inference.memory.gb: "16"
+  ml.resources.inference.gpu.count: "1"
+  
+  ml.resources.batch.cpu.cores: "8"
+  ml.resources.batch.memory.gb: "32"
+  
+  # 24. CONFIGURATION DU CACHE ML
+  ml.cache.type: "redis"
+  ml.cache.host: "redis-ml-cache.goat-prediction.svc.cluster.local"
+  ml.cache.port: "6379"
+  ml.cache.db: "1"
+  
+  ml.cache.models.ttl.minutes: "1440"
+  ml.cache.features.ttl.minutes: "60"
+  ml.cache.predictions.ttl.minutes: "30"
+  ml.cache.metrics.ttl.minutes: "1440"
+  
+  ml.cache.max.size.mb: "50000"
+  ml.cache.eviction.policy: "lru"
+  ml.cache.compression.enabled: "true"
+  
+  # 25. CONFIGURATION DES JOURNAUX ML
+  ml.logging.level: "INFO"
+  ml.logging.format: "json"
+  ml.logging.destination: "stdout,elasticsearch"
+  
+  ml.logging.retention.days: "90"
+  ml.logging.rotation.size.mb: "100"
+  ml.logging.rotation.backup.count: "10"
+  
+  ml.logging.audit.enabled: "true"
+  ml.logging.audit.events:
+    - "model_training_started"
+    - "model_training_completed"
+    - "model_deployed"
+    - "model_retired"
+    - "data_drift_detected"
+    - "concept_drift_detected"
+    - "prediction_made"
+    - "bet_placed"
+  
+  # 26. CONFIGURATION DE LA SÉCURITÉ ML
+  ml.security.model.encryption.enabled: "true"
+  ml.security.model.encryption.algorithm: "AES-256-GCM"
+  
+  ml.security.data.encryption.enabled: "true"
+  ml.security.data.encryption.at.rest: "true"
+  ml.security.data.encryption.in.transit: "true"
+  
+  ml.security.access.control.enabled: "true"
+  ml.security.access.control.roles:
+    - "ml_admin"
+    - "ml_engineer"
+    - "ml_researcher"
+    - "ml_viewer"
+  
+  ml.security.audit.trail.enabled: "true"
+  ml.security.audit.trail.retention.days: "365"
+  
+  # 27. CONFIGURATION DU BACKUP ML
+  ml.backup.enabled: "true"
+  ml.backup.schedule.cron: "0 2 * * *"
+  ml.backup.retention.days: "30"
+  
+  ml.backup.content:
+    - "models"
+    - "configurations"
+    - "features"
+    - "metrics"
+    - "logs"
+  
+  ml.backup.storage:
+    primary: "s3://goat-prediction-ml-backups"
+    secondary: "gcs://goat-prediction-ml-backups"
+  
+  ml.backup.encryption.enabled: "true"
+  ml.backup.compression.enabled: "true"
+  ml.backup.verification.enabled: "true"
+  
+  # 28. CONFIGURATION DES TESTS ML
+  ml.testing.enabled: "true"
+  ml.testing.levels:
+    - "unit"
+    - "integration"
+    - "performance"
+    - "accuracy"
+    - "fairness"
+  
+  ml.testing.unit.coverage.target: "0.80"
+  ml.testing.integration.coverage.target: "0.70"
+  ml.testing.performance.targets:
+    inference_time_p95_ms: "100"
+    throughput_rps: "1000"
+    memory_usage_mb: "500"
+  
+  ml.testing.accuracy.target: "0.85"
+  ml.testing.fairness.targets:
+    demographic_parity: "0.95"
+    equal_opportunity: "0.95"
+  
+  ml.testing.automated.enabled: "true"
+  ml.testing.automated.schedule.cron: "0 4 * * *"
+  
+  # 29. CONFIGURATION DE L'OPTIMISATION
+  ml.optimization.enabled: "true"
+  ml.optimization.methods:
+    - "pruning"
+    - "quantization"
+    - "distillation"
+    - "compression"
+  
+  ml.optimization.targets:
+    model_size_reduction: "0.5"
+    inference_speedup: "2.0"
+    memory_reduction: "0.5"
+  
+  ml.optimization.accuracy.tolerance: "0.02"
+  ml.optimization.automatic.enabled: "true"
+  
+  # 30. CONFIGURATION DE LA CONFORMITÉ ML
+  ml.compliance.gdpr.enabled: "true"
+  ml.compliance.gdpr.data.minimization: "true"
+  ml.compliance.gdpr.right.to.explanation: "true"
+  
+  ml.compliance.ethical.ai.enabled: "true"
+  ml.compliance.ethical.ai.principles:
+    - "fairness"
+    - "transparency"
+    - "accountability"
+    - "privacy"
+  
+  ml.compliance.audit.enabled: "true"
+  ml.compliance.audit.frequency.months: "6"
+  
+  # 31. CONFIGURATION DES WEBHOOKS ML
+  ml.webhooks.enabled: "true"
+  ml.webhooks.events:
+    - "model_trained"
+    - "model_deployed"
+    - "model_retired"
+    - "drift_detected"
+    - "anomaly_detected"
+    - "threshold_breached"
+  
+  ml.webhooks.endpoints:
+    slack: "https://hooks.slack.com/services/..."
+    teams: "https://outlook.office.com/webhook/..."
+    custom: "https://api.internal.goat-prediction.com/ml/webhooks"
+  
+  ml.webhooks.retry.count: "3"
+  ml.webhooks.retry.delay.seconds: "5"
+  ml.webhooks.timeout.seconds: "10"
+  
+  # 32. CONFIGURATION DES MÉTADONNÉES ML
+  ml.metadata.version: "2.0.0"
+  ml.metadata.schema.version: "1.0.0"
+  ml.metadata.catalog.file: "/etc/ml/metadata/model_catalog.yaml"
+  
+  ml.metadata.required.fields:
+    - "model_id"
+    - "model_name"
+    - "model_version"
+    - "model_type"
+    - "training_date"
+    - "framework"
+    - "metrics"
+    - "hyperparameters"
+    - "features"
+  
+  ml.metadata.optional.fields:
+    - "author"
+    - "team"
+    - "description"
+    - "limitations"
+    - "usage_instructions"
+    - "monitoring_config"
+  
+  # 33. CONFIGURATION DE LA DOCUMENTATION ML
+  ml.documentation.enabled: "true"
+  ml.documentation.formats:
+    - "model_cards"
+    - "api_documentation"
+    - "user_guides"
+    - "technical_reports"
+  
+  ml.documentation.auto.generation: "true"
+  ml.documentation.update.on.change: "true"
+  ml.documentation.storage: "s3://goat-prediction-ml-docs"
+  
+  # 34. CONFIGURATION DES EXPERTS ML
+  ml.experts.enabled: "true"
+  ml.experts.domains:
+    - "football"
+    - "basketball"
+    - "tennis"
+    - "esports"
+    - "betting"
+    - "risk_management"
+  
+  ml.experts.integration.method: "weighted_average"
+  ml.experts.weight: "0.2"
+  ml.experts.min.confidence: "0.70"
+  ml.experts.override.threshold: "0.85"
+  
+  # 35. CONFIGURATION DE L'ANALYSE DES PERFORMANCES
+  ml.performance.analysis.enabled: "true"
+  ml.performance.analysis.metrics:
+    - "accuracy_by_league"
+    - "accuracy_by_time"
+    - "accuracy_by_odds_range"
+    - "accuracy_by_market"
+    - "accuracy_by_stake"
+  
+  ml.performance.analysis.frequency: "daily"
+  ml.performance.analysis.reporting: "auto"
+  ml.performance.analysis.alerting: "true"
+  
+  # 36. CONFIGURATION DES FONCTIONNALITÉS AVANCÉES
+  ml.features.advanced.realtime.learning: "true"
+  ml.features.advanced.online.learning: "false"
+  ml.features.advanced.active.learning: "true"
+  ml.features.advanced.multi.armed.bandit: "true"
+  ml.features.advanced.reinforcement.learning: "true"
+  
+  ml.features.advanced.ensemble.dynamic: "true"
+  ml.features.advanced.ensemble.adaptive: "true"
+  ml.features.advanced.transfer.learning.cross.sport: "true"
+  ml.features.advanced.meta.learning: "true"
+  
+  # 37. CONFIGURATION DES SEUILS D'ALERTE
+  ml.thresholds.accuracy.warning: "0.80"
+  ml.thresholds.accuracy.critical: "0.75"
+  
+  ml.thresholds.latency.warning: "150"
+  ml.thresholds.latency.critical: "200"
+  
+  ml.thresholds.data.drift.warning: "0.08"
+  ml.thresholds.data.drift.critical: "0.10"
+  
+  ml.thresholds.concept.drift.warning: "0.04"
+  ml.thresholds.concept.drift.critical: "0.05"
+  
+  ml.thresholds.memory.usage.warning: "80"
+  ml.thresholds.memory.usage.critical: "90"
+  
+  ml.thresholds.error.rate.warning: "0.03"
+  ml.thresholds.error.rate.critical: "0.05"
+  
+  # 38. CONFIGURATION DE LA GESTION DES VERSIONS
+  ml.versioning.enabled: "true"
+  ml.versioning.scheme: "semantic"
+  ml.versioning.auto.increment: "true"
+  
+  ml.versioning.major.threshold: "0.1"
+  ml.versioning.minor.threshold: "0.05"
+  ml.versioning.patch.threshold: "0.01"
+  
+  ml.versioning.rollback.enabled: "true"
+  ml.versioning.rollback.window.hours: "24"
+  ml.versioning.snapshot.enabled: "true"
+  
+  # 39. CONFIGURATION DES EXPÉRIMENTATIONS
+  ml.experimentation.enabled: "true"
+  ml.experimentation.max.concurrent: "10"
+  ml.experimentation.max.duration.days: "30"
+  ml.experimentation.traffic.percentage.max: "0.10"
+  
+  ml.experimentation.metrics.required:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "roi"
+    - "user_feedback"
+  
+  ml.experimentation.approval.required: "true"
+  ml.experimentation.auto.termination: "true"
+  
+  # 40. CONFIGURATION DES RAPPORTS ML
+  ml.reporting.enabled: "true"
+  ml.reporting.frequency:
+    daily: "true"
+    weekly: "true"
+    monthly: "true"
+    quarterly: "true"
+  
+  ml.reporting.audience:
+    - "executive"
+    - "management"
+    - "technical"
+    - "operations"
+  
+  ml.reporting.formats:
+    - "pdf"
+    - "html"
+    - "json"
+    - "csv"
+  
+  ml.reporting.delivery:
+    - "email"
+    - "s3"
+    - "api"
+    - "dashboard"
+  
+  ml.reporting.auto.generation: "true"
+  ml.reporting.templates.directory: "/etc/ml/reporting/templates/"
