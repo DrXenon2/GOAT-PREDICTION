@@ -1,0 +1,221 @@
+# GOAT Prediction Ultimate Configuration
+# This file contains the main configuration for the API Gateway
+
+app:
+  name: "GOAT Prediction Ultimate API Gateway"
+  version: "1.0.0"
+  environment: "${ENVIRONMENT:-development}"
+  debug: "${DEBUG:-false}"
+
+database:
+  host: "${POSTGRES_SERVER:-localhost}"
+  port: "${POSTGRES_PORT:-5432}"
+  database: "${POSTGRES_DB:-goat_prediction}"
+  username: "${POSTGRES_USER:-goat_user}"
+  password: "${POSTGRES_PASSWORD:-goat_password}"
+  pool_size: 20
+  max_overflow: 40
+  pool_timeout: 30
+  echo: false
+
+redis:
+  host: "${REDIS_HOST:-localhost}"
+  port: "${REDIS_PORT:-6379}"
+  password: "${REDIS_PASSWORD:-}"
+  db: 0
+  max_connections: 100
+  decode_responses: true
+
+cache:
+  enabled: true
+  default_ttl: 300
+  max_size: 10000
+  cleanup_interval: 60
+  ttl_predictions: 60
+  ttl_odds: 30
+  ttl_statistics: 3600
+  ttl_users: 300
+
+security:
+  secret_key: "${SECRET_KEY}"
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+  refresh_token_expire_days: 7
+  rate_limit_enabled: true
+  rate_limit_default: "100/minute"
+  rate_limit_premium: "500/minute"
+  rate_limit_admin: "1000/minute"
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:3001"
+    - "https://goat-prediction.com"
+    - "https://admin.goat-prediction.com"
+  security_headers_enabled: true
+  hsts_enabled: true
+  csp_enabled: true
+
+logging:
+  level: "${LOG_LEVEL:-INFO}"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_enabled: true
+  file_path: "logs/api-gateway.log"
+  file_max_size: 10485760  # 10MB
+  file_backup_count: 10
+  sentry_enabled: false
+  sentry_dsn: "${SENTRY_DSN:-}"
+  logstash_enabled: false
+  logstash_host: "localhost"
+  logstash_port: 5000
+
+monitoring:
+  prometheus_enabled: true
+  prometheus_port: 9090
+  health_check_enabled: true
+  health_check_interval: 60
+  metrics_enabled: true
+  metrics_interval: 30
+  alerting_enabled: false
+  alert_email: "${ALERT_EMAIL:-}"
+  alert_slack_webhook: "${ALERT_SLACK_WEBHOOK:-}"
+
+apis:
+  statsbomb:
+    base_url: "https://api.statsbomb.com"
+    api_key: "${STATSBOMB_API_KEY:-}"
+    timeout: 30
+    rate_limit: 100
+  opta:
+    base_url: "https://api.opta.net"
+    api_key: "${OPTA_API_KEY:-}"
+    timeout: 30
+    rate_limit: 100
+  sportradar:
+    base_url: "https://api.sportradar.com"
+    api_key: "${SPORTRADAR_API_KEY:-}"
+    timeout: 30
+    rate_limit: 100
+  betfair:
+    api_key: "${BETFAIR_API_KEY:-}"
+    username: "${BETFAIR_USERNAME:-}"
+    password: "${BETFAIR_PASSWORD:-}"
+    app_key: "${BETFAIR_APP_KEY:-}"
+
+services:
+  prediction_engine:
+    url: "${PREDICTION_ENGINE_URL:-http://prediction-engine:8001}"
+    timeout: 30
+  user_service:
+    url: "${USER_SERVICE_URL:-http://user-service:8002}"
+    timeout: 10
+  auth_service:
+    url: "${AUTH_SERVICE_URL:-http://auth-service:8003}"
+    timeout: 10
+  notification_service:
+    url: "${NOTIFICATION_SERVICE_URL:-http://notification-service:8004}"
+    timeout: 10
+
+sports:
+  football:
+    name: "Football"
+    enabled: true
+    markets:
+      - "match_winner"
+      - "over_under"
+      - "both_teams_to_score"
+      - "exact_score"
+      - "handicap"
+    refresh_interval: 60
+    api_endpoints:
+      - "/api/v1/sports/football/predictions"
+      - "/api/v1/sports/football/odds"
+  basketball:
+    name: "Basketball"
+    enabled: true
+    markets:
+      - "moneyline"
+      - "point_spread"
+      - "total_points"
+      - "player_props"
+    refresh_interval: 30
+    api_endpoints:
+      - "/api/v1/sports/basketball/predictions"
+  tennis:
+    name: "Tennis"
+    enabled: true
+    markets:
+      - "match_winner"
+      - "set_betting"
+      - "total_games"
+      - "handicap"
+    refresh_interval: 45
+    api_endpoints:
+      - "/api/v1/sports/tennis/predictions"
+
+subscriptions:
+  free:
+    name: "Free"
+    price: 0
+    currency: "USD"
+    predictions_per_day: 10
+    features:
+      - "basic_predictions"
+      - "daily_summary"
+    rate_limit: "10/minute"
+  premium:
+    name: "Premium"
+    price: 29.99
+    currency: "USD"
+    predictions_per_day: 100
+    features:
+      - "all_predictions"
+      - "real_time_updates"
+      - "advanced_analytics"
+    rate_limit: "100/minute"
+  pro:
+    name: "Professional"
+    price: 99.99
+    currency: "USD"
+    predictions_per_day: 1000
+    features:
+      - "all_predictions"
+      - "real_time_updates"
+      - "advanced_analytics"
+      - "api_access"
+      - "custom_models"
+    rate_limit: "500/minute"
+
+features:
+  enable_live_predictions:
+    enabled: true
+    description: "Enable live prediction updates"
+    rollout_percentage: 100
+  enable_betting_simulator:
+    enabled: true
+    description: "Enable betting simulator"
+    rollout_percentage: 50
+  enable_ai_explanations:
+    enabled: true
+    description: "Enable AI explanations for predictions"
+    rollout_percentage: 100
+  enable_sentiment_analysis:
+    enabled: false
+    description: "Enable sentiment analysis integration"
+    rollout_percentage: 0
+
+performance:
+  max_workers: 4
+  request_timeout: 30
+  keepalive_timeout: 5
+  gzip_min_size: 1000
+  gzip_compression_level: 6
+
+webhooks:
+  secret: "${WEBHOOK_SECRET}"
+  timeout: 10
+  max_retries: 3
+
+payment:
+  stripe:
+    secret_key: "${STRIPE_SECRET_KEY:-}"
+    publishable_key: "${STRIPE_PUBLISHABLE_KEY:-}"
+    webhook_secret: "${STRIPE_WEBHOOK_SECRET:-}"
