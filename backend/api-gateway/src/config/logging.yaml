@@ -1,0 +1,106 @@
+# logging.yaml - Configuration avancée du logging
+version: 1
+disable_existing_loggers: false
+
+formatters:
+  json:
+    class: src.config.logging_config.StructuredLogFormatter
+  
+  simple:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  
+  detailed:
+    format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: json
+    stream: ext://sys.stdout
+  
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/application.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf-8
+  
+  error_file:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: json
+    filename: logs/error.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf-8
+  
+  access_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/access.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf-8
+    filters: [access_filter]
+
+filters:
+  access_filter:
+    class: src.config.logging_config.RequestContextFilter
+    name: access
+
+loggers:
+  # Root logger
+  "":
+    level: INFO
+    handlers: [console, file, error_file]
+    propagate: false
+  
+  # Application loggers
+  goat.api:
+    level: INFO
+    handlers: [console, file]
+    propagate: false
+    qualname: goat.api
+  
+  goat.api.access:
+    level: INFO
+    handlers: [console, access_file]
+    propagate: false
+    qualname: goat.api.access
+  
+  # Third-party loggers
+  uvicorn:
+    level: INFO
+    handlers: [console]
+    propagate: false
+  
+  uvicorn.access:
+    level: INFO
+    handlers: [console, access_file]
+    propagate: false
+  
+  uvicorn.error:
+    level: INFO
+    handlers: [console, error_file]
+    propagate: false
+  
+  sqlalchemy.engine:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  aioredis:
+    level: WARNING
+    handlers: [console]
+    propagate: false
+  
+  httpx:
+    level: WARNING
+    handlers: [console]
+    propagate: false
