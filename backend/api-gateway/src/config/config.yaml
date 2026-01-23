@@ -1,0 +1,92 @@
+# config.yaml - Configuration de base
+app:
+  name: "GOAT Prediction API Gateway"
+  description: "Advanced Sports Prediction Platform"
+  version: "1.0.0"
+  environment: "${ENVIRONMENT:development}"
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  reload: false
+  root_path: ""
+
+database:
+  url: "${DATABASE_URL:postgresql+asyncpg://postgres:postgres@localhost:5432/goat_prediction}"
+  pool_size: 20
+  max_overflow: 10
+  pool_recycle: 3600
+  echo: false
+
+redis:
+  url: "${REDIS_URL:redis://localhost:6379/0}"
+  pool_size: 20
+  socket_timeout: 5
+  socket_connect_timeout: 5
+
+security:
+  secret_key: "${SECRET_KEY}"
+  jwt_secret_key: "${JWT_SECRET_KEY}"
+  jwt_algorithm: "HS256"
+  jwt_access_token_expire_minutes: 30
+  jwt_refresh_token_expire_days: 7
+
+cors:
+  enabled: true
+  origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+  allow_credentials: true
+  allow_methods: ["*"]
+  allow_headers: ["*"]
+  max_age: 600
+
+rate_limiting:
+  enabled: true
+  default_limits:
+    - "100/minute"
+    - "1000/hour"
+    - "10000/day"
+
+monitoring:
+  enabled: true
+  metrics_path: "/metrics"
+  health_check_path: "/health"
+  readiness_path: "/ready"
+  liveness_path: "/live"
+  log_level: "INFO"
+  log_format: "json"
+
+sports:
+  enabled:
+    football: true
+    basketball: true
+    tennis: true
+    esports: true
+    baseball: false
+    hockey: false
+    rugby: false
+
+external_apis:
+  statsbomb:
+    api_key: "${STATSBOMB_API_KEY}"
+    base_url: "https://data.statsbomb.com/api/v2/"
+    timeout: 30
+  
+  opta:
+    api_key: "${OPTA_API_KEY}"
+    base_url: "https://api.opta.net/"
+    timeout: 30
+  
+  betfair:
+    api_key: "${BETFAIR_API_KEY}"
+    base_url: "https://api.betfair.com/exchange/"
+    timeout: 30
+
+features:
+  background_tasks: true
+  cache_warming: true
+  metrics_aggregation: true
+  live_betting: true
+  multi_sport: true
