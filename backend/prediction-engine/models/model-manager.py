@@ -1,11 +1,11 @@
 """
-optimize
-Optimization script
+model-manager
+Model manager
 """
 
 def main():
     """Main function"""
-    print("optimize loaded")
+    print("model-manager loaded")
 
 
 if __name__ == "__main__":
