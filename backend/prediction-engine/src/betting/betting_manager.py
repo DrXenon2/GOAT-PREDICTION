@@ -1,11 +1,11 @@
 """
-stake_calculator
-Stake calculator
+betting_manager
+Betting manager
 """
 
 def main():
     """Main function"""
-    print("stake_calculator loaded")
+    print("betting_manager loaded")
 
 
 if __name__ == "__main__":
