@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+retention_manager
+Retention policy manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("retention_manager loaded")
 
 
 if __name__ == "__main__":

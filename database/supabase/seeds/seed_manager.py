@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+seed_manager
+Seed manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("seed_manager loaded")
 
 
 if __name__ == "__main__":

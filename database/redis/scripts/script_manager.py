@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+script_manager
+Script manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("script_manager loaded")
 
 
 if __name__ == "__main__":

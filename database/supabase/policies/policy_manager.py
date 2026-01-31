@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+policy_manager
+Policy manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("policy_manager loaded")
 
 
 if __name__ == "__main__":

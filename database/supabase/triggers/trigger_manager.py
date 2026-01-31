@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+trigger_manager
+Trigger manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("trigger_manager loaded")
 
 
 if __name__ == "__main__":

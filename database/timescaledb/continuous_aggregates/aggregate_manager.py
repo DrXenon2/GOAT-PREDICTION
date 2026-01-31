@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+aggregate_manager
+Aggregate manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("aggregate_manager loaded")
 
 
 if __name__ == "__main__":

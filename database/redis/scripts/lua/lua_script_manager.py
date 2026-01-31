@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+lua_script_manager
+Lua script manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("lua_script_manager loaded")
 
 
 if __name__ == "__main__":

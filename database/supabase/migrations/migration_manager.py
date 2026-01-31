@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+migration_manager
+Migration manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("migration_manager loaded")
 
 
 if __name__ == "__main__":

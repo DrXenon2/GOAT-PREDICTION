@@ -1,11 +1,11 @@
 """
-redis_client
-Redis client
+hypertable_manager
+Hypertable manager
 """
 
 def main():
     """Main function"""
-    print("redis_client loaded")
+    print("hypertable_manager loaded")
 
 
 if __name__ == "__main__":
