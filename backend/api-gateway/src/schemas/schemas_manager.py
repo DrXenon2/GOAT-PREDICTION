@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+schemas_manager
+Schemas manager
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("schemas_manager loaded")
 
 
 if __name__ == "__main__":

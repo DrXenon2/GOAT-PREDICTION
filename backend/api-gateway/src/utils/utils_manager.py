@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+utils_manager
+Utils manager
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("utils_manager loaded")
 
 
 if __name__ == "__main__":

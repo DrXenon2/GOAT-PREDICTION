@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+router
+Main router
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("router loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+integration_runner
+Integration test runner
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("integration_runner loaded")
 
 
 if __name__ == "__main__":

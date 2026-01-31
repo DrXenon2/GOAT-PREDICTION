@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+middleware_manager
+Middleware manager
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("middleware_manager loaded")
 
 
 if __name__ == "__main__":

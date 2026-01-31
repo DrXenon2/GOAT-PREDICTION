@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+admin_routes
+Admin routes registration
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("admin_routes loaded")
 
 
 if __name__ == "__main__":

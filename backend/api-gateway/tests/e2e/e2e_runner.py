@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+e2e_runner
+E2E test runner
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("e2e_runner loaded")
 
 
 if __name__ == "__main__":

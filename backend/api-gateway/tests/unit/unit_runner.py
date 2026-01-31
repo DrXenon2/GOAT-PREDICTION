@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+unit_runner
+Unit test runner
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("unit_runner loaded")
 
 
 if __name__ == "__main__":

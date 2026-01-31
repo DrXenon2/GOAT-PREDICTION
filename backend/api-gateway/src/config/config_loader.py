@@ -1,11 +1,11 @@
 """
-config
-Core configuration
+config_loader
+Configuration loader
 """
 
 def main():
     """Main function"""
-    print("config loaded")
+    print("config_loader loaded")
 
 
 if __name__ == "__main__":
