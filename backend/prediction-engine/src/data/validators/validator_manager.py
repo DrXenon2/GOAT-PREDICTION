@@ -1,11 +1,11 @@
 """
-odds_transformer
-Odds transformer
+validator_manager
+Validator manager
 """
 
 def main():
     """Main function"""
-    print("odds_transformer loaded")
+    print("validator_manager loaded")
 
 
 if __name__ == "__main__":

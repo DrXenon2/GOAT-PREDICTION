@@ -1,11 +1,11 @@
 """
-odds_transformer
-Odds transformer
+data_manager
+Data manager
 """
 
 def main():
     """Main function"""
-    print("odds_transformer loaded")
+    print("data_manager loaded")
 
 
 if __name__ == "__main__":
