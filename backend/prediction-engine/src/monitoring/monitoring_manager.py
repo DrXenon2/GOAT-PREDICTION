@@ -1,11 +1,11 @@
 """
-realtime_monitor
-Realtime monitor
+monitoring_manager
+Monitoring manager
 """
 
 def main():
     """Main function"""
-    print("realtime_monitor loaded")
+    print("monitoring_manager loaded")
 
 
 if __name__ == "__main__":
