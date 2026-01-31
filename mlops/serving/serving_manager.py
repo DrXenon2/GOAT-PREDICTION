@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+serving_manager
+Serving manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("serving_manager loaded")
 
 
 if __name__ == "__main__":

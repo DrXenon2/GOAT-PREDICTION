@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+mlops_manager
+MLOps manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("mlops_manager loaded")
 
 
 if __name__ == "__main__":

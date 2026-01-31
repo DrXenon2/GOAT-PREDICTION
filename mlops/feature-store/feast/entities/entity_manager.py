@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+entity_manager
+Entity manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("entity_manager loaded")
 
 
 if __name__ == "__main__":

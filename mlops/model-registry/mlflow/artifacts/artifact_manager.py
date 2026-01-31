@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+artifact_manager
+Artifact manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("artifact_manager loaded")
 
 
 if __name__ == "__main__":

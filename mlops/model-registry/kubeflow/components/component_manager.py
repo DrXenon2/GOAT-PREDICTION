@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+component_manager
+Kubeflow component manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("component_manager loaded")
 
 
 if __name__ == "__main__":

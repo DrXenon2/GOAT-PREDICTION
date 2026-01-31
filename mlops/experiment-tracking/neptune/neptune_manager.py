@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+neptune_manager
+Neptune manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("neptune_manager loaded")
 
 
 if __name__ == "__main__":

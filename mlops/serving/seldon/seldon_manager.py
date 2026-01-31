@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+seldon_manager
+Seldon manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("seldon_manager loaded")
 
 
 if __name__ == "__main__":

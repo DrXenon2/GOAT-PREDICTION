@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+wandb_manager
+WandB manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("wandb_manager loaded")
 
 
 if __name__ == "__main__":

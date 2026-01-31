@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+model_manager
+MLflow model manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("model_manager loaded")
 
 
 if __name__ == "__main__":

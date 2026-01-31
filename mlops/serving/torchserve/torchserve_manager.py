@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+torchserve_manager
+TorchServe manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("torchserve_manager loaded")
 
 
 if __name__ == "__main__":

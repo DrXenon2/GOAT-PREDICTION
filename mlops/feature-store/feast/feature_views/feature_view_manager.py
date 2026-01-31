@@ -1,11 +1,11 @@
 """
-football_features
-Football features
+feature_view_manager
+Feature view manager
 """
 
 def main():
     """Main function"""
-    print("football_features loaded")
+    print("feature_view_manager loaded")
 
 
 if __name__ == "__main__":
