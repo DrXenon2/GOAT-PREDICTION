@@ -1,11 +1,11 @@
 """
-test_formulas
-Formula tests
+data_test_runner
+Data test runner
 """
 
 def main():
     """Main function"""
-    print("test_formulas loaded")
+    print("data_test_runner loaded")
 
 
 if __name__ == "__main__":

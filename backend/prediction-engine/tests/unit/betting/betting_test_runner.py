@@ -1,11 +1,11 @@
 """
-test_formulas
-Formula tests
+betting_test_runner
+Betting test runner
 """
 
 def main():
     """Main function"""
-    print("test_formulas loaded")
+    print("betting_test_runner loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-test_formulas
-Formula tests
+integration_runner
+Integration test runner
 """
 
 def main():
     """Main function"""
-    print("test_formulas loaded")
+    print("integration_runner loaded")
 
 
 if __name__ == "__main__":
