@@ -1,11 +1,11 @@
 """
-value_at_risk
-Value at Risk formulas
+evaluator_manager
+Evaluator manager
 """
 
 def main():
     """Main function"""
-    print("value_at_risk loaded")
+    print("evaluator_manager loaded")
 
 
 if __name__ == "__main__":

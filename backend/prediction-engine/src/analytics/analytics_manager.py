@@ -1,11 +1,11 @@
 """
-value_at_risk
-Value at Risk formulas
+analytics_manager
+Analytics manager
 """
 
 def main():
     """Main function"""
-    print("value_at_risk loaded")
+    print("analytics_manager loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-value_at_risk
-Value at Risk formulas
+visualizer_manager
+Visualizer manager
 """
 
 def main():
     """Main function"""
-    print("value_at_risk loaded")
+    print("visualizer_manager loaded")
 
 
 if __name__ == "__main__":
