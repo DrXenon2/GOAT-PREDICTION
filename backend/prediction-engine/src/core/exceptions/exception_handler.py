@@ -1,11 +1,11 @@
 """
-prediction_errors
-Prediction errors
+exception_handler
+Exception handler
 """
 
 def main():
     """Main function"""
-    print("prediction_errors loaded")
+    print("exception_handler loaded")
 
 
 if __name__ == "__main__":

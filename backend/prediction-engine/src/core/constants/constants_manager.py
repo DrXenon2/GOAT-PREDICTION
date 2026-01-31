@@ -1,11 +1,11 @@
 """
-prediction_errors
-Prediction errors
+constants_manager
+Constants manager
 """
 
 def main():
     """Main function"""
-    print("prediction_errors loaded")
+    print("constants_manager loaded")
 
 
 if __name__ == "__main__":

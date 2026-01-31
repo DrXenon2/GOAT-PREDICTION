@@ -1,11 +1,11 @@
 """
-prediction_errors
-Prediction errors
+log_manager
+Log manager
 """
 
 def main():
     """Main function"""
-    print("prediction_errors loaded")
+    print("log_manager loaded")
 
 
 if __name__ == "__main__":

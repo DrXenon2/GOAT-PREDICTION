@@ -1,11 +1,11 @@
 """
-prediction_errors
-Prediction errors
+core_manager
+Core manager
 """
 
 def main():
     """Main function"""
-    print("prediction_errors loaded")
+    print("core_manager loaded")
 
 
 if __name__ == "__main__":
