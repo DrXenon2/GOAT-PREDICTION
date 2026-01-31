@@ -1,11 +1,11 @@
 """
-app
-Prediction engine application
+app_factory
+Application factory
 """
 
 def main():
     """Main function"""
-    print("app loaded")
+    print("app_factory loaded")
 
 
 if __name__ == "__main__":
