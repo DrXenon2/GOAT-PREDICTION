@@ -1,11 +1,11 @@
 """
-ws_manager
-WebSocket manager
+endpoint_manager
+Endpoint manager
 """
 
 def main():
     """Main function"""
-    print("ws_manager loaded")
+    print("endpoint_manager loaded")
 
 
 if __name__ == "__main__":
