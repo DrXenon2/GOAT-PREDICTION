@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+fact_manager
+Fact manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("fact_manager loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+odds_data
+Odds data
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("odds_data loaded")
 
 
 if __name__ == "__main__":

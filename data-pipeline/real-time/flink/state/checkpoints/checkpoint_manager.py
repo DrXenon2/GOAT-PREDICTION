@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+checkpoint_manager
+Checkpoint manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("checkpoint_manager loaded")
 
 
 if __name__ == "__main__":

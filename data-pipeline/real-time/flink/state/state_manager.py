@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+state_manager
+State manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("state_manager loaded")
 
 
 if __name__ == "__main__":

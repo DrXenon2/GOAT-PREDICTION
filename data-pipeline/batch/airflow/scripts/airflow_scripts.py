@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+airflow_scripts
+Airflow scripts
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("airflow_scripts loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+data_lake_manager
+Data lake manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("data_lake_manager loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+consumer_manager
+Consumer manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("consumer_manager loaded")
 
 
 if __name__ == "__main__":

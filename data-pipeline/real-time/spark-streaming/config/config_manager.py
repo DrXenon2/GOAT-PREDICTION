@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+config_manager
+Spark config manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("config_manager loaded")
 
 
 if __name__ == "__main__":

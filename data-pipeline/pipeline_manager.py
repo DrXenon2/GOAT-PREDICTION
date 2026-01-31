@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+pipeline_manager
+Pipeline manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("pipeline_manager loaded")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+batch_manager
+Batch pipeline manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("batch_manager loaded")
 
 
 if __name__ == "__main__":

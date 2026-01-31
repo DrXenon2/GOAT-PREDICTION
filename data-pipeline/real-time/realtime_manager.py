@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+realtime_manager
+Realtime pipeline manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("realtime_manager loaded")
 
 
 if __name__ == "__main__":

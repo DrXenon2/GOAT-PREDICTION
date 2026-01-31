@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+historical_features
+Historical features
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("historical_features loaded")
 
 
 if __name__ == "__main__":

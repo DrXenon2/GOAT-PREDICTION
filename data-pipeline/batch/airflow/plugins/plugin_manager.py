@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+plugin_manager
+Plugin manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("plugin_manager loaded")
 
 
 if __name__ == "__main__":

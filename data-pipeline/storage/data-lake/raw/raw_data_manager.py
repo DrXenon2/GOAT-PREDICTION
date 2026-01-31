@@ -1,11 +1,11 @@
 """
-prediction-consumer
-Prediction consumer
+raw_data_manager
+Raw data manager
 """
 
 def main():
     """Main function"""
-    print("prediction-consumer loaded")
+    print("raw_data_manager loaded")
 
 
 if __name__ == "__main__":
