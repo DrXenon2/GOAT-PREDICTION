@@ -83,101 +83,101 @@ GOAT-PREDICTION/
 │   ├── config/
 │   │   ├── daily/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── config-backup-2024-01-01.json
 │   │   ├── monthly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── config-backup-2024-01.json
 │   │   ├── README.md
 │   │   ├── weekly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── config-backup-week-01.json
+│   │   └── backup-manager.py
 │   ├── database/
 │   │   ├── daily/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── db-backup-2024-01-01.sql
 │   │   ├── monthly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── db-backup-2024-01.sql
 │   │   ├── README.md
 │   │   ├── weekly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── db-backup-week-01.sql
+│   │   └── backup-script.py
 │   ├── logs/
 │   │   ├── daily/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── logs-2024-01-01.tar.gz
 │   │   ├── monthly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── logs-2024-01.tar.gz
 │   │   ├── README.md
 │   │   ├── weekly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── logs-week-01.tar.gz
+│   │   └── log-backup.sh
 │   ├── models/
 │   │   ├── daily/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── model-backup-2024-01-01.pkl
 │   │   ├── monthly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── model-backup-2024-01.pkl
 │   │   ├── README.md
 │   │   ├── weekly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── model-backup-week-01.pkl
+│   │   └── model-backup.py
 │   ├── README.md
-│   └── xenon.js
+│   └── backup-manager.sh
 ├── .cache/
 │   ├── data/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── cached-data.json
 │   ├── logs/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── cache.log
 │   ├── ml-models/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── cached-models/
 │   ├── README.md
 │   ├── tmp/
 │   │   ├── README.md
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── temp-files/
+│   └── cache-cleaner.py
 ├── .config/
 │   ├── certbot/
 │   │   ├── conf/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── ssl-config.conf
 │   │   ├── README.md
 │   │   ├── renewal/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── renewal-config.conf
+│   │   └── certbot-setup.sh
 │   ├── elasticsearch/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── elasticsearch.yml
 │   ├── grafana/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── grafana.ini
 │   ├── nginx/
 │   │   ├── nginx.conf
 │   │   ├── README.md
 │   │   ├── sites-available/
 │   │   │   ├── goat-prediction.conf
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── ssl-config.conf
 │   │   ├── ssl/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── dhparam.pem
+│   │   └── nginx-setup.sh
 │   ├── prometheus/
 │   │   ├── prometheus.yml
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── alert-rules.yml
 │   ├── README.md
-│   └── xenon.js
+│   └── config-manager.py
 ├── .dockerignore
 ├── .editorconfig
 ├── .env.development
@@ -197,78 +197,78 @@ GOAT-PREDICTION/
 │   │   ├── performance-test.yml
 │   │   ├── README.md
 │   │   ├── security-scan.yml
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── deployment.yml
+│   └── issue_template.md
 ├── .gitignore
 ├── .logs/
 │   ├── access/
 │   │   ├── admin/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── admin-access.log
 │   │   ├── api-gateway/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── api-access.log
 │   │   ├── nginx/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── nginx-access.log
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── access-log-rotator.sh
 │   ├── application/
 │   │   ├── api/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── api-application.log
 │   │   ├── database/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── database.log
 │   │   ├── frontend/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── frontend.log
 │   │   ├── ml/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── ml-pipeline.log
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── log-monitor.py
 │   ├── audit/
 │   │   ├── README.md
 │   │   ├── security/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── security-audit.log
 │   │   ├── system/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── system-audit.log
 │   │   ├── user-actions/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── user-actions.log
+│   │   └── audit-analyzer.py
 │   ├── error/
 │   │   ├── api/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── api-error.log
 │   │   ├── database/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── database-error.log
 │   │   ├── frontend/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── frontend-error.log
 │   │   ├── ml/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── ml-error.log
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── error-tracker.py
 │   ├── README.md
 │   ├── rotated/
 │   │   ├── daily/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── logs-2024-01-01.tar.gz
 │   │   ├── monthly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── logs-2024-01.tar.gz
 │   │   ├── README.md
 │   │   ├── weekly/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   │   └── logs-week-01.tar.gz
+│   │   └── log-rotate.sh
+│   └── log-manager.sh
 ├── .nvmrc
 ├── .prettierignore
 ├── .prettierrc
@@ -277,46 +277,50 @@ GOAT-PREDICTION/
 │   ├── api-keys/
 │   │   ├── README.md
 │   │   ├── statsbomb.key
-│   │   └── xenon.js
+│   │   └── api-keys-manager.py
 │   ├── auth/
 │   │   ├── jwt-secret.key
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── auth-manager.py
 │   ├── database/
 │   │   ├── README.md
 │   │   ├── supabase.env
-│   │   └── xenon.js
+│   │   └── db-secrets-manager.py
 │   ├── README.md
 │   ├── ssl/
 │   │   ├── README.md
 │   │   ├── wildcard.crt
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── ssl-manager.py
+│   └── secrets-manager.sh
 ├── .stylelintrc
 ├── .tmp/
 │   ├── backups/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── temp-backup/
 │   ├── downloads/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── temp-downloads/
 │   ├── processing/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── processing-files/
 │   ├── README.md
 │   ├── uploads/
 │   │   ├── README.md
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── temp-uploads/
+│   └── temp-cleaner.py
 ├── .vscode/
 │   ├── extensions.json
 │   ├── launch.json
 │   ├── README.md
 │   ├── settings.json
-│   └── xenon.js
+│   └── vscode-setup.sh
 ├── backend/
 │   ├── api-gateway/
+│   │   ├── .env
 │   │   ├── alembic.ini
+│   │   ├── config/
+│   │   │   ├── config.yaml
+│   │   │   └── middleware.yaml
 │   │   ├── docker-compose.yml
 │   │   ├── Dockerfile
 │   │   ├── pyproject.toml
@@ -329,11 +333,22 @@ GOAT-PREDICTION/
 │   │   │   ├── app.py
 │   │   │   ├── config/
 │   │   │   │   ├── __init__.py
+│   │   │   │   ├── config.yaml
 │   │   │   │   ├── constants.py
+│   │   │   │   ├── env_config.py
 │   │   │   │   ├── logging_config.py
+│   │   │   │   ├── logging.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── settings.py
-│   │   │   │   └── xenon.js
+│   │   │   │   ├── test_settings.py
+│   │   │   │   ├── config_loader.py
+│   │   │   │   └── yaml_config.py
+│   │   │   ├── core/
+│   │   │   │   ├── config.py
+│   │   │   │   ├── exceptions/
+│   │   │   │   │   └── config_errors.py
+│   │   │   │   ├── exceptions.py
+│   │   │   │   └── logging.py
 │   │   │   ├── dependencies.py
 │   │   │   ├── main.py
 │   │   │   ├── middleware/
@@ -345,7 +360,9 @@ GOAT-PREDICTION/
 │   │   │   │   ├── rate_limiter.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── validation.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── middleware_manager.py
+│   │   │   ├── models/
+│   │   │   │   └── user.py
 │   │   │   ├── README.md
 │   │   │   ├── routes/
 │   │   │   │   ├── admin/
@@ -354,7 +371,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── system.py
 │   │   │   │   │   ├── users.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── admin_routes.py
+│   │   │   │   ├── __init__.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── v1/
 │   │   │   │   │   ├── __init__.py
@@ -366,7 +384,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── subscriptions.py
 │   │   │   │   │   ├── users.py
 │   │   │   │   │   ├── webhooks.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── v1_routes.py
 │   │   │   │   ├── v2/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── advanced.py
@@ -374,8 +392,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── predictions.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── realtime.py
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── v2_routes.py
+│   │   │   │   └── router.py
 │   │   │   ├── schemas/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── bets.py
@@ -384,7 +402,7 @@ GOAT-PREDICTION/
 │   │   │   │   ├── responses.py
 │   │   │   │   ├── sports.py
 │   │   │   │   ├── users.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── schemas_manager.py
 │   │   │   ├── utils/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── converters.py
@@ -392,8 +410,8 @@ GOAT-PREDICTION/
 │   │   │   │   ├── helpers.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── validators.py
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── utils_manager.py
+│   │   │   └── app_factory.py
 │   │   ├── tests/
 │   │   │   ├── conftest.py
 │   │   │   ├── e2e/
@@ -401,14 +419,14 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── test_full_flow.py
 │   │   │   │   ├── test_performance.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── e2e_runner.py
 │   │   │   ├── integration/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── test_api.py
 │   │   │   │   ├── test_auth.py
 │   │   │   │   ├── test_rate_limit.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── integration_runner.py
 │   │   │   ├── README.md
 │   │   │   ├── unit/
 │   │   │   │   ├── __init__.py
@@ -416,31 +434,56 @@ GOAT-PREDICTION/
 │   │   │   │   ├── test_middleware.py
 │   │   │   │   ├── test_routes.py
 │   │   │   │   ├── test_utils.py
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   │   └── unit_runner.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
 │   ├── auth-service/
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── requirements.txt
 │   │   ├── src/
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── auth_manager.py
+│   │   │   ├── config.py
+│   │   │   ├── jwt_handler.py
+│   │   │   ├── models.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   ├── routes.py
+│   │   │   ├── schemas.py
+│   │   │   ├── utils.py
+│   │   │   └── main.py
 │   │   ├── tests/
+│   │   │   ├── __init__.py
+│   │   │   ├── conftest.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   ├── test_auth.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
 │   ├── notification-service/
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── requirements.txt
 │   │   ├── src/
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── config.py
+│   │   │   ├── email_sender.py
+│   │   │   ├── models.py
+│   │   │   ├── notification_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   ├── routes.py
+│   │   │   ├── schemas.py
+│   │   │   ├── sms_sender.py
+│   │   │   ├── utils.py
+│   │   │   └── main.py
 │   │   ├── tests/
+│   │   │   ├── __init__.py
+│   │   │   ├── conftest.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   ├── test_notifications.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
 │   ├── prediction-engine/
 │   │   ├── 1.dockerignore
 │   │   ├── 1.env.example
@@ -460,7 +503,7 @@ GOAT-PREDICTION/
 │   │   │   │   ├── football_markets.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── tennis_markets.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── market_config_manager.py
 │   │   │   ├── ml_config.yaml
 │   │   │   ├── models/
 │   │   │   │   ├── basketball_models.yaml
@@ -468,7 +511,7 @@ GOAT-PREDICTION/
 │   │   │   │   ├── football_models.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── tennis_models.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── model_config_manager.py
 │   │   │   ├── monitoring_config.yaml
 │   │   │   ├── README.md
 │   │   │   ├── sports/
@@ -480,42 +523,42 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── rugby.yaml
 │   │   │   │   ├── tennis.yaml
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── sport_config_manager.py
+│   │   │   └── config_manager.py
 │   │   ├── CONTRIBUTING.md
 │   │   ├── data/
 │   │   │   ├── backups/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── backup-manager.py
 │   │   │   ├── cache/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── cache-manager.py
 │   │   │   ├── processed/
 │   │   │   │   ├── features/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── feature-processor.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── training/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── training-data-processor.py
+│   │   │   │   └── data-processor.py
 │   │   │   ├── raw/
 │   │   │   │   ├── basketball/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── basketball-data-collector.py
 │   │   │   │   ├── football/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── football-data-collector.py
 │   │   │   │   ├── odds/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── odds-collector.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── tennis/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── tennis-data-collector.py
+│   │   │   │   └── data-collector.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── data-manager.py
 │   │   ├── docker-compose.dev.yml
 │   │   ├── docker-compose.prod.yml
 │   │   ├── docker-compose.yml
@@ -525,42 +568,42 @@ GOAT-PREDICTION/
 │   │   │   ├── error.log
 │   │   │   ├── prediction.log
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── log-manager.py
 │   │   ├── migrations/
 │   │   │   ├── env.py
 │   │   │   ├── README.md
 │   │   │   ├── script.py.mako
 │   │   │   ├── versions/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── migration-manager.py
+│   │   │   └── migrate.py
 │   │   ├── models/
 │   │   │   ├── basketball/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── basketball-models/
 │   │   │   ├── ensembles/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── ensemble-models/
 │   │   │   ├── football/
 │   │   │   │   ├── exact_score/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── exact-score-models/
 │   │   │   │   ├── match_winner/
 │   │   │   │   │   ├── metadata.json
 │   │   │   │   │   ├── model.joblib
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── scaler.joblib
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── model-info.json
 │   │   │   │   ├── over_under/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── over-under-models/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── football-model-manager.py
 │   │   │   ├── README.md
 │   │   │   ├── tennis/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── tennis-models/
+│   │   │   └── model-manager.py
 │   │   ├── mypy.ini
 │   │   ├── pre-commit-config.yaml
 │   │   ├── pyproject.toml
@@ -578,7 +621,7 @@ GOAT-PREDICTION/
 │   │   │   ├── README.md
 │   │   │   ├── train_models.py
 │   │   │   ├── update_data.py
-│   │   │   └── xenon.js
+│   │   │   └── script-manager.py
 │   │   ├── setup.cfg
 │   │   ├── setup.py
 │   │   ├── src/
@@ -594,7 +637,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── roi_calculator.py
 │   │   │   │   │   ├── stake_calculator.py
 │   │   │   │   │   ├── value_calculator.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── calculator_manager.py
 │   │   │   │   ├── evaluators/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── market_evaluator.py
@@ -605,7 +648,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── risk_evaluator.py
 │   │   │   │   │   ├── team_evaluator.py
 │   │   │   │   │   ├── value_evaluator.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── evaluator_manager.py
 │   │   │   │   ├── formulas/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── advanced_metrics.py
@@ -620,7 +663,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── sharpe_ratio.py
 │   │   │   │   │   ├── true_skill.py
 │   │   │   │   │   ├── value_at_risk.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── formula_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── visualizers/
 │   │   │   │   │   ├── __init__.py
@@ -631,8 +674,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── report_generator.py
 │   │   │   │   │   ├── trend_analyzer.py
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── visualizer_manager.py
+│   │   │   │   └── analytics_manager.py
 │   │   │   ├── api/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── endpoints/
@@ -644,7 +687,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sports.py
 │   │   │   │   │   ├── webhooks.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── endpoint_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── websockets/
 │   │   │   │   │   ├── __init__.py
@@ -653,8 +696,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── realtime_updates.py
 │   │   │   │   │   ├── ws_manager.py
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── websocket_manager.py
+│   │   │   │   └── api_manager.py
 │   │   │   ├── app.py
 │   │   │   ├── betting/
 │   │   │   │   ├── __init__.py
@@ -668,7 +711,7 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── risk_manager.py
 │   │   │   │   ├── stake_calculator.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── betting_manager.py
 │   │   │   ├── core/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── config/
@@ -678,7 +721,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── settings.py
 │   │   │   │   │   ├── validators.py
-│   │   │   │   │   ├── xenon.js
+│   │   │   │   │   ├── config_loader.py
 │   │   │   │   │   └── yaml_config.py
 │   │   │   │   ├── constants/
 │   │   │   │   │   ├── __init__.py
@@ -689,7 +732,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sports.py
 │   │   │   │   │   ├── timezones.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── constants_manager.py
 │   │   │   │   ├── exceptions/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── api_errors.py
@@ -698,7 +741,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── model_errors.py
 │   │   │   │   │   ├── prediction_errors.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── exception_handler.py
 │   │   │   │   ├── logging/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── formatters.py
@@ -706,7 +749,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── logger.py
 │   │   │   │   │   ├── middleware.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── log_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── utils/
 │   │   │   │   │   ├── __init__.py
@@ -717,8 +760,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── serializers.py
 │   │   │   │   │   ├── validators.py
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── utils_manager.py
+│   │   │   │   └── core_manager.py
 │   │   │   ├── data/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── collectors/
@@ -732,7 +775,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── fiba_collector.py
 │   │   │   │   │   │   ├── nba_collector.py
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── basketball_collector_manager.py
 │   │   │   │   │   ├── collector_manager.py
 │   │   │   │   │   ├── esports/
 │   │   │   │   │   │   ├── __init__.py
@@ -743,7 +786,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── overwatch_collector.py
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── valorant_collector.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── esports_collector_manager.py
 │   │   │   │   │   ├── football/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── flashscore_collector.py
@@ -753,7 +796,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── statsbomb_collector.py
 │   │   │   │   │   │   ├── understat_collector.py
 │   │   │   │   │   │   ├── whoscored_collector.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── football_collector_manager.py
 │   │   │   │   │   ├── news/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── bbc_collector.py
@@ -762,7 +805,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── news_analyzer.py
 │   │   │   │   │   │   ├── newsapi_collector.py
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── news_collector_manager.py
 │   │   │   │   │   ├── odds/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── bet365_collector.py
@@ -772,7 +815,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── pinnacle_collector.py
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── williamhill_collector.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── odds_collector_manager.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── social/
 │   │   │   │   │   │   ├── __init__.py
@@ -783,7 +826,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── social_monitor.py
 │   │   │   │   │   │   ├── trend_analyzer.py
 │   │   │   │   │   │   ├── twitter_collector.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── social_collector_manager.py
 │   │   │   │   │   ├── tennis/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── atp_collector.py
@@ -792,7 +835,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── tennisabstract_collector.py
 │   │   │   │   │   │   ├── ultimatetennis_collector.py
 │   │   │   │   │   │   ├── wta_collector.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── tennis_collector_manager.py
 │   │   │   │   │   ├── weather/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── accuweather_collector.py
@@ -801,8 +844,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── visualcrossing_collector.py
 │   │   │   │   │   │   ├── weather_analyzer.py
 │   │   │   │   │   │   ├── weather_api_collector.py
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── weather_collector_manager.py
+│   │   │   │   │   └── data_collector_manager.py
 │   │   │   │   ├── processors/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── aggregator.py
@@ -812,7 +855,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── pipeline.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── transformer.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── processor_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── storage/
 │   │   │   │   │   ├── __init__.py
@@ -823,7 +866,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── s3_client.py
 │   │   │   │   │   ├── supabase_client.py
 │   │   │   │   │   ├── timescale_client.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── storage_manager.py
 │   │   │   │   ├── transformers/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── basketball_transformer.py
@@ -833,7 +876,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── odds_transformer.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── tennis_transformer.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── transformer_manager.py
 │   │   │   │   ├── validators/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── anomaly_detector.py
@@ -842,8 +885,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── outlier_detector.py
 │   │   │   │   │   ├── quality_checker.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── validator_manager.py
+│   │   │   │   └── data_manager.py
 │   │   │   ├── main.py
 │   │   │   ├── ml/
 │   │   │   │   ├── __init__.py
@@ -857,7 +900,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── model_evaluator.py
 │   │   │   │   │   ├── performance_tracker.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── ml_analytics_manager.py
 │   │   │   │   ├── ensembles/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── bayesian_ensemble.py
@@ -868,7 +911,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── stacking_ensemble.py
 │   │   │   │   │   ├── weighted_ensemble.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── ensemble_manager.py
 │   │   │   │   ├── features/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── advanced_features.py
@@ -883,7 +926,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── statistical_features.py
 │   │   │   │   │   ├── temporal_features.py
 │   │   │   │   │   ├── tennis_features.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── feature_manager.py
 │   │   │   │   ├── models/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── advanced/
@@ -896,7 +939,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── time_series_model.py
 │   │   │   │   │   │   ├── transformer_model.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── advanced_model_manager.py
 │   │   │   │   │   ├── base_model.py
 │   │   │   │   │   ├── basketball/
 │   │   │   │   │   │   ├── __init__.py
@@ -907,7 +950,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── quarter_betting_model.py
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── total_points_model.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── basketball_model_manager.py
 │   │   │   │   │   ├── esports/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── first_blood_model.py
@@ -916,7 +959,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── match_winner_esports.py
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── total_kills_model.py
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── esports_model_manager.py
 │   │   │   │   │   ├── football/
 │   │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   │   ├── btts_model.py
@@ -928,7 +971,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── over_under_model.py
 │   │   │   │   │   │   ├── player_goals_model.py
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── football_model_manager.py
 │   │   │   │   │   ├── model_factory.py
 │   │   │   │   │   ├── model_registry.py
 │   │   │   │   │   ├── README.md
@@ -940,8 +983,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── set_betting_model.py
 │   │   │   │   │   │   ├── tiebreak_model.py
 │   │   │   │   │   │   ├── total_games_model.py
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── tennis_model_manager.py
+│   │   │   │   │   └── model_manager.py
 │   │   │   │   ├── predictors/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── base_predictor.py
@@ -953,7 +996,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── realtime_predictor.py
 │   │   │   │   │   ├── tennis_predictor.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── predictor_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── trainers/
 │   │   │   │   │   ├── __init__.py
@@ -964,8 +1007,8 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── retrain_scheduler.py
 │   │   │   │   │   ├── trainer_factory.py
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── trainer_manager.py
+│   │   │   │   └── ml_manager.py
 │   │   │   ├── monitoring/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── alert_system.py
@@ -976,11 +1019,11 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── realtime_monitor.py
 │   │   │   │   ├── system_monitor.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── monitoring_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── scheduler.py
 │   │   │   ├── worker.py
-│   │   │   └── xenon.js
+│   │   │   └── app_factory.py
 │   │   ├── tests/
 │   │   │   ├── conftest.py
 │   │   │   ├── e2e/
@@ -988,21 +1031,21 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── test_betting_flow.py
 │   │   │   │   ├── test_full_prediction.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── e2e_runner.py
 │   │   │   ├── integration/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── test_data_pipeline.py
 │   │   │   │   ├── test_ml_pipeline.py
 │   │   │   │   ├── test_prediction_flow.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── integration_runner.py
 │   │   │   ├── performance/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── test_latency.py
 │   │   │   │   ├── test_scalability.py
 │   │   │   │   ├── test_throughput.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── performance_runner.py
 │   │   │   ├── README.md
 │   │   │   ├── unit/
 │   │   │   │   ├── analytics/
@@ -1010,64 +1053,88 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── test_calculators.py
 │   │   │   │   │   ├── test_evaluators.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── analytics_test_runner.py
 │   │   │   │   ├── betting/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── test_risk_manager.py
 │   │   │   │   │   ├── test_stake_calculator.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── betting_test_runner.py
 │   │   │   │   ├── core/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── test_formulas.py
 │   │   │   │   │   ├── test_utils.py
 │   │   │   │   │   ├── test_validators.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── core_test_runner.py
 │   │   │   │   ├── data/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── test_collectors.py
 │   │   │   │   │   ├── test_processors.py
 │   │   │   │   │   ├── test_validators.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── data_test_runner.py
 │   │   │   │   ├── ml/
 │   │   │   │   │   ├── __init__.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── test_features.py
 │   │   │   │   │   ├── test_models.py
 │   │   │   │   │   ├── test_predictors.py
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── ml_test_runner.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   │   └── unit_test_runner.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
 │   ├── README.md
 │   ├── subscription-service/
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── requirements.txt
 │   │   ├── src/
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── config.py
+│   │   │   ├── models.py
+│   │   │   ├── payment_processor.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   ├── routes.py
+│   │   │   ├── schemas.py
+│   │   │   ├── subscription_manager.py
+│   │   │   ├── utils.py
+│   │   │   └── main.py
 │   │   ├── tests/
+│   │   │   ├── __init__.py
+│   │   │   ├── conftest.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   ├── test_subscriptions.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
 │   ├── user-service/
 │   │   ├── Dockerfile
 │   │   ├── README.md
 │   │   ├── requirements.txt
 │   │   ├── src/
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── config.py
+│   │   │   ├── models.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   ├── routes.py
+│   │   │   ├── schemas.py
+│   │   │   ├── user_manager.py
+│   │   │   ├── utils.py
+│   │   │   └── main.py
 │   │   ├── tests/
+│   │   │   ├── __init__.py
+│   │   │   ├── conftest.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   │   ├── test_users.py
+│   │   │   └── test_runner.py
+│   │   └── run.py
+│   └── backend-manager.sh
 ├── CHANGELOG.md
 ├── CODE_OF_CONDUCT.md
+├── constraints.txt
 ├── CONTRIBUTING.md
 ├── data-pipeline/
 │   ├── batch/
@@ -1076,66 +1143,66 @@ GOAT-PREDICTION/
 │   │   │   │   ├── data_collection.py
 │   │   │   │   ├── model_training.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── dag_manager.py
 │   │   │   ├── docker-compose.airflow.yml
 │   │   │   ├── operators/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sports_operator.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── operator_manager.py
 │   │   │   ├── plugins/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── plugin_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── scripts/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── airflow_scripts.py
+│   │   │   └── airflow_manager.sh
 │   │   ├── dbt/
 │   │   │   ├── analysis/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── analysis_queries.sql
 │   │   │   ├── dbt_project.yml
 │   │   │   ├── macros/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── custom_macros.sql
 │   │   │   ├── models/
 │   │   │   │   ├── intermediate/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── team_performance.sql
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── intermediate_models.sql
 │   │   │   │   ├── marts/
 │   │   │   │   │   ├── analytics.sql
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── mart_models.sql
 │   │   │   │   ├── README.md
 │   │   │   │   ├── seeds/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── seed_data.sql
 │   │   │   │   ├── staging/
 │   │   │   │   │   ├── odds.sql
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sports.sql
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── staging_models.sql
+│   │   │   │   └── model_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── tests/
 │   │   │   │   ├── accepted_values/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── accepted_values_tests.sql
 │   │   │   │   ├── not_null/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── not_null_tests.sql
 │   │   │   │   ├── README.md
 │   │   │   │   ├── relationships/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── relationship_tests.sql
 │   │   │   │   ├── uniqueness/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   │   └── uniqueness_tests.sql
+│   │   │   │   └── test_manager.py
+│   │   │   └── dbt_manager.sh
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── batch_manager.py
 │   ├── README.md
 │   ├── real-time/
 │   │   ├── flink/
@@ -1144,195 +1211,195 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── real-time-aggregations.py
 │   │   │   │   ├── windowed-calculations.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── flink_job_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── state/
 │   │   │   │   ├── checkpoints/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── checkpoint_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── savepoints/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   │   └── savepoint_manager.py
+│   │   │   │   └── state_manager.py
+│   │   │   └── flink_manager.sh
 │   │   ├── kafka/
 │   │   │   ├── consumers/
 │   │   │   │   ├── analytics-consumer.py
 │   │   │   │   ├── prediction-consumer.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── consumer_manager.py
 │   │   │   ├── docker-compose.kafka.yml
 │   │   │   ├── producers/
 │   │   │   │   ├── odds-producer.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sports-producer.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── producer_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── schemas/
 │   │   │   │   ├── odds.avsc
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sports.avsc
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── schema_manager.py
+│   │   │   └── kafka_manager.sh
 │   │   ├── README.md
 │   │   ├── spark-streaming/
 │   │   │   ├── config/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── spark-config.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── config_manager.py
 │   │   │   ├── Dockerfile
 │   │   │   ├── jobs/
 │   │   │   │   ├── odds-processing.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── real-time-predictions.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── spark_job_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── spark_manager.sh
+│   │   └── realtime_manager.py
 │   ├── storage/
 │   │   ├── data-lake/
 │   │   │   ├── backups/
 │   │   │   │   ├── daily/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── daily_backup.py
 │   │   │   │   ├── monthly/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── monthly_backup.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── weekly/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── weekly_backup.py
+│   │   │   │   └── backup_manager.py
 │   │   │   ├── features/
 │   │   │   │   ├── aggregated/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── aggregated_features.py
 │   │   │   │   ├── historical/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── historical_features.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── realtime/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── realtime_features.py
+│   │   │   │   └── feature_manager.py
 │   │   │   ├── processed/
 │   │   │   │   ├── cleaned/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── cleaned_data.py
 │   │   │   │   ├── normalized/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── normalized_data.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── validated/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── validated_data.py
+│   │   │   │   └── processed_data_manager.py
 │   │   │   ├── raw/
 │   │   │   │   ├── news/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── news_data.py
 │   │   │   │   ├── odds/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── odds_data.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── social/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── social_data.py
 │   │   │   │   ├── sports/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── sports_data.py
 │   │   │   │   ├── weather/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── weather_data.py
+│   │   │   │   └── raw_data_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── data_lake_manager.py
 │   │   ├── data-warehouse/
 │   │   │   ├── aggregates/
 │   │   │   │   ├── daily_aggregates.sql
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── aggregate_manager.py
 │   │   │   ├── dimensions/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sport_dimension.sql
 │   │   │   │   ├── time_dimension.sql
-│   │   │   │   └── xenon.js
+│   │   │   │   └── dimension_manager.py
 │   │   │   ├── facts/
 │   │   │   │   ├── bets_fact.sql
 │   │   │   │   ├── predictions_fact.sql
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── fact_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── data_warehouse_manager.py
 │   │   ├── README.md
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── storage_manager.py
+│   └── pipeline_manager.py
 ├── database/
 │   ├── README.md
 │   ├── redis/
 │   │   ├── configurations/
 │   │   │   ├── README.md
 │   │   │   ├── redis.conf
-│   │   │   └── xenon.js
+│   │   │   └── redis_config_manager.py
 │   │   ├── docker-compose.redis.yml
 │   │   ├── README.md
 │   │   ├── scripts/
 │   │   │   ├── lua/
 │   │   │   │   ├── rate_limiter.lua
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── lua_script_manager.py
 │   │   │   ├── python/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── redis_client.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── python_script_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── shell/
 │   │   │   │   ├── backup.sh
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   │   └── shell_script_manager.py
+│   │   │   └── script_manager.py
+│   │   └── redis_manager.sh
 │   ├── supabase/
 │   │   ├── functions/
 │   │   │   ├── calculate_metrics.sql
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── function_manager.py
 │   │   ├── migrations/
 │   │   │   ├── 001_initial_schema.sql
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── migration_manager.py
 │   │   ├── policies/
 │   │   │   ├── README.md
 │   │   │   ├── users_policies.sql
-│   │   │   └── xenon.js
+│   │   │   └── policy_manager.py
 │   │   ├── README.md
 │   │   ├── seeds/
 │   │   │   ├── README.md
 │   │   │   ├── sports_data.sql
-│   │   │   └── xenon.js
+│   │   │   └── seed_manager.py
 │   │   ├── supabase-config.yaml
 │   │   ├── triggers/
 │   │   │   ├── README.md
 │   │   │   ├── update_timestamps.sql
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── trigger_manager.py
+│   │   └── supabase_manager.sh
 │   ├── timescaledb/
 │   │   ├── continuous_aggregates/
 │   │   │   ├── hourly_predictions.sql
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── aggregate_manager.py
 │   │   ├── hypertables/
 │   │   │   ├── predictions_hypertable.sql
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── hypertable_manager.py
 │   │   ├── README.md
 │   │   ├── retention_policies/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── retention_manager.py
 │   │   ├── timescaledb-config.yaml
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── timescaledb_manager.sh
+│   └── database_manager.py
 ├── docker-compose.dev.yml
 ├── docker-compose.override.yml
 ├── docker-compose.prod.yml
@@ -1344,67 +1411,75 @@ GOAT-PREDICTION/
 │   │   ├── v1/
 │   │   │   ├── predictions.md
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── api_documentation.py
 │   │   ├── v2/
 │   │   │   ├── README.md
 │   │   │   ├── realtime.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── api_documentation.py
+│   │   └── api_doc_manager.py
 │   ├── architecture/
 │   │   ├── README.md
 │   │   ├── system-architecture.md
-│   │   └── xenon.js
+│   │   └── architecture_doc_manager.py
 │   ├── deployment/
 │   │   ├── local-development.md
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── deployment_doc_manager.py
 │   ├── development/
 │   │   ├── README.md
 │   │   ├── setup.md
-│   │   └── xenon.js
+│   │   └── development_doc_manager.py
 │   ├── ml/
 │   │   ├── model-development.md
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── ml_doc_manager.py
 │   ├── README.md
 │   ├── user-guide/
 │   │   ├── getting-started.md
 │   │   ├── README.md
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── user_guide_manager.py
+│   └── docs_manager.py
 ├── frontend/
 │   ├── admin-dashboard/
 │   │   ├── package.json
 │   │   ├── public/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── index.html
 │   │   ├── README.md
 │   │   ├── src/
-│   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   ├── App.jsx
+│   │   │   ├── App.css
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── utils/
+│   │   │   └── index.js
+│   │   └── vite.config.js
 │   ├── landing-page/
 │   │   ├── assets/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   ├── css/
+│   │   │   ├── js/
+│   │   │   └── images/
 │   │   ├── index.html
 │   │   ├── README.md
 │   │   ├── script.js
 │   │   ├── style.css
-│   │   └── xenon.js
+│   │   └── landing-page-manager.py
 │   ├── mobile-app/
 │   │   ├── android/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── build.gradle
 │   │   ├── ios/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── Podfile
 │   │   ├── package.json
 │   │   ├── README.md
 │   │   ├── src/
-│   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   ├── App.tsx
+│   │   │   ├── components/
+│   │   │   ├── screens/
+│   │   │   └── utils/
+│   │   └── app.json
 │   ├── README.md
 │   ├── web-app/
 │   │   ├── 1.env.local
@@ -1423,7 +1498,7 @@ GOAT-PREDICTION/
 │   │   │   │   ├── favicon.ico
 │   │   │   │   ├── README.md
 │   │   │   │   ├── site.webmanifest
-│   │   │   │   └── xenon.js
+│   │   │   │   └── favicon_manager.py
 │   │   │   ├── fonts/
 │   │   │   │   ├── Inter/
 │   │   │   │   │   ├── Inter-Bold.woff2
@@ -1432,15 +1507,15 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── Inter-Regular.woff2
 │   │   │   │   │   ├── Inter-SemiBold.woff2
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── font_manager.py
 │   │   │   │   ├── Montserrat/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── font_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── Roboto/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── font_manager.py
+│   │   │   │   └── font_manager.py
 │   │   │   ├── images/
 │   │   │   │   ├── flags/
 │   │   │   │   │   ├── france.svg
@@ -1450,7 +1525,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── spain.svg
 │   │   │   │   │   ├── uk.svg
 │   │   │   │   │   ├── usa.svg
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── flag_manager.py
 │   │   │   │   ├── icons/
 │   │   │   │   │   ├── betting/
 │   │   │   │   │   │   ├── bet-placed.svg
@@ -1460,7 +1535,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── lose.svg
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── win.svg
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── betting_icon_manager.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sports/
 │   │   │   │   │   │   ├── all-sports.svg
@@ -1471,7 +1546,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── rugby.svg
 │   │   │   │   │   │   ├── tennis.svg
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── sports_icon_manager.py
 │   │   │   │   │   ├── status/
 │   │   │   │   │   │   ├── error.svg
 │   │   │   │   │   │   ├── high-confidence.svg
@@ -1481,7 +1556,7 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── success.svg
 │   │   │   │   │   │   ├── warning.svg
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── status_icon_manager.py
 │   │   │   │   │   ├── ui/
 │   │   │   │   │   │   ├── analytics.svg
 │   │   │   │   │   │   ├── bell.svg
@@ -1496,15 +1571,15 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── search.svg
 │   │   │   │   │   │   ├── settings.svg
 │   │   │   │   │   │   ├── sort.svg
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── ui_icon_manager.py
+│   │   │   │   │   └── icon_manager.py
 │   │   │   │   ├── logos/
 │   │   │   │   │   ├── goat-prediction-dark.svg
 │   │   │   │   │   ├── goat-prediction-icon.png
 │   │   │   │   │   ├── goat-prediction-light.svg
 │   │   │   │   │   ├── goat-prediction-logo.svg
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── logo_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sports/
 │   │   │   │   │   ├── basketball-court.jpg
@@ -1513,12 +1588,12 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── stadium.jpg
 │   │   │   │   │   ├── tennis-court.jpg
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── sports_image_manager.py
+│   │   │   │   └── image_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── robots.txt
 │   │   │   ├── sitemap.xml
-│   │   │   └── xenon.js
+│   │   │   └── public_manager.py
 │   │   ├── README.md
 │   │   ├── src/
 │   │   │   ├── app/
@@ -1527,79 +1602,79 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── dashboard_manager.py
 │   │   │   │   ├── (marketing)/
 │   │   │   │   │   ├── components/
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── marketing_components/
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── marketing_manager.py
 │   │   │   │   ├── account/
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── account_manager.py
 │   │   │   │   ├── admin/
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── admin_manager.py
 │   │   │   │   ├── analytics/
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── analytics_manager.py
 │   │   │   │   ├── api/
 │   │   │   │   │   ├── [...nextauth]/
-│   │   │   │   │   │   └── authxenon.js
+│   │   │   │   │   │   └── route.ts
 │   │   │   │   │   ├── auth/
 │   │   │   │   │   │   ├── [...nextauth]/
 │   │   │   │   │   │   │   └── README.md
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── route.ts
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── auth_manager.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── webhooks/
 │   │   │   │   │   │   ├── predictions/
 │   │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   │   ├── route.ts
-│   │   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   │   └── webhook_manager.py
 │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   ├── stripe/
 │   │   │   │   │   │   │   ├── README.md
 │   │   │   │   │   │   │   ├── route.ts
-│   │   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   │   └── stripe_manager.py
+│   │   │   │   │   │   └── webhook_manager.py
+│   │   │   │   │   └── api_manager.py
 │   │   │   │   ├── auth/
 │   │   │   │   │   ├── forgot-password/
 │   │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── forgot_password_manager.py
 │   │   │   │   │   ├── login/
 │   │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── login_manager.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── register/
 │   │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── register_manager.py
+│   │   │   │   │   └── auth_manager.py
 │   │   │   │   ├── betting/
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── betting_manager.py
 │   │   │   │   ├── error.tsx
 │   │   │   │   ├── globals.css
 │   │   │   │   ├── layout.tsx
@@ -1611,189 +1686,191 @@ GOAT-PREDICTION/
 │   │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── sport_manager.py
 │   │   │   │   │   ├── layout.tsx
 │   │   │   │   │   ├── loading.tsx
 │   │   │   │   │   ├── page.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── predictions_manager.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── app_manager.py
 │   │   │   ├── components/
 │   │   │   │   ├── admin/
 │   │   │   │   │   ├── admin-dashboard.tsx
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── user-management.tsx
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── admin_component_manager.py
 │   │   │   │   ├── analytics/
 │   │   │   │   │   ├── charts/
 │   │   │   │   │   │   ├── accuracy-chart.tsx
 │   │   │   │   │   │   ├── profit-chart.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── chart_manager.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── analytics_component_manager.py
 │   │   │   │   ├── betting/
 │   │   │   │   │   ├── bet-history.tsx
 │   │   │   │   │   ├── bet-slip.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── betting_component_manager.py
 │   │   │   │   ├── dashboard/
 │   │   │   │   │   ├── live-matches.tsx
 │   │   │   │   │   ├── overview.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── dashboard_component_manager.py
 │   │   │   │   ├── forms/
 │   │   │   │   │   ├── bet-form.tsx
 │   │   │   │   │   ├── filter-form.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── form_component_manager.py
 │   │   │   │   ├── layout/
 │   │   │   │   │   ├── footer.tsx
 │   │   │   │   │   ├── header.tsx
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sidebar.tsx
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── layout_component_manager.py
 │   │   │   │   ├── notifications/
 │   │   │   │   │   ├── notification-bell.tsx
 │   │   │   │   │   ├── notification-list.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── notification_component_manager.py
 │   │   │   │   ├── predictions/
 │   │   │   │   │   ├── bet-slip.tsx
 │   │   │   │   │   ├── prediction-card.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── prediction_component_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── sports/
 │   │   │   │   │   ├── basketball/
 │   │   │   │   │   │   ├── match-card.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── basketball_component_manager.py
 │   │   │   │   │   ├── esports/
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── esports_component_manager.py
 │   │   │   │   │   ├── football/
 │   │   │   │   │   │   ├── match-card.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── football_component_manager.py
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── tennis/
 │   │   │   │   │   │   ├── match-card.tsx
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── tennis_component_manager.py
+│   │   │   │   │   └── sports_component_manager.py
 │   │   │   │   ├── ui/
 │   │   │   │   │   ├── button.tsx
 │   │   │   │   │   ├── card.tsx
 │   │   │   │   │   ├── modal.tsx
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── table.tsx
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── ui_component_manager.py
+│   │   │   │   └── component_manager.py
 │   │   │   ├── config/
 │   │   │   │   ├── api-config.ts
 │   │   │   │   ├── README.md
 │   │   │   │   ├── site.ts
 │   │   │   │   ├── theme-config.ts
-│   │   │   │   └── xenon.js
+│   │   │   │   └── config_manager.py
 │   │   │   ├── contexts/
 │   │   │   │   ├── auth-context.tsx
 │   │   │   │   ├── README.md
 │   │   │   │   ├── theme-context.tsx
-│   │   │   │   └── xenon.js
+│   │   │   │   └── context_manager.py
 │   │   │   ├── hooks/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── use-analytics.ts
 │   │   │   │   ├── use-auth.ts
 │   │   │   │   ├── use-predictions.ts
 │   │   │   │   ├── use-websocket.ts
-│   │   │   │   └── xenon.js
+│   │   │   │   └── hook_manager.py
 │   │   │   ├── i18n/
 │   │   │   │   ├── i18n-config.ts
 │   │   │   │   ├── locales/
 │   │   │   │   │   ├── en/
 │   │   │   │   │   │   ├── common.json
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── en_locale_manager.py
 │   │   │   │   │   ├── fr/
 │   │   │   │   │   │   ├── common.json
 │   │   │   │   │   │   ├── README.md
-│   │   │   │   │   │   └── xenon.js
+│   │   │   │   │   │   └── fr_locale_manager.py
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── locale_manager.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── i18n_manager.py
 │   │   │   ├── lib/
 │   │   │   │   ├── api/
 │   │   │   │   │   ├── client.ts
 │   │   │   │   │   ├── endpoints.ts
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── api_manager.py
 │   │   │   │   ├── constants/
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── sports.ts
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── constant_manager.py
 │   │   │   │   ├── README.md
 │   │   │   │   ├── services/
 │   │   │   │   │   ├── auth-service.ts
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── service_manager.py
 │   │   │   │   ├── types/
 │   │   │   │   │   ├── predictions.ts
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── type_manager.py
 │   │   │   │   ├── utils/
 │   │   │   │   │   ├── calculations.ts
 │   │   │   │   │   ├── formatters.ts
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
+│   │   │   │   │   └── util_manager.py
+│   │   │   │   └── lib_manager.py
 │   │   │   ├── middleware/
 │   │   │   │   ├── auth-middleware.ts
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── middleware_manager.py
 │   │   │   ├── pages/
 │   │   │   │   ├── about.tsx
 │   │   │   │   ├── blog/
 │   │   │   │   │   ├── [slug].tsx
 │   │   │   │   │   ├── index.tsx
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── blog_manager.py
 │   │   │   │   ├── contact.tsx
 │   │   │   │   ├── index.tsx
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── page_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── store/
 │   │   │   │   ├── betting-store.ts
 │   │   │   │   ├── predictions-store.ts
 │   │   │   │   ├── README.md
 │   │   │   │   ├── user-store.ts
-│   │   │   │   └── xenon.js
+│   │   │   │   └── store_manager.py
 │   │   │   ├── styles/
 │   │   │   │   ├── animations/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── animation_manager.py
 │   │   │   │   ├── components/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── component_style_manager.py
 │   │   │   │   ├── globals.css
 │   │   │   │   ├── README.md
 │   │   │   │   ├── themes/
 │   │   │   │   │   ├── dark.ts
 │   │   │   │   │   ├── light.ts
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── theme_manager.py
 │   │   │   │   ├── utilities/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   │   └── utility_manager.py
+│   │   │   │   └── style_manager.py
+│   │   │   └── src_manager.py
 │   │   ├── tailwind.config.js
+│   │   ├── tsconfig.app.json
 │   │   ├── tsconfig.json
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   ├── tsconfig.node.json
+│   │   └── web_app_manager.py
+│   └── frontend_manager.py
 ├── infrastructure/
 │   ├── kubernetes/
 │   │   ├── configmaps/
@@ -1801,7 +1878,7 @@ GOAT-PREDICTION/
 │   │   │   ├── ml-config.yaml
 │   │   │   ├── README.md
 │   │   │   ├── sports-config.yaml
-│   │   │   └── xenon.js
+│   │   │   └── configmap_manager.py
 │   │   ├── deployments/
 │   │   │   ├── api-gateway.yaml
 │   │   │   ├── data-collector.yaml
@@ -1809,24 +1886,24 @@ GOAT-PREDICTION/
 │   │   │   ├── ml-models.yaml
 │   │   │   ├── prediction-engine.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── deployment_manager.py
 │   │   ├── helm-charts/
 │   │   │   ├── ml-pipeline/
 │   │   │   │   ├── Chart.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── templates/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── template_manager.py
 │   │   │   │   ├── values.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── helm_chart_manager.py
 │   │   │   ├── monitoring-stack/
 │   │   │   │   ├── Chart.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── templates/
 │   │   │   │   │   ├── README.md
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── template_manager.py
 │   │   │   │   ├── values.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── helm_chart_manager.py
 │   │   │   ├── prediction-engine/
 │   │   │   │   ├── Chart.yaml
 │   │   │   │   ├── README.md
@@ -1837,50 +1914,50 @@ GOAT-PREDICTION/
 │   │   │   │   │   ├── hpa.yaml
 │   │   │   │   │   ├── README.md
 │   │   │   │   │   ├── service.yaml
-│   │   │   │   │   └── xenon.js
+│   │   │   │   │   └── template_manager.py
 │   │   │   │   ├── values.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── helm_chart_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── helm_manager.py
 │   │   ├── ingress/
 │   │   │   ├── admin-ingress.yaml
 │   │   │   ├── api-ingress.yaml
 │   │   │   ├── main-ingress.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── ingress_manager.py
 │   │   ├── namespaces/
 │   │   │   ├── goat-prediction.yaml
 │   │   │   ├── ml-pipeline.yaml
 │   │   │   ├── monitoring.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── namespace_manager.py
 │   │   ├── README.md
 │   │   ├── secrets/
 │   │   │   ├── api-keys.yaml
 │   │   │   ├── database.yaml
 │   │   │   ├── README.md
 │   │   │   ├── supabase.yaml
-│   │   │   └── xenon.js
+│   │   │   └── secret_manager.py
 │   │   ├── services/
 │   │   │   ├── api-gateway-svc.yaml
 │   │   │   ├── frontend-svc.yaml
 │   │   │   ├── ml-models-svc.yaml
 │   │   │   ├── prediction-engine-svc.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── service_manager.py
+│   │   └── kubernetes_manager.py
 │   ├── monitoring/
 │   │   ├── alertmanager/
 │   │   │   ├── alertmanager.yml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── alertmanager_manager.py
 │   │   ├── dashboards/
 │   │   │   ├── financial-metrics.json
 │   │   │   ├── model-accuracy.json
 │   │   │   ├── prediction-performance.json
 │   │   │   ├── README.md
 │   │   │   ├── system-health.json
-│   │   │   └── xenon.js
+│   │   │   └── dashboard_manager.py
 │   │   ├── grafana/
 │   │   │   ├── dashboards/
 │   │   │   │   ├── financial-metrics.json
@@ -1889,41 +1966,41 @@ GOAT-PREDICTION/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── real-time-monitoring.json
 │   │   │   │   ├── system-health.json
-│   │   │   │   └── xenon.js
+│   │   │   │   └── dashboard_manager.py
 │   │   │   ├── datasources/
 │   │   │   │   ├── postgres.yaml
 │   │   │   │   ├── prometheus.yaml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── redis.yaml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── datasource_manager.py
 │   │   │   ├── provisioning/
 │   │   │   │   ├── dashboards.yaml
 │   │   │   │   ├── datasources.yaml
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── provisioning_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── grafana_manager.py
 │   │   ├── loki/
 │   │   │   ├── loki-config.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── loki_manager.py
 │   │   ├── prometheus/
 │   │   │   ├── alerts/
 │   │   │   │   ├── business-alerts.yml
 │   │   │   │   ├── prediction-alerts.yml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── system-alerts.yml
-│   │   │   │   └── xenon.js
+│   │   │   │   └── alert_manager.py
 │   │   │   ├── prometheus.yml
 │   │   │   ├── README.md
 │   │   │   ├── rules/
 │   │   │   │   ├── alerting-rules.yml
 │   │   │   │   ├── README.md
 │   │   │   │   ├── recording-rules.yml
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── rule_manager.py
+│   │   │   └── prometheus_manager.py
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── monitoring_manager.py
 │   ├── README.md
 │   ├── terraform/
 │   │   ├── main.tf
@@ -1933,39 +2010,39 @@ GOAT-PREDICTION/
 │   │   │   │   ├── outputs.tf
 │   │   │   │   ├── README.md
 │   │   │   │   ├── variables.tf
-│   │   │   │   └── xenon.js
+│   │   │   │   └── compute_module_manager.py
 │   │   │   ├── database/
 │   │   │   │   ├── main.tf
 │   │   │   │   ├── outputs.tf
 │   │   │   │   ├── README.md
 │   │   │   │   ├── variables.tf
-│   │   │   │   └── xenon.js
+│   │   │   │   └── database_module_manager.py
 │   │   │   ├── ml-infra/
 │   │   │   │   ├── main.tf
 │   │   │   │   ├── outputs.tf
 │   │   │   │   ├── README.md
 │   │   │   │   ├── variables.tf
-│   │   │   │   └── xenon.js
+│   │   │   │   └── ml_infra_module_manager.py
 │   │   │   ├── monitoring/
 │   │   │   │   ├── main.tf
 │   │   │   │   ├── outputs.tf
 │   │   │   │   ├── README.md
 │   │   │   │   ├── variables.tf
-│   │   │   │   └── xenon.js
+│   │   │   │   └── monitoring_module_manager.py
 │   │   │   ├── networking/
 │   │   │   │   ├── main.tf
 │   │   │   │   ├── outputs.tf
 │   │   │   │   ├── README.md
 │   │   │   │   ├── variables.tf
-│   │   │   │   └── xenon.js
+│   │   │   │   └── networking_module_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── module_manager.py
 │   │   ├── outputs.tf
 │   │   ├── providers.tf
 │   │   ├── README.md
 │   │   ├── variables.tf
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── terraform_manager.py
+│   └── infrastructure_manager.py
 ├── LICENSE
 ├── Makefile
 ├── mlops/
@@ -1973,102 +2050,103 @@ GOAT-PREDICTION/
 │   │   ├── comet/
 │   │   │   ├── config.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── comet_manager.py
 │   │   ├── neptune/
 │   │   │   ├── config.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── neptune_manager.py
 │   │   ├── README.md
 │   │   ├── wandb/
 │   │   │   ├── config.yaml
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── wandb_manager.py
+│   │   └── experiment_tracking_manager.py
 │   ├── feature-store/
 │   │   ├── feast/
 │   │   │   ├── entities/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── teams.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── entity_manager.py
 │   │   │   ├── feature_repos/
 │   │   │   │   ├── football_features.py
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── feature_repo_manager.py
 │   │   │   ├── feature_store.yaml
 │   │   │   ├── feature_views/
 │   │   │   │   ├── README.md
 │   │   │   │   ├── team_features.py
-│   │   │   │   └── xenon.js
+│   │   │   │   └── feature_view_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── feast_manager.py
 │   │   ├── hopsworks/
 │   │   │   ├── feature_groups/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── feature_group_manager.py
 │   │   │   ├── models/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── model_manager.py
 │   │   │   ├── README.md
 │   │   │   ├── training_datasets/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
-│   │   │   └── xenon.js
+│   │   │   │   └── training_dataset_manager.py
+│   │   │   └── hopsworks_manager.py
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── feature_store_manager.py
 │   ├── model-registry/
 │   │   ├── kubeflow/
 │   │   │   ├── components/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── component_manager.py
 │   │   │   ├── experiments/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── experiment_manager.py
 │   │   │   ├── pipelines/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── pipeline_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── kubeflow_manager.py
 │   │   ├── mlflow/
 │   │   │   ├── artifacts/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── artifact_manager.py
 │   │   │   ├── experiments/
 │   │   │   │   ├── football.json
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── experiment_manager.py
 │   │   │   ├── mlflow-config.yaml
 │   │   │   ├── models/
 │   │   │   │   ├── football/
 │   │   │   │   │   └── model.yaml
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── model_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── mlflow_manager.py
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── model_registry_manager.py
 │   ├── README.md
 │   ├── serving/
 │   │   ├── README.md
 │   │   ├── seldon/
 │   │   │   ├── README.md
 │   │   │   ├── seldon-deployment.yaml
-│   │   │   └── xenon.js
+│   │   │   └── seldon_manager.py
 │   │   ├── tensorflow-serving/
 │   │   │   ├── models.config
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── tensorflow_serving_manager.py
 │   │   ├── torchserve/
 │   │   │   ├── config.properties
 │   │   │   ├── model-store/
 │   │   │   │   ├── README.md
-│   │   │   │   └── xenon.js
+│   │   │   │   └── model_store_manager.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   │   └── torchserve_manager.py
+│   │   └── serving_manager.py
+│   └── mlops_manager.py
 ├── next.config.js
 ├── package.json
 ├── postcss.config.js
+├── Prompt.txt
 ├── pyproject.toml
 ├── README.md
 ├── requirements-dev.txt
@@ -2078,25 +2156,25 @@ GOAT-PREDICTION/
 │   ├── data/
 │   │   ├── collect-data.sh
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── data_script_manager.py
 │   ├── deployment/
 │   │   ├── deploy.sh
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── deployment_script_manager.py
 │   ├── maintenance/
 │   │   ├── backup.sh
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── maintenance_script_manager.py
 │   ├── monitoring/
 │   │   ├── check-performance.sh
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── monitoring_script_manager.py
 │   ├── README.md
 │   ├── utils/
 │   │   ├── README.md
 │   │   ├── setup-environment.sh
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── util_script_manager.py
+│   └── script_manager.py
 ├── SECURITY.md
 ├── tailwind.config.js
 ├── tests/
@@ -2104,55 +2182,55 @@ GOAT-PREDICTION/
 │   │   ├── api/
 │   │   │   ├── predictions.test.js
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── api_e2e_manager.py
 │   │   ├── mobile/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── mobile_e2e_manager.py
 │   │   ├── performance/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── performance_e2e_manager.py
 │   │   ├── README.md
 │   │   ├── web/
 │   │   │   ├── homepage.test.js
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── web_e2e_manager.py
+│   │   └── e2e_manager.py
 │   ├── integration/
 │   │   ├── api-integration.test.js
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── integration_manager.py
 │   ├── load/
 │   │   ├── api-load.test.js
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── load_manager.py
 │   ├── penetration/
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── penetration_manager.py
 │   ├── performance/
 │   │   ├── api-performance.test.js
 │   │   ├── README.md
-│   │   └── xenon.js
+│   │   └── performance_manager.py
 │   ├── README.md
 │   ├── security/
 │   │   ├── audit/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── audit_manager.py
 │   │   ├── compliance/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── compliance_manager.py
 │   │   ├── penetration/
 │   │   │   ├── api-pentest.py
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
+│   │   │   └── penetration_manager.py
 │   │   ├── README.md
 │   │   ├── vulnerability/
 │   │   │   ├── README.md
-│   │   │   └── xenon.js
-│   │   └── xenon.js
+│   │   │   └── vulnerability_manager.py
+│   │   └── security_manager.py
 │   ├── test-setup.js
 │   ├── unit/
 │   │   ├── backend-unit.test.js
 │   │   ├── README.md
-│   │   └── xenon.js
-│   └── xenon.js
+│   │   └── unit_manager.py
+│   └── test_manager.py
 └── tsconfig.json
