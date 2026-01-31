@@ -1,11 +1,11 @@
 """
-dynamic_ensemble
-Dynamic ensemble
+tennis_model_manager
+Tennis model manager
 """
 
 def main():
     """Main function"""
-    print("dynamic_ensemble loaded")
+    print("tennis_model_manager loaded")
 
 
 if __name__ == "__main__":

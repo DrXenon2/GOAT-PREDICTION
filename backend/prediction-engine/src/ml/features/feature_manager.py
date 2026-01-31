@@ -1,11 +1,11 @@
 """
-dynamic_ensemble
-Dynamic ensemble
+feature_manager
+Feature manager
 """
 
 def main():
     """Main function"""
-    print("dynamic_ensemble loaded")
+    print("feature_manager loaded")
 
 
 if __name__ == "__main__":

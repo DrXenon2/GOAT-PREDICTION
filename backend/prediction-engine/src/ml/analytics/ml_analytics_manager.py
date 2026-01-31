@@ -1,11 +1,11 @@
 """
-dynamic_ensemble
-Dynamic ensemble
+ml_analytics_manager
+ML analytics manager
 """
 
 def main():
     """Main function"""
-    print("dynamic_ensemble loaded")
+    print("ml_analytics_manager loaded")
 
 
 if __name__ == "__main__":

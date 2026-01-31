@@ -1,11 +1,11 @@
 """
-dynamic_ensemble
-Dynamic ensemble
+trainer_manager
+Trainer manager
 """
 
 def main():
     """Main function"""
-    print("dynamic_ensemble loaded")
+    print("trainer_manager loaded")
 
 
 if __name__ == "__main__":
