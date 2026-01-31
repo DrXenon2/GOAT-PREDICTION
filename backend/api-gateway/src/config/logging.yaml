@@ -1,106 +1,486 @@
-# logging.yaml - Configuration avancée du logging
+# Logging Configuration for GOAT Prediction API Gateway
+# Production-ready logging setup with multiple handlers, formatters, and loggers
+
 version: 1
 disable_existing_loggers: false
 
+# Formatters define the structure of log messages
 formatters:
-  json:
-    class: src.config.logging_config.StructuredLogFormatter
+  # Standard formatter with timestamp, level, and message
+  standard:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
   
-  simple:
-    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    datefmt: "%Y-%m-%d %H:%M:%S"
-  
+  # Detailed formatter with additional context
   detailed:
-    format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
-    datefmt: "%Y-%m-%d %H:%M:%S"
+    format: '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(funcName)s() - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  # JSON formatter for structured logging
+  json:
+    format: '{"timestamp": "%(asctime)s", "name": "%(name)s", "level": "%(levelname)s", "message": "%(message)s", "module": "%(module)s", "function": "%(funcName)s", "line": %(lineno)d}'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  # Simple formatter for development
+  simple:
+    format: '%(levelname)s - %(message)s'
+  
+  # Access log formatter
+  access:
+    format: '%(asctime)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  # Error formatter with stack traces
+  error:
+    format: '%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d]\n%(message)s\n%(exc_info)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  
+  # Colored formatter for console (development)
+  colored:
+    (): colorlog.ColoredFormatter
+    format: '%(log_color)s%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+    log_colors:
+      DEBUG: cyan
+      INFO: green
+      WARNING: yellow
+      ERROR: red
+      CRITICAL: bold_red
 
+# Filters for controlling log flow
+filters:
+  # Filter to add request context
+  request_context:
+    (): logging.Filter
+    name: request_context
+  
+  # Filter for rate limiting logs
+  rate_limit:
+    (): logging.Filter
+    name: rate_limit
+
+# Handlers define where logs are sent
 handlers:
+  # Console handler for stdout
   console:
     class: logging.StreamHandler
     level: INFO
-    formatter: json
+    formatter: standard
     stream: ext://sys.stdout
   
+  # Console handler for development with colors
+  console_dev:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: colored
+    stream: ext://sys.stdout
+  
+  # Console handler for errors only
+  console_error:
+    class: logging.StreamHandler
+    level: ERROR
+    formatter: error
+    stream: ext://sys.stderr
+  
+  # Rotating file handler for general logs
   file:
     class: logging.handlers.RotatingFileHandler
     level: INFO
-    formatter: json
-    filename: logs/application.log
+    formatter: detailed
+    filename: .logs/application/api/api-application.log
     maxBytes: 10485760  # 10MB
     backupCount: 10
-    encoding: utf-8
+    encoding: utf8
   
+  # Rotating file handler for error logs
   error_file:
     class: logging.handlers.RotatingFileHandler
     level: ERROR
-    formatter: json
-    filename: logs/error.log
+    formatter: error
+    filename: .logs/error/api/api-error.log
     maxBytes: 10485760  # 10MB
     backupCount: 10
-    encoding: utf-8
+    encoding: utf8
   
-  access_file:
+  # Time-based rotating file handler for daily logs
+  daily_file:
+    class: logging.handlers.TimedRotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: .logs/application/api/api-daily.log
+    when: midnight
+    interval: 1
+    backupCount: 30
+    encoding: utf8
+  
+  # JSON file handler for structured logging
+  json_file:
     class: logging.handlers.RotatingFileHandler
     level: INFO
     formatter: json
-    filename: logs/access.log
+    filename: .logs/application/api/api-json.log
     maxBytes: 10485760  # 10MB
     backupCount: 10
-    encoding: utf-8
-    filters: [access_filter]
+    encoding: utf8
+  
+  # Access log handler
+  access_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: access
+    filename: .logs/access/api-gateway/api-access.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 20
+    encoding: utf8
+  
+  # Security audit log handler
+  security_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: .logs/audit/security/security-audit.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 30
+    encoding: utf8
+  
+  # User actions audit log handler
+  user_actions_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: .logs/audit/user-actions/user-actions.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 30
+    encoding: utf8
+  
+  # Syslog handler for production monitoring
+  syslog:
+    class: logging.handlers.SysLogHandler
+    level: WARNING
+    formatter: standard
+    address: /dev/log
+    facility: local0
+  
+  # Null handler to suppress logs
+  null:
+    class: logging.NullHandler
 
-filters:
-  access_filter:
-    class: src.config.logging_config.RequestContextFilter
-    name: access
-
+# Loggers define logging behavior for specific modules
 loggers:
-  # Root logger
-  "":
+  # Root application logger
+  app:
     level: INFO
-    handlers: [console, file, error_file]
+    handlers:
+      - console
+      - file
+      - error_file
     propagate: false
   
-  # Application loggers
-  goat.api:
+  # API Gateway logger
+  api_gateway:
     level: INFO
-    handlers: [console, file]
+    handlers:
+      - console
+      - file
+      - json_file
     propagate: false
-    qualname: goat.api
   
-  goat.api.access:
+  # Routes logger
+  routes:
     level: INFO
-    handlers: [console, access_file]
+    handlers:
+      - console
+      - file
     propagate: false
-    qualname: goat.api.access
   
-  # Third-party loggers
+  # Middleware logger
+  middleware:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Authentication logger
+  auth:
+    level: INFO
+    handlers:
+      - console
+      - file
+      - security_file
+    propagate: false
+  
+  # Security logger
+  security:
+    level: WARNING
+    handlers:
+      - console_error
+      - security_file
+      - error_file
+    propagate: false
+  
+  # Database logger
+  database:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Access logger
+  access:
+    level: INFO
+    handlers:
+      - access_file
+    propagate: false
+  
+  # User actions logger
+  user_actions:
+    level: INFO
+    handlers:
+      - user_actions_file
+    propagate: false
+  
+  # Performance logger
+  performance:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # External API logger
+  external_api:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Cache logger
+  cache:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # WebSocket logger
+  websocket:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Background tasks logger
+  tasks:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Third-party library loggers
+  
+  # FastAPI/Starlette
   uvicorn:
     level: INFO
-    handlers: [console]
+    handlers:
+      - console
+      - access_file
     propagate: false
   
   uvicorn.access:
     level: INFO
-    handlers: [console, access_file]
+    handlers:
+      - access_file
     propagate: false
   
   uvicorn.error:
+    level: ERROR
+    handlers:
+      - console_error
+      - error_file
+    propagate: false
+  
+  fastapi:
     level: INFO
-    handlers: [console, error_file]
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  starlette:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # SQLAlchemy
+  sqlalchemy:
+    level: WARNING
+    handlers:
+      - file
     propagate: false
   
   sqlalchemy.engine:
     level: WARNING
-    handlers: [console]
+    handlers:
+      - file
     propagate: false
   
-  aioredis:
+  sqlalchemy.pool:
     level: WARNING
-    handlers: [console]
+    handlers:
+      - file
     propagate: false
   
+  # Redis
+  redis:
+    level: INFO
+    handlers:
+      - file
+    propagate: false
+  
+  # HTTP clients
   httpx:
     level: WARNING
-    handlers: [console]
+    handlers:
+      - file
     propagate: false
+  
+  urllib3:
+    level: WARNING
+    handlers:
+      - file
+    propagate: false
+  
+  requests:
+    level: WARNING
+    handlers:
+      - file
+    propagate: false
+  
+  # Pydantic
+  pydantic:
+    level: WARNING
+    handlers:
+      - file
+    propagate: false
+  
+  # AsyncIO
+  asyncio:
+    level: WARNING
+    handlers:
+      - file
+    propagate: false
+  
+  # Celery (if used)
+  celery:
+    level: INFO
+    handlers:
+      - console
+      - file
+    propagate: false
+  
+  # Pytest (for testing)
+  pytest:
+    level: DEBUG
+    handlers:
+      - console
+    propagate: false
+
+# Root logger configuration
+root:
+  level: INFO
+  handlers:
+    - console
+    - file
+    - error_file
+
+# Environment-specific overrides
+# These can be loaded conditionally based on environment
+
+development:
+  version: 1
+  disable_existing_loggers: false
+  
+  root:
+    level: DEBUG
+    handlers:
+      - console_dev
+      - file
+  
+  loggers:
+    app:
+      level: DEBUG
+    
+    api_gateway:
+      level: DEBUG
+    
+    sqlalchemy.engine:
+      level: INFO  # Show SQL queries in development
+
+production:
+  version: 1
+  disable_existing_loggers: false
+  
+  root:
+    level: INFO
+    handlers:
+      - console
+      - file
+      - error_file
+      - syslog
+  
+  loggers:
+    app:
+      level: INFO
+    
+    api_gateway:
+      level: INFO
+    
+    sqlalchemy.engine:
+      level: WARNING  # Hide SQL queries in production
+    
+    uvicorn.access:
+      level: WARNING  # Reduce access log verbosity
+
+testing:
+  version: 1
+  disable_existing_loggers: false
+  
+  root:
+    level: DEBUG
+    handlers:
+      - console
+  
+  loggers:
+    app:
+      level: DEBUG
+    
+    pytest:
+      level: DEBUG
+    
+    sqlalchemy.engine:
+      level: WARNING  # Hide SQL in tests
+
+staging:
+  version: 1
+  disable_existing_loggers: false
+  
+  root:
+    level: INFO
+    handlers:
+      - console
+      - file
+      - error_file
+  
+  loggers:
+    app:
+      level: INFO
+    
+    api_gateway:
+      level: DEBUG  # More verbose in staging
